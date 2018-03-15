@@ -4,16 +4,16 @@ import sqlite3
 def main():
     print("Hello world")
 
-    readtitlebasisctodb(True, False)
+    readtitlebasisctodb()
 
 
-def readtitlebasisctodb(only_movies, with_adult):
+def readtitlebasisctodb():
     conn = sqlite3.connect("test.db")
     c = conn.cursor()
     c.execute("DROP TABLE IF EXISTS 'title.basics'")
     c.execute(
-        "CREATE TABLE 'title.basics' (tconst TEXT, titleType TEXT, primaryTitle TEXT, originalTitle TEXT, "
-        "isAdult INTEGER, startYear INTEGER, endYear INTEGER, runtimeMinutes INTEGER, genres TEXT)")
+        "CREATE TABLE 'title.basics' (tconst TEXT, primaryTitle TEXT, originalTitle TEXT, "
+        "year INTEGER, runtimeMinutes INTEGER, genres TEXT)")
 
     with open('../DB Data/IMDB/title.basics.tsv', 'r') as file:
         line = file.readline()
@@ -23,8 +23,11 @@ def readtitlebasisctodb(only_movies, with_adult):
         while line:
             entries = line.split('\t')
 
-            if ((not only_movies) | (entries[1] == "movie")) & (with_adult | (entries[4] == "0")):
-                c.execute("INSERT INTO 'title.basics' VALUES (?,?,?,?,?,?,?,?,?)", entries)
+            if (entries[1] == "movie") & (entries[4] == "0"):
+                del entries[1]
+                del entries[3]
+                del entries[4]
+                c.execute("INSERT INTO 'title.basics' VALUES (?,?,?,?,?,?)", entries)
 
             line = file.readline().strip()
             print("Reading line %d" % count)
