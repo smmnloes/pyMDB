@@ -43,14 +43,17 @@ def restore_last_version():
 def download_new_data(dataset):
     unzipped_path = ROOT_DB_DATA_REMOTE + dataset
     zipped_path = unzipped_path + '_zipped'
+    print('Downloading %s data' % dataset)
     urllib.request.urlretrieve(URL_IMDB_DATA_ROOT + DATASETS_TO_FILENAMES.get(dataset),
                                zipped_path)
 
+    print('Unzipping %s data' % dataset)
     with gzip.open(zipped_path) as zipped_file:
         with open(unzipped_path, 'wb') as unzipped_file:
             unzipped_file.write(zipped_file.read())
 
     os.remove(zipped_path)
+    print('Finished processing %s data' % dataset)
 
 
 def read_title_basisc():
