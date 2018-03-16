@@ -16,6 +16,16 @@ def main():
         elif user_input == 'restore':
             DatabaseUpdateService.restore_last_version()
         elif user_input == 'readbasics':
-            DatabaseUpdateService.read_title_basisc()
+            DatabaseUpdateService.read_basics()
+        elif user_input == 'readratings':
+            DatabaseUpdateService.read_ratings()
+        elif user_input == 'readakas':
+            DatabaseUpdateService.read_akas()
+        elif user_input == 'readprincipals':
+            DatabaseUpdateService.read_principals()
+        elif user_input == 'readcrew':
+            DatabaseUpdateService.read_crew()
+        elif user_input == 'readnames':
+            DatabaseUpdateService.read_names()
 
 main()
