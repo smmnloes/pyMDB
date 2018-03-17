@@ -1,1 +1,6 @@
-/DB Data/
+/DB_Data*/
+*.db
+.idea
+src/__pycache__/
+*.pyc
+
