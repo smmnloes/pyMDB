@@ -10,6 +10,7 @@ PATH_LOCAL_DB = "../DB_Data_Local/local.db"
 
 URL_IMDB_DATA_ROOT = "https://datasets.imdbws.com/"
 
+DATASETS = ['basics', 'names', 'akas', 'crew', 'principals', 'ratings']
 DATASETS_TO_FILENAMES = {'basics': 'title.basics.tsv.gz', 'names': 'name.basics.tsv.gz', 'akas': 'title.akas.tsv.gz',
                          'crew': 'title.crew.tsv.gz', 'principals': 'title.principals.tsv.gz',
                          'ratings': 'title.ratings.tsv.gz'}
@@ -18,29 +19,23 @@ VALID_IDS = []
 
 
 def update_db():
-    backup_last_version()
+    backup_local_db()
 
     try:
-        for dataset in DATASETS_TO_FILENAMES:
+        for dataset in DATASETS:
+            print('\nProcessing %s data.' % dataset)
             download_new_data(dataset)
-
-        read_basics()
-        read_principals()
-        read_akas()
-        read_ratings()
-        read_crew()
-        read_names()
-
-        for dataset in DATASETS_TO_FILENAMES:
+            DATASETS_TO_READ_FUNCTIONS.get(dataset)()
             delete_downloaded_remote_data(dataset)
+            print('Finished processing %s data.\n' % dataset)
 
     except Exception as e:
-        print("Error while updating: {}\nRestoring last dabase version!".format(e))
-        restore_last_version()
+        print("Error while updating: {}".format(e))
+        restore_db_last_version()
 
 
-def backup_last_version():
-    print('Backing up last version!')
+def backup_local_db():
+    print('Backing up last version.')
     if os.path.isfile(PATH_LOCAL_DB):
         os.rename(PATH_LOCAL_DB, PATH_LOCAL_DB_LAST_VERSION)
     else:
@@ -52,17 +47,18 @@ def delete_downloaded_remote_data(dataset):
     os.remove(ROOT_DB_DATA_REMOTE + dataset)
 
 
-def restore_last_version():
+def restore_db_last_version():
+    print('Restoring last version.')
     if os.path.isfile(PATH_LOCAL_DB_LAST_VERSION):
         os.rename(PATH_LOCAL_DB_LAST_VERSION, PATH_LOCAL_DB)
     else:
-        print("No previous version found! Sorry...")
+        print("No previous version found! Cannot restore last version!")
 
 
 def download_new_data(dataset):
     unzipped_path = ROOT_DB_DATA_REMOTE + dataset
     zipped_path = unzipped_path + '_zipped'
-    print('Downloading %s data' % dataset)
+    print('Downloading %s data.' % dataset)
     urllib.request.urlretrieve(URL_IMDB_DATA_ROOT + DATASETS_TO_FILENAMES.get(dataset),
                                zipped_path)
 
@@ -72,10 +68,9 @@ def download_new_data(dataset):
             unzipped_file.write(zipped_file.read())
 
     os.remove(zipped_path)
-    print('Finished processing %s data' % dataset)
 
 
-def is_valid_id(to_check):
+def is_valid_tid(to_check):
     i = bisect.bisect_left(VALID_IDS, to_check)
     if i != len(VALID_IDS) and VALID_IDS[i] == to_check:
         return True
@@ -83,19 +78,19 @@ def is_valid_id(to_check):
         return False
 
 
-def one_is_valid_id(to_check):
+def one_is_valid_tid(to_check):
     for x in to_check:
-        if is_valid_id(x):
+        if is_valid_tid(x):
             return True
     return False
 
 
-def imdb_id_to_int(imdb_id):
+def tid_to_int(imdb_id):
     return int(imdb_id[2:])
 
 
 def read_basics():
-    print('Reading basics...')
+    print('Reading basics to database.')
     conn = sqlite3.connect(PATH_LOCAL_DB)
     c = conn.cursor()
     c.execute("CREATE TABLE basics(tid TEXT PRIMARY KEY, primaryTitle TEXT, originalTitle TEXT, "
@@ -113,7 +108,7 @@ def read_basics():
                 del entries[3]
                 del entries[4]
                 c.execute("INSERT INTO basics VALUES (?,?,?,?,?,?)", entries)
-                VALID_IDS.append(imdb_id_to_int(entries[0]))
+                VALID_IDS.append(tid_to_int(entries[0]))
 
             line = file.readline().strip()
 
@@ -122,7 +117,7 @@ def read_basics():
 
 
 def read_ratings():
-    print('Reading ratings...')
+    print('Reading ratings to database.')
     conn = sqlite3.connect(PATH_LOCAL_DB)
     c = conn.cursor()
     c.execute("CREATE TABLE ratings(tid TEXT PRIMARY KEY, averageRating REAL, numVotes INTEGER)")
@@ -132,7 +127,7 @@ def read_ratings():
 
         while line:
             entries = line.split('\t')
-            if is_valid_id(imdb_id_to_int(entries[0])):
+            if is_valid_tid(tid_to_int(entries[0])):
                 c.execute("INSERT INTO ratings VALUES (?,?,?)", entries)
 
             line = file.readline().strip()
@@ -142,7 +137,7 @@ def read_ratings():
 
 
 def read_akas():
-    print('Reading akas...')
+    print('Reading akas to database.')
     conn = sqlite3.connect(PATH_LOCAL_DB)
     c = conn.cursor()
     c.execute("CREATE TABLE akas(tid TEXT, title TEXT)")
@@ -153,8 +148,8 @@ def read_akas():
         last_valid_id = -1
         while line:
             entries = line.split('\t')
-            current_id = imdb_id_to_int(entries[0])
-            if (current_id == last_valid_id) or is_valid_id(current_id):
+            current_id = tid_to_int(entries[0])
+            if (current_id == last_valid_id) or is_valid_tid(current_id):
                 last_valid_id = current_id
                 entries = entries[0:1] + entries[2:3]
                 c.execute("INSERT INTO akas VALUES (?,?)", entries)
@@ -166,7 +161,7 @@ def read_akas():
 
 
 def read_principals():
-    print('Reading principals...')
+    print('Reading principals to database.')
     conn = sqlite3.connect(PATH_LOCAL_DB)
     c = conn.cursor()
     c.execute("CREATE TABLE principals(tid TEXT, nid TEXT, category TEXT, characters TEXT)")
@@ -177,8 +172,8 @@ def read_principals():
         last_valid_id = -1
         while line:
             entries = line.split('\t')
-            current_id = imdb_id_to_int(entries[0])
-            if (current_id == last_valid_id) or is_valid_id(current_id):
+            current_id = tid_to_int(entries[0])
+            if (current_id == last_valid_id) or is_valid_tid(current_id):
                 last_valid_id = current_id
                 entries = entries[0:1] + entries[2:4] + entries[5:]
                 c.execute("INSERT INTO principals VALUES (?,?,?,?)", entries)
@@ -190,7 +185,7 @@ def read_principals():
 
 
 def read_crew():
-    print('Reading crew...')
+    print('Reading crew to database.')
     conn = sqlite3.connect(PATH_LOCAL_DB)
     c = conn.cursor()
     c.execute("CREATE TABLE crew(tid TEXT, directors TEXT, writers TEXT)")
@@ -200,7 +195,7 @@ def read_crew():
 
         while line:
             entries = line.split('\t')
-            if is_valid_id(imdb_id_to_int(entries[0])):
+            if is_valid_tid(tid_to_int(entries[0])):
                 c.execute("INSERT INTO crew VALUES (?,?,?)", entries)
 
             line = file.readline().strip()
@@ -210,7 +205,7 @@ def read_crew():
 
 
 def read_names():
-    print('Reading names...')
+    print('Reading names to database.')
     conn = sqlite3.connect(PATH_LOCAL_DB)
     c = conn.cursor()
     c.execute("CREATE TABLE names(nid TEXT, name TEXT)")
@@ -223,9 +218,9 @@ def read_names():
 
             if entries[5] != '\\N':
                 known_for = entries[5].split(',')
-                known_for = [imdb_id_to_int(x) for x in known_for]
+                known_for = [tid_to_int(x) for x in known_for]
 
-                if one_is_valid_id(known_for):
+                if one_is_valid_tid(known_for):
                     entries = entries[0:2]
                     c.execute("INSERT INTO names VALUES (?,?)", entries)
 
@@ -233,3 +228,8 @@ def read_names():
 
     conn.commit()
     conn.close()
+
+
+DATASETS_TO_READ_FUNCTIONS = {'basics': read_basics, 'names': read_names, 'akas': read_akas,
+                              'crew': read_crew, 'principals': read_principals,
+                              'ratings': read_ratings}

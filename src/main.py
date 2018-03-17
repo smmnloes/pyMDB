@@ -12,9 +12,9 @@ def main():
         elif user_input == 'download':
             DatabaseUpdateService.download_new_data('ratings')
         elif user_input == 'backup':
-            DatabaseUpdateService.backup_last_version()
+            DatabaseUpdateService.backup_local_db()
         elif user_input == 'restore':
-            DatabaseUpdateService.restore_last_version()
+            DatabaseUpdateService.restore_db_last_version()
         elif user_input == 'readbasics':
             DatabaseUpdateService.read_basics()
         elif user_input == 'readratings':
@@ -27,5 +27,6 @@ def main():
             DatabaseUpdateService.read_crew()
         elif user_input == 'readnames':
             DatabaseUpdateService.read_names()
+
 
 main()
