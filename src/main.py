@@ -1,4 +1,4 @@
-import DatabaseUpdateService
+from DatabaseServices import DatabaseUpdateService
 
 
 def main():
