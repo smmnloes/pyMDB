@@ -10,7 +10,8 @@ def main():
         if user_input == 'update':
             DatabaseUpdateService.update_db()
         elif user_input == 'download':
-            DatabaseUpdateService.download_new_data('ratings')
+            next_input = input('Download which dataset? ')
+            DatabaseUpdateService.download_new_data(next_input)
         elif user_input == 'backup':
             DatabaseUpdateService.backup_local_db()
         elif user_input == 'restore':

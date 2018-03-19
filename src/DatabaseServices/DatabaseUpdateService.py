@@ -181,10 +181,11 @@ def read_principals():
 
 
 def read_crew():
-    print('Reading crew to database.')
+    print('Reading writers&directors to database.')
     db_connect = sqlite3.connect(Paths.LOCAL_DB)
     c = db_connect.cursor()
-    c.execute("CREATE TABLE crew(tid TEXT, directors TEXT, writers TEXT)")
+    c.execute("CREATE TABLE writers(tid TEXT, writer TEXT)")
+    c.execute("CREATE TABLE directors(tid TEXT, director TEXT)")
     with open(Paths.DB_DATA_REMOTE + 'crew', 'r') as file:
         line = file.readline()
         line = file.readline().strip()
@@ -192,7 +193,11 @@ def read_crew():
         while line:
             entries = line.split('\t')
             if is_valid_tid(tid_to_int(entries[0])):
-                c.execute("INSERT INTO crew VALUES (?,?,?)", entries)
+                for director in entries[1].split(','):
+                    c.execute("INSERT INTO directors VALUES (?,?)", (entries[0], director))
+
+                for writer in entries[2].split(','):
+                    c.execute("INSERT INTO writers VALUES (?,?)", (entries[0], writer))
 
             line = file.readline().strip()
 
