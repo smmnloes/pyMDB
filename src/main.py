@@ -1,5 +1,16 @@
+import json
+from threading import Thread
+
+import requests
+
 from DatabaseServices import DatabaseUpdateService
 from DatabaseServices import Server
+
+
+def testquery():
+    url = "http://localhost:5002/query"
+    data = json.dumps({"director": "Steven Spielberg", "year_from": 2000, "year_to": 2018})
+    requests.post(url, data=data)
 
 
 def main():
@@ -21,9 +32,10 @@ def main():
             next_input = input('Read which dataset? ')
             DatabaseUpdateService.DATASETS_TO_READ_FUNCTIONS.get(next_input)()
         elif user_input == 'query':
-            movie = Server.Movie()
-            result = movie.get("Steven Spielberg", 1900, 2018)
-            print(result)
+            testquery()
+        elif user_input == 'startserver':
+            thread = Thread(target=Server.start_app)
+            thread.start()
 
 
 main()
