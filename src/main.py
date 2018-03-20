@@ -1,4 +1,5 @@
 from DatabaseServices import DatabaseUpdateService
+from DatabaseServices import Server
 
 
 def main():
@@ -16,18 +17,13 @@ def main():
             DatabaseUpdateService.backup_local_db()
         elif user_input == 'restore':
             DatabaseUpdateService.restore_db_last_version()
-        elif user_input == 'readbasics':
-            DatabaseUpdateService.read_basics()
-        elif user_input == 'readratings':
-            DatabaseUpdateService.read_ratings()
-        elif user_input == 'readakas':
-            DatabaseUpdateService.read_akas()
-        elif user_input == 'readprincipals':
-            DatabaseUpdateService.read_principals()
-        elif user_input == 'readcrew':
-            DatabaseUpdateService.read_crew()
-        elif user_input == 'readnames':
-            DatabaseUpdateService.read_names()
+        elif user_input == 'read':
+            next_input = input('Read which dataset? ')
+            DatabaseUpdateService.DATASETS_TO_READ_FUNCTIONS.get(next_input)()
+        elif user_input == 'query':
+            movie = Server.Movie()
+            result = movie.get("Steven Spielberg", 1900, 2018)
+            print(result)
 
 
 main()

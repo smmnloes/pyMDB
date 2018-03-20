@@ -181,7 +181,7 @@ def read_principals():
 
 
 def read_crew():
-    print('Reading writers&directors to database.')
+    print('Reading writers & directors to database.')
     db_connect = sqlite3.connect(Paths.LOCAL_DB)
     c = db_connect.cursor()
     c.execute("CREATE TABLE writers(tid TEXT, writer TEXT)")
