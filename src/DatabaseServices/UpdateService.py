@@ -184,8 +184,8 @@ def read_crew():
     print('Reading writers & directors to database.')
     db_connect = sqlite3.connect(Paths.LOCAL_DB)
     c = db_connect.cursor()
-    c.execute("CREATE TABLE writers(tid TEXT, writer TEXT)")
-    c.execute("CREATE TABLE directors(tid TEXT, director TEXT)")
+    c.execute("CREATE TABLE writers(tid TEXT, nid TEXT)")
+    c.execute("CREATE TABLE directors(tid TEXT, nid TEXT)")
     with open(Paths.DB_DATA_REMOTE + 'crew', 'r') as file:
         line = file.readline()
         line = file.readline().strip()

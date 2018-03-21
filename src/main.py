@@ -2,14 +2,20 @@ from threading import Thread
 
 import requests
 
-from DatabaseServices import Server
+from DatabaseServices import Server, QueryService
 from DatabaseServices import UpdateService
 
+testquery_data = {"director": "Steven Spielberg",
+                  "writer": None,
+                  "year_from": 2000,
+                  "year_to": 2018,
+                  "genres": ['Adventure', 'Sci-Fi'],
+                  "minRatingIMDB": 5.0}
 
-def testquery():
+
+def testquery_rest():
     url = "http://localhost:5002/query"
-    data = {"director": "Steven Spielberg", "year_from": 2000, "year_to": 2018, 'genres': ['Adventure', 'Sci-Fi']}
-    requests.post(url, json=data)
+    requests.post(url, json=testquery_data)
 
 
 def main():
@@ -30,11 +36,13 @@ def main():
         elif user_input == 'read':
             next_input = input('Read which dataset? ')
             UpdateService.DATASETS_TO_READ_FUNCTIONS.get(next_input)()
-        elif user_input == 'query':
-            testquery()
+        elif user_input == 'queryrest':
+            testquery_rest()
         elif user_input == 'startserver':
             thread = Thread(target=Server.start_app)
             thread.start()
+        elif user_input == 'querylocal':
+            print(QueryService.make_query(testquery_data))
 
 
 main()
