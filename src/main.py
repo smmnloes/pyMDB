@@ -5,12 +5,12 @@ import requests
 from DatabaseServices import Server, QueryService
 from DatabaseServices import UpdateService
 
-testquery_data = {"director": 'Woody Allen',
-                  "writer": None,
-                  "year_from": 1988,
-                  "year_to": 1988,
+testquery_data = {"director": "J.J. Abrams",
+                  "writer": "George Lucas",
+                  "year_from": 1950,
+                  "year_to": None,
                   "genres": [],
-                  "minRatingIMDB": 6.6}
+                  "minRatingIMDB": 5.0}
 
 
 def testquery_rest():
@@ -45,6 +45,9 @@ def main():
             result = QueryService.make_query(testquery_data)
             for r in result:
                 print(r)
+
+        elif user_input == 'analyze':
+            UpdateService.analyze()
 
 
 main()

@@ -29,6 +29,8 @@ def update_db():
         print("Error while updating: {}".format(e))
         restore_db_last_version()
 
+    analyze()
+
 
 def backup_local_db():
     print('Backing up last version.')
@@ -85,11 +87,17 @@ def tid_to_int(imdb_id):
     return int(imdb_id[2:])
 
 
+def analyze():
+    db_connect = sqlite3.connect(Paths.LOCAL_DB)
+    c = db_connect.cursor()
+    c.execute('ANALYZE')
+
+
 def read_basics():
     print('Reading basics to database.')
     db_connect = sqlite3.connect(Paths.LOCAL_DB)
     c = db_connect.cursor()
-    c.execute("CREATE TABLE basics(tid TEXT PRIMARY KEY, primaryTitle TEXT, originalTitle TEXT, "
+    c.execute("CREATE TABLE basics(tid TEXT PRIMARY KEY, primaryTitle TEXT, "
               "year INTEGER, runtimeMinutes INTEGER, genres TEXT)")
 
     with open(Paths.DB_DATA_REMOTE + 'basics', 'r') as file:
@@ -100,15 +108,12 @@ def read_basics():
             entries = line.split('\t')
 
             if (entries[1] == "movie") & (entries[4] == "0"):
-                del entries[1]
-                del entries[3]
-                del entries[4]
-                c.execute("INSERT INTO basics VALUES (?,?,?,?,?,?)", entries)
+                entries = entries[0:1] + entries[2:3] + entries[5:6] + entries[7:]
+                c.execute("INSERT INTO basics VALUES (?,?,?,?,?)", entries)
                 VALID_IDS.append(tid_to_int(entries[0]))
 
             line = file.readline().strip()
 
-    c.execute("CREATE INDEX 'index_basics' ON 'basics' ('tid')")
     db_connect.commit()
     db_connect.close()
 
@@ -117,7 +122,7 @@ def read_ratings():
     print('Reading ratings to database.')
     db_connect = sqlite3.connect(Paths.LOCAL_DB)
     c = db_connect.cursor()
-    c.execute("CREATE TABLE ratings(tid TEXT REFERENCES basics(tid), averageRating REAL, numVotes INTEGER)")
+    c.execute("CREATE TABLE ratings(tid TEXT, averageRating REAL, numVotes INTEGER)")
     with open(Paths.DB_DATA_REMOTE + 'ratings', 'r') as file:
         line = file.readline()
         line = file.readline().strip()
@@ -129,7 +134,6 @@ def read_ratings():
 
             line = file.readline().strip()
 
-    c.execute("CREATE INDEX 'index_ratings' ON 'akas' ('tid')")
     db_connect.commit()
     db_connect.close()
 
@@ -138,7 +142,7 @@ def read_akas():
     print('Reading akas to database.')
     db_connect = sqlite3.connect(Paths.LOCAL_DB)
     c = db_connect.cursor()
-    c.execute("CREATE TABLE akas(tid TEXT REFERENCES basics(tid), title TEXT)")
+    c.execute("CREATE TABLE akas(tid TEXT, title TEXT)")
     with open(Paths.DB_DATA_REMOTE + 'akas', 'r') as file:
         line = file.readline()
         line = file.readline().strip()
@@ -154,7 +158,6 @@ def read_akas():
 
             line = file.readline().strip()
 
-    c.execute("CREATE INDEX 'index_akas' ON 'akas' ('tid','title')")
     db_connect.commit()
     db_connect.close()
 
@@ -163,8 +166,8 @@ def read_principals():
     print('Reading principals to database.')
     db_connect = sqlite3.connect(Paths.LOCAL_DB)
     c = db_connect.cursor()
-    c.execute("CREATE TABLE principals(tid TEXT REFERENCES basics(tid), "
-              "nid TEXT REFERENCES names(nid), category TEXT, characters TEXT)")
+    c.execute("CREATE TABLE principals(tid TEXT, "
+              "nid TEXT, category TEXT, characters TEXT)")
     with open(Paths.DB_DATA_REMOTE + 'principals', 'r') as file:
         line = file.readline()
         line = file.readline().strip()
@@ -180,7 +183,6 @@ def read_principals():
 
             line = file.readline().strip()
 
-    c.execute("CREATE INDEX 'index_principals' ON 'principals' ('tid')")
     db_connect.commit()
     db_connect.close()
 
@@ -190,11 +192,11 @@ def read_crew():
     db_connect = sqlite3.connect(Paths.LOCAL_DB)
     c = db_connect.cursor()
     c.execute(
-        "CREATE TABLE writers(tid TEXT REFERENCES basics(tid), "
-        "nid TEXT REFERENCES names(nid))")
+        "CREATE TABLE writers(tid TEXT, "
+        "nid TEXT)")
     c.execute(
-        "CREATE TABLE directors(tid TEXT REFERENCES basics(tid), "
-        "nid TEXT REFERENCES names(nid))")
+        "CREATE TABLE directors(tid TEXT, "
+        "nid TEXT)")
     with open(Paths.DB_DATA_REMOTE + 'crew', 'r') as file:
         line = file.readline()
         line = file.readline().strip()
@@ -210,8 +212,6 @@ def read_crew():
 
             line = file.readline().strip()
 
-    c.execute("CREATE INDEX 'index_writers' ON 'writers' ('tid','nid')")
-    c.execute("CREATE INDEX 'index_directors' ON 'directors' ('tid','nid')")
     db_connect.commit()
     db_connect.close()
 
@@ -238,7 +238,6 @@ def read_names():
 
             line = file.readline().strip()
 
-    c.execute("CREATE INDEX 'index_names' ON 'names' ('nid','name')")
     db_connect.commit()
     db_connect.close()
 

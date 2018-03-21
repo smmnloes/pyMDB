@@ -1,6 +1,11 @@
 import sqlite3
+import time
 
 from DatabaseServices import Paths
+
+
+def millis():
+    return int(round(time.time() * 1000))
 
 
 def make_query(request):
@@ -43,5 +48,7 @@ def make_query(request):
     query = query_select + " " + query_from + " " + query_where
 
     print(query)
+    time_before = millis()
     c.execute(query)
+    print("Time taken: " + str(millis() - time_before) + "ms")
     return c.fetchall()
