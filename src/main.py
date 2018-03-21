@@ -5,12 +5,12 @@ import requests
 from DatabaseServices import Server, QueryService
 from DatabaseServices import UpdateService
 
-testquery_data = {"director": "Steven Spielberg",
+testquery_data = {"director": 'Woody Allen',
                   "writer": None,
-                  "year_from": 2000,
-                  "year_to": 2018,
-                  "genres": ['Adventure', 'Sci-Fi'],
-                  "minRatingIMDB": 5.0}
+                  "year_from": 1988,
+                  "year_to": 1988,
+                  "genres": [],
+                  "minRatingIMDB": 6.6}
 
 
 def testquery_rest():
@@ -42,7 +42,9 @@ def main():
             thread = Thread(target=Server.start_app)
             thread.start()
         elif user_input == 'querylocal':
-            print(QueryService.make_query(testquery_data))
+            result = QueryService.make_query(testquery_data)
+            for r in result:
+                print(r)
 
 
 main()
