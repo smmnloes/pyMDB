@@ -15,14 +15,14 @@ VALID_IDS = []
 
 
 def update_db():
-    backup_local_db()
+    # backup_local_db()
 
     try:
         for dataset in DATASETS:
             print('\nProcessing %s data.' % dataset)
-            download_new_data(dataset)
+            # download_new_data(dataset)
             DATASETS_TO_READ_FUNCTIONS.get(dataset)()
-            delete_downloaded_remote_data(dataset)
+            # delete_downloaded_remote_data(dataset)
             print('Finished processing %s data.\n' % dataset)
 
     except (Exception, BaseException) as e:
@@ -108,6 +108,7 @@ def read_basics():
 
             line = file.readline().strip()
 
+    c.execute("CREATE INDEX 'index_basics' ON 'basics' ('tid')")
     db_connect.commit()
     db_connect.close()
 
@@ -116,7 +117,7 @@ def read_ratings():
     print('Reading ratings to database.')
     db_connect = sqlite3.connect(Paths.LOCAL_DB)
     c = db_connect.cursor()
-    c.execute("CREATE TABLE ratings(tid TEXT PRIMARY KEY, averageRating REAL, numVotes INTEGER)")
+    c.execute("CREATE TABLE ratings(tid TEXT REFERENCES basics(tid), averageRating REAL, numVotes INTEGER)")
     with open(Paths.DB_DATA_REMOTE + 'ratings', 'r') as file:
         line = file.readline()
         line = file.readline().strip()
@@ -128,6 +129,7 @@ def read_ratings():
 
             line = file.readline().strip()
 
+    c.execute("CREATE INDEX 'index_ratings' ON 'akas' ('tid')")
     db_connect.commit()
     db_connect.close()
 
@@ -136,7 +138,7 @@ def read_akas():
     print('Reading akas to database.')
     db_connect = sqlite3.connect(Paths.LOCAL_DB)
     c = db_connect.cursor()
-    c.execute("CREATE TABLE akas(tid TEXT, title TEXT)")
+    c.execute("CREATE TABLE akas(tid TEXT REFERENCES basics(tid), title TEXT)")
     with open(Paths.DB_DATA_REMOTE + 'akas', 'r') as file:
         line = file.readline()
         line = file.readline().strip()
@@ -152,6 +154,7 @@ def read_akas():
 
             line = file.readline().strip()
 
+    c.execute("CREATE INDEX 'index_akas' ON 'akas' ('tid','title')")
     db_connect.commit()
     db_connect.close()
 
@@ -160,7 +163,8 @@ def read_principals():
     print('Reading principals to database.')
     db_connect = sqlite3.connect(Paths.LOCAL_DB)
     c = db_connect.cursor()
-    c.execute("CREATE TABLE principals(tid TEXT, nid TEXT, category TEXT, characters TEXT)")
+    c.execute("CREATE TABLE principals(tid TEXT REFERENCES basics(tid), "
+              "nid TEXT REFERENCES names(nid), category TEXT, characters TEXT)")
     with open(Paths.DB_DATA_REMOTE + 'principals', 'r') as file:
         line = file.readline()
         line = file.readline().strip()
@@ -176,6 +180,7 @@ def read_principals():
 
             line = file.readline().strip()
 
+    c.execute("CREATE INDEX 'index_principals' ON 'principals' ('tid')")
     db_connect.commit()
     db_connect.close()
 
@@ -184,8 +189,12 @@ def read_crew():
     print('Reading writers & directors to database.')
     db_connect = sqlite3.connect(Paths.LOCAL_DB)
     c = db_connect.cursor()
-    c.execute("CREATE TABLE writers(tid TEXT, nid TEXT)")
-    c.execute("CREATE TABLE directors(tid TEXT, nid TEXT)")
+    c.execute(
+        "CREATE TABLE writers(tid TEXT REFERENCES basics(tid), "
+        "nid TEXT REFERENCES names(nid))")
+    c.execute(
+        "CREATE TABLE directors(tid TEXT REFERENCES basics(tid), "
+        "nid TEXT REFERENCES names(nid))")
     with open(Paths.DB_DATA_REMOTE + 'crew', 'r') as file:
         line = file.readline()
         line = file.readline().strip()
@@ -201,6 +210,8 @@ def read_crew():
 
             line = file.readline().strip()
 
+    c.execute("CREATE INDEX 'index_writers' ON 'writers' ('tid','nid')")
+    c.execute("CREATE INDEX 'index_directors' ON 'directors' ('tid','nid')")
     db_connect.commit()
     db_connect.close()
 
@@ -209,7 +220,7 @@ def read_names():
     print('Reading names to database.')
     db_connect = sqlite3.connect(Paths.LOCAL_DB)
     c = db_connect.cursor()
-    c.execute("CREATE TABLE names(nid TEXT, name TEXT)")
+    c.execute("CREATE TABLE names(nid TEXT PRIMARY KEY, name TEXT)")
     with open(Paths.DB_DATA_REMOTE + 'names', 'r') as file:
         line = file.readline()
         line = file.readline().strip()
@@ -227,6 +238,7 @@ def read_names():
 
             line = file.readline().strip()
 
+    c.execute("CREATE INDEX 'index_names' ON 'names' ('nid','name')")
     db_connect.commit()
     db_connect.close()
 
