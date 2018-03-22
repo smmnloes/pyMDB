@@ -8,7 +8,7 @@ def millis():
     return int(round(time.time() * 1000))
 
 
-def make_query(request):
+def get_movies_by_criteria(request):
     db_connect = sqlite3.connect('file:' + Paths.LOCAL_DB + '?mode=ro', uri=True)
     c = db_connect.cursor()
 
@@ -51,4 +51,6 @@ def make_query(request):
     time_before = millis()
     c.execute(query)
     print("Time taken: " + str(millis() - time_before) + "ms")
-    return c.fetchall()
+    results = c.fetchall()
+    print("Results: {}".format(len(results)))
+    return results

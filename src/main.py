@@ -5,11 +5,11 @@ import requests
 from DatabaseServices import Server, QueryService
 from DatabaseServices import UpdateService
 
-testquery_data = {"director": "J.J. Abrams",
-                  "writer": "George Lucas",
-                  "year_from": 1950,
+testquery_data = {"director": "Ron Howard",
+                  "writer": None,
+                  "year_from": None,
                   "year_to": None,
-                  "genres": [],
+                  "genres": None,
                   "minRatingIMDB": 5.0}
 
 
@@ -42,7 +42,7 @@ def main():
             thread = Thread(target=Server.start_app)
             thread.start()
         elif user_input == 'querylocal':
-            result = QueryService.make_query(testquery_data)
+            result = QueryService.get_movies_by_criteria(testquery_data)
             for r in result:
                 print(r)
 
