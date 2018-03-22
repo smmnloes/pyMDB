@@ -1,4 +1,7 @@
-<head></head>
+<head>
+    <script src="jquery-3.3.1.js"></script>
+    <script src="search_Script.js"></script>
+</head>
 <body>
 <div id="inputfields">
     <ul>
@@ -27,11 +30,11 @@
             <input id="minRatingIMDB_input">
         </li>
     </ul>
-    <button id="search_button">Search!</button>
+    <button id="search_button" onclick="make_query()">Search!</button>
 </div>
 
 <div id="search_results">
-
+    <span id="results_span"></span>
 </div>
 
 

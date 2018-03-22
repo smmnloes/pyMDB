@@ -6,10 +6,10 @@ from DatabaseServices import Server, QueryService
 from DatabaseServices import UpdateService
 
 testquery_data = {"director": "Ron Howard",
-                  "writer": None,
-                  "year_from": None,
-                  "year_to": None,
-                  "genres": None,
+                  "writer": "",
+                  "year_from": "",
+                  "year_to": "",
+                  "genres": "",
                   "minRatingIMDB": 5.0}
 
 
