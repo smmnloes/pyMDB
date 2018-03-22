@@ -16,6 +16,7 @@ flask-jsonpify = "*"
 flask-sqlalchemy = "*"
 flask-restful = "*"
 requests = "*"
+flask-cors = "*"
 
 
 [requires]

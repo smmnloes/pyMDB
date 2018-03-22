@@ -1,12 +1,13 @@
-var results = $('#search_results');
-
 function make_query() {
-    var director = $('#director_input').value;
-    var writer = $('#writer_input').value;
-    var year_from = $('#year_from_input');
-    var year_to = $('#year_to_input');
-    var genres = $('#genres_input');
-    var minRatingIMDB = $('#minRatingIMDB_input');
+    var director = $('#director_input').val();
+    var writer = $('#writer_input').val();
+    var year_from = parseInt($('#year_from_input').val());
+    var year_to = parseInt($('#year_to_input').val());
+    var genres = $('#genres_input').val();
+    var minRatingIMDB = parseFloat($('#minRatingIMDB_input').val());
+    var search_results = $('#results_list');
+
+    search_results.empty();
 
     var requestBody = {
         "director": director,
@@ -17,12 +18,20 @@ function make_query() {
         "minRatingIMDB": minRatingIMDB
     };
 
+    var requestJson = JSON.stringify(requestBody);
+    console.log(requestJson);
 
-    var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "http://localhost:5002/query", true);
-    xhttp.setRequestHeader("Content-type", "application/json");
+    $.ajax({
+        url: "http://localhost:5002/query",
+        type: "post",
+        data: requestJson,
+        contentType: "application/json",
+        success: function (data) {
+            var i;
+            for (i = 0; i < data.length; i++) {
+                search_results.append("<li>" + data[i][1] + "</li>");
+            }
+        }
+    });
 
-    xhttp.send(JSON.stringify(requestBody));
-    var response = JSON.parse(xhttp.responseText);
-    $('#results_span').value = response;
 }
