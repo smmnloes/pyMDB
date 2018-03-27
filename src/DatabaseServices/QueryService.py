@@ -35,7 +35,7 @@ def get_movies_by_criteria(request):
         query_where += "r.averageRating>=%.1f AND " % request['minRatingIMDB']
 
     if request['genres']:
-        for genre in request['genres']:
+        for genre in request['genres'].split(','):
             query_where += "b.genres LIKE '%{}%' AND ".format(genre)
 
     query_where = query_where.strip(' AND ')

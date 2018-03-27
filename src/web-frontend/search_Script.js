@@ -6,6 +6,7 @@ function make_query() {
     var genres = $('#genres_input').val();
     var minRatingIMDB = parseFloat($('#minRatingIMDB_input').val());
     var search_results = $('#results_list');
+    var result_size = $('#result_size');
 
     search_results.empty();
 
@@ -28,7 +29,9 @@ function make_query() {
         contentType: "application/json",
         success: function (data) {
             var i;
-            for (i = 0; i < data.length; i++) {
+            var result_length = data.length;
+            result_size.text("Results: " + result_length);
+            for (i = 0; i < result_length; i++) {
                 search_results.append("<li>" + data[i][1] + "</li>");
             }
         }
