@@ -89,16 +89,15 @@ def tid_to_int(imdb_id):
 
 def analyze():
     db_connect = sqlite3.connect(Paths.LOCAL_DB)
-    c = db_connect.cursor()
-    c.execute('ANALYZE')
+    db_connect.execute('ANALYZE')
 
 
 def read_basics():
     print('Reading basics to database.')
     db_connect = sqlite3.connect(Paths.LOCAL_DB)
-    c = db_connect.cursor()
-    c.execute("CREATE TABLE basics(tid TEXT PRIMARY KEY, primaryTitle TEXT, "
-              "year INTEGER, runtimeMinutes INTEGER, genres TEXT)")
+
+    db_connect.execute("CREATE TABLE basics(tid TEXT PRIMARY KEY, primaryTitle TEXT, "
+                       "year INTEGER, runtimeMinutes INTEGER, genres TEXT)")
 
     with open(Paths.DB_DATA_REMOTE + 'basics', 'r') as file:
         line = file.readline()
@@ -109,7 +108,7 @@ def read_basics():
 
             if (entries[1] == "movie") & (entries[4] == "0"):
                 entries = entries[0:1] + entries[2:3] + entries[5:6] + entries[7:]
-                c.execute("INSERT INTO basics VALUES (?,?,?,?,?)", entries)
+                db_connect.execute("INSERT INTO basics VALUES (?,?,?,?,?)", entries)
                 VALID_IDS.append(tid_to_int(entries[0]))
 
             line = file.readline().strip()
@@ -121,8 +120,7 @@ def read_basics():
 def read_ratings():
     print('Reading ratings to database.')
     db_connect = sqlite3.connect(Paths.LOCAL_DB)
-    c = db_connect.cursor()
-    c.execute("CREATE TABLE ratings(tid TEXT, averageRating REAL, numVotes INTEGER)")
+    db_connect.execute("CREATE TABLE ratings(tid TEXT, averageRating REAL, numVotes INTEGER)")
     with open(Paths.DB_DATA_REMOTE + 'ratings', 'r') as file:
         line = file.readline()
         line = file.readline().strip()
@@ -130,7 +128,7 @@ def read_ratings():
         while line:
             entries = line.split('\t')
             if is_valid_tid(tid_to_int(entries[0])):
-                c.execute("INSERT INTO ratings VALUES (?,?,?)", entries)
+                db_connect.execute("INSERT INTO ratings VALUES (?,?,?)", entries)
 
             line = file.readline().strip()
 
@@ -141,8 +139,7 @@ def read_ratings():
 def read_akas():
     print('Reading akas to database.')
     db_connect = sqlite3.connect(Paths.LOCAL_DB)
-    c = db_connect.cursor()
-    c.execute("CREATE TABLE akas(tid TEXT, title TEXT)")
+    db_connect.execute("CREATE TABLE akas(tid TEXT, title TEXT)")
     with open(Paths.DB_DATA_REMOTE + 'akas', 'r') as file:
         line = file.readline()
         line = file.readline().strip()
@@ -154,7 +151,7 @@ def read_akas():
             if (current_id == last_valid_id) or is_valid_tid(current_id):
                 last_valid_id = current_id
                 entries = entries[0:1] + entries[2:3]
-                c.execute("INSERT INTO akas VALUES (?,?)", entries)
+                db_connect.execute("INSERT INTO akas VALUES (?,?)", entries)
 
             line = file.readline().strip()
 
@@ -165,8 +162,7 @@ def read_akas():
 def read_principals():
     print('Reading principals to database.')
     db_connect = sqlite3.connect(Paths.LOCAL_DB)
-    c = db_connect.cursor()
-    c.execute("CREATE TABLE principals(tid TEXT, "
+    db_connect.execute("CREATE TABLE principals(tid TEXT, "
               "nid TEXT, category TEXT, characters TEXT)")
     with open(Paths.DB_DATA_REMOTE + 'principals', 'r') as file:
         line = file.readline()
@@ -179,7 +175,7 @@ def read_principals():
             if (current_id == last_valid_id) or is_valid_tid(current_id):
                 last_valid_id = current_id
                 entries = entries[0:1] + entries[2:4] + entries[5:]
-                c.execute("INSERT INTO principals VALUES (?,?,?,?)", entries)
+                db_connect.execute("INSERT INTO principals VALUES (?,?,?,?)", entries)
 
             line = file.readline().strip()
 
@@ -190,11 +186,10 @@ def read_principals():
 def read_crew():
     print('Reading writers & directors to database.')
     db_connect = sqlite3.connect(Paths.LOCAL_DB)
-    c = db_connect.cursor()
-    c.execute(
+    db_connect.execute(
         "CREATE TABLE writers(tid TEXT, "
         "nid TEXT)")
-    c.execute(
+    db_connect.execute(
         "CREATE TABLE directors(tid TEXT, "
         "nid TEXT)")
     with open(Paths.DB_DATA_REMOTE + 'crew', 'r') as file:
@@ -205,10 +200,10 @@ def read_crew():
             entries = line.split('\t')
             if is_valid_tid(tid_to_int(entries[0])):
                 for director in entries[1].split(','):
-                    c.execute("INSERT INTO directors VALUES (?,?)", (entries[0], director))
+                    db_connect.execute("INSERT INTO directors VALUES (?,?)", (entries[0], director))
 
                 for writer in entries[2].split(','):
-                    c.execute("INSERT INTO writers VALUES (?,?)", (entries[0], writer))
+                    db_connect.execute("INSERT INTO writers VALUES (?,?)", (entries[0], writer))
 
             line = file.readline().strip()
 
@@ -219,8 +214,7 @@ def read_crew():
 def read_names():
     print('Reading names to database.')
     db_connect = sqlite3.connect(Paths.LOCAL_DB)
-    c = db_connect.cursor()
-    c.execute("CREATE TABLE names(nid TEXT PRIMARY KEY, name TEXT)")
+    db_connect.execute("CREATE TABLE names(nid TEXT PRIMARY KEY, name TEXT)")
     with open(Paths.DB_DATA_REMOTE + 'names', 'r') as file:
         line = file.readline()
         line = file.readline().strip()
@@ -234,7 +228,7 @@ def read_names():
 
                 if one_is_valid_tid(known_for):
                     entries = entries[0:2]
-                    c.execute("INSERT INTO names VALUES (?,?)", entries)
+                    db_connect.execute("INSERT INTO names VALUES (?,?)", entries)
 
             line = file.readline().strip()
 
