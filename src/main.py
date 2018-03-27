@@ -2,24 +2,23 @@ from threading import Thread
 
 import requests
 
-from DatabaseServices import Server, QueryService
+import AppMain
+from DatabaseServices import QueryService
 from DatabaseServices import UpdateService
-
-testquery_data = {"director": "Ron Howard",
-                  "writer": "",
-                  "year_from": "",
-                  "year_to": "",
-                  "genres": "",
-                  "minRatingIMDB": 5.0}
+from test.Testqueries import testquery_data
 
 
 def testquery_rest():
     url = "http://localhost:5002/query"
-    requests.post(url, json=testquery_data)
+    requests.post(url, json=testquery_data[5])
 
 
 def main():
     print("Welcome to Max' Movie Recommendation Engine!")
+    print("Starting App...")
+    thread = Thread(target=AppMain.start_app)
+    thread.start()
+
     user_input = ''
     while user_input != 'exit':
         user_input = input('Please enter Command! ')
@@ -38,14 +37,13 @@ def main():
             UpdateService.DATASETS_TO_READ_FUNCTIONS.get(next_input)()
         elif user_input == 'queryrest':
             testquery_rest()
-        elif user_input == 'startserver':
-            thread = Thread(target=Server.start_app)
-            thread.start()
         elif user_input == 'querylocal':
-            result = QueryService.get_movies_by_criteria(testquery_data)
+            result = QueryService.get_movies_by_criteria(testquery_data[5])
             for r in result:
                 print(r)
-
+        elif user_input == 'queryall':
+            for query in testquery_data:
+                QueryService.get_movies_by_criteria(query)
         elif user_input == 'analyze':
             UpdateService.analyze()
 

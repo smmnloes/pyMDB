@@ -95,7 +95,7 @@ def analyze():
 def read_basics():
     print('Reading basics to database.')
     db_connect = sqlite3.connect(Paths.LOCAL_DB)
-
+    db_connect.execute("PRAGMA synchronous = 0")
     db_connect.execute("CREATE TABLE basics(tid TEXT PRIMARY KEY, primaryTitle TEXT, "
                        "year INTEGER, runtimeMinutes INTEGER, genres TEXT)")
 
@@ -113,13 +113,14 @@ def read_basics():
 
             line = file.readline().strip()
 
-    db_connect.commit()
-    db_connect.close()
+        db_connect.commit()
+        db_connect.close()
 
 
 def read_ratings():
     print('Reading ratings to database.')
     db_connect = sqlite3.connect(Paths.LOCAL_DB)
+    db_connect.execute("PRAGMA synchronous = 0")
     db_connect.execute("CREATE TABLE ratings(tid TEXT, averageRating REAL, numVotes INTEGER)")
     with open(Paths.DB_DATA_REMOTE + 'ratings', 'r') as file:
         line = file.readline()
@@ -139,6 +140,7 @@ def read_ratings():
 def read_akas():
     print('Reading akas to database.')
     db_connect = sqlite3.connect(Paths.LOCAL_DB)
+    db_connect.execute("PRAGMA synchronous = 0")
     db_connect.execute("CREATE TABLE akas(tid TEXT, title TEXT)")
     with open(Paths.DB_DATA_REMOTE + 'akas', 'r') as file:
         line = file.readline()
@@ -162,8 +164,9 @@ def read_akas():
 def read_principals():
     print('Reading principals to database.')
     db_connect = sqlite3.connect(Paths.LOCAL_DB)
+    db_connect.execute("PRAGMA synchronous = 0")
     db_connect.execute("CREATE TABLE principals(tid TEXT, "
-              "nid TEXT, category TEXT, characters TEXT)")
+                       "nid TEXT, category TEXT, characters TEXT)")
     with open(Paths.DB_DATA_REMOTE + 'principals', 'r') as file:
         line = file.readline()
         line = file.readline().strip()
@@ -186,6 +189,7 @@ def read_principals():
 def read_crew():
     print('Reading writers & directors to database.')
     db_connect = sqlite3.connect(Paths.LOCAL_DB)
+    db_connect.execute("PRAGMA synchronous = 0")
     db_connect.execute(
         "CREATE TABLE writers(tid TEXT, "
         "nid TEXT)")
@@ -207,6 +211,8 @@ def read_crew():
 
             line = file.readline().strip()
 
+    db_connect.execute("CREATE INDEX directors_ix ON directors (nid)")
+    db_connect.execute("CREATE INDEX writers_ix ON writers (nid)")
     db_connect.commit()
     db_connect.close()
 
@@ -214,6 +220,7 @@ def read_crew():
 def read_names():
     print('Reading names to database.')
     db_connect = sqlite3.connect(Paths.LOCAL_DB)
+    db_connect.execute("PRAGMA synchronous = 0")
     db_connect.execute("CREATE TABLE names(nid TEXT PRIMARY KEY, name TEXT)")
     with open(Paths.DB_DATA_REMOTE + 'names', 'r') as file:
         line = file.readline()
@@ -232,6 +239,7 @@ def read_names():
 
             line = file.readline().strip()
 
+    db_connect.execute("CREATE INDEX names_ix ON names (name)")
     db_connect.commit()
     db_connect.close()
 
