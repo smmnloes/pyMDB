@@ -1,30 +1,26 @@
 from flask import Flask, request
 from flask_cors import CORS
 from flask_restful import Api, Resource
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import MetaData
-from sqlalchemy.ext.automap import automap_base
 
 from DatabaseServices import QueryService
-from DatabaseServices.Paths import *
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + LOCAL_DB
-db = SQLAlchemy(app)
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + LOCAL_DB
+# db = SQLAlchemy(app)
 
-metadata = MetaData()
-metadata.reflect(db.engine)
-Base = automap_base(metadata=metadata)
-Base.prepare()
-Base.query = db.session.query_property()
+# metadata = MetaData()
+# metadata.reflect(db.engine)
+# Base = automap_base(metadata=metadata)
+# Base.prepare()
+# Base.query = db.session.query_property()
 
-Basics = Base.classes.basics
-query = db.session.query(Basics)
-query = query.add_columns(Basics.primaryTitle, Basics.runtimeMinutes)
-query = query.filter(Basics.primaryTitle == 'Miss Jerry')
-result = query.all()
-print(result)
+# Basics = Base.classes.basics
+# query = db.session.query(Basics)
+# query = query.add_columns(Basics.primaryTitle, Basics.runtimeMinutes)
+# query = query.filter(Basics.primaryTitle == 'Miss Jerry')
+# result = query.all()
+# print(result)
 
 api = Api(app)
 cors = CORS(app, resources={r"/query": {"origins": "*"}})
