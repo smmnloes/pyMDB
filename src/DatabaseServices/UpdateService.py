@@ -121,7 +121,9 @@ def read_ratings():
     print('Reading ratings to database.')
     db_connect = sqlite3.connect(Paths.LOCAL_DB)
     db_connect.execute("PRAGMA synchronous = 0")
-    db_connect.execute("CREATE TABLE ratings(tid TEXT, averageRating REAL, numVotes INTEGER)")
+    db_connect.execute(
+        "CREATE TABLE ratings(tid TEXT PRIMARY KEY , averageRating REAL, numVotes INTEGER, "
+        "FOREIGN KEY (tid) REFERENCES basics(tid))")
     with open(Paths.DB_DATA_REMOTE + 'ratings', 'r') as file:
         line = file.readline()
         line = file.readline().strip()
@@ -141,7 +143,9 @@ def read_akas():
     print('Reading akas to database.')
     db_connect = sqlite3.connect(Paths.LOCAL_DB)
     db_connect.execute("PRAGMA synchronous = 0")
-    db_connect.execute("CREATE TABLE akas(tid TEXT, title TEXT)")
+    db_connect.execute("CREATE TABLE akas(tid TEXT, title TEXT, "
+                       "FOREIGN KEY (tid) REFERENCES basics(tid),"
+                       "PRIMARY KEY (tid,title))")
     with open(Paths.DB_DATA_REMOTE + 'akas', 'r') as file:
         line = file.readline()
         line = file.readline().strip()
@@ -153,7 +157,7 @@ def read_akas():
             if (current_id == last_valid_id) or is_valid_tid(current_id):
                 last_valid_id = current_id
                 entries = entries[0:1] + entries[2:3]
-                db_connect.execute("INSERT INTO akas VALUES (?,?)", entries)
+                db_connect.execute("INSERT OR REPLACE INTO akas VALUES (?,?)", entries)
 
             line = file.readline().strip()
 
@@ -166,7 +170,10 @@ def read_principals():
     db_connect = sqlite3.connect(Paths.LOCAL_DB)
     db_connect.execute("PRAGMA synchronous = 0")
     db_connect.execute("CREATE TABLE principals(tid TEXT, "
-                       "nid TEXT, category TEXT, characters TEXT)")
+                       "nid TEXT, category TEXT, characters TEXT,"
+                       "FOREIGN KEY (tid) REFERENCES basics(tid),"
+                       "FOREIGN KEY (nid) REFERENCES names(nid),"
+                       "PRIMARY KEY (tid,nid,category,characters))")
     with open(Paths.DB_DATA_REMOTE + 'principals', 'r') as file:
         line = file.readline()
         line = file.readline().strip()
@@ -178,7 +185,7 @@ def read_principals():
             if (current_id == last_valid_id) or is_valid_tid(current_id):
                 last_valid_id = current_id
                 entries = entries[0:1] + entries[2:4] + entries[5:]
-                db_connect.execute("INSERT INTO principals VALUES (?,?,?,?)", entries)
+                db_connect.execute("INSERT OR REPLACE INTO principals VALUES (?,?,?,?)", entries)
 
             line = file.readline().strip()
 
@@ -192,10 +199,16 @@ def read_crew():
     db_connect.execute("PRAGMA synchronous = 0")
     db_connect.execute(
         "CREATE TABLE writers(tid TEXT, "
-        "nid TEXT)")
+        "nid TEXT,"
+        "FOREIGN KEY (tid) REFERENCES basics(tid),"
+        "FOREIGN KEY (nid) REFERENCES names(nid),"
+        "PRIMARY KEY (tid,nid))")
     db_connect.execute(
         "CREATE TABLE directors(tid TEXT, "
-        "nid TEXT)")
+        "nid TEXT,"
+        "FOREIGN KEY (tid) REFERENCES basics(tid),"
+        "FOREIGN KEY (nid) REFERENCES names(nid),"
+        "PRIMARY KEY (tid,nid))")
     with open(Paths.DB_DATA_REMOTE + 'crew', 'r') as file:
         line = file.readline()
         line = file.readline().strip()
