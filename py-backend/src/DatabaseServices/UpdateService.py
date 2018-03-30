@@ -4,7 +4,7 @@ import os
 import sqlite3
 import urllib.request
 
-from DatabaseServices import Paths
+import definitions
 
 DATASETS = ['basics', 'names', 'akas', 'crew', 'principals', 'ratings']
 DATASETS_TO_FILENAMES = {'basics': 'title.basics.tsv.gz', 'names': 'name.basics.tsv.gz', 'akas': 'title.akas.tsv.gz',
@@ -34,30 +34,30 @@ def update_db():
 
 def backup_local_db():
     print('Backing up last version.')
-    if os.path.isfile(Paths.LOCAL_DB):
-        os.rename(Paths.LOCAL_DB, Paths.DB_LAST_VERSION)
+    if os.path.isfile(definitions.LOCAL_DB):
+        os.rename(definitions.LOCAL_DB, definitions.DB_LAST_VERSION)
     else:
         print('No database found, nothing to back up.')
 
 
 def delete_downloaded_remote_data(dataset):
     print('Deleting local %s file' % dataset)
-    os.remove(Paths.DB_DATA_REMOTE + dataset)
+    os.remove(definitions.DB_DATA_REMOTE + dataset)
 
 
 def restore_db_last_version():
     print('Restoring last version.')
-    if os.path.isfile(Paths.DB_LAST_VERSION):
-        os.rename(Paths.DB_LAST_VERSION, Paths.LOCAL_DB)
+    if os.path.isfile(definitions.DB_LAST_VERSION):
+        os.rename(definitions.DB_LAST_VERSION, definitions.LOCAL_DB)
     else:
         print("No previous version found! Cannot restore last version!")
 
 
 def download_new_data(dataset):
-    unzipped_path = Paths.DB_DATA_REMOTE + dataset
+    unzipped_path = definitions.DB_DATA_REMOTE + dataset
     zipped_path = unzipped_path + '_zipped'
     print('Downloading %s data.' % dataset)
-    urllib.request.urlretrieve(Paths.URL_IMDB_DATA + DATASETS_TO_FILENAMES.get(dataset),
+    urllib.request.urlretrieve(definitions.URL_IMDB_DATA + DATASETS_TO_FILENAMES.get(dataset),
                                zipped_path)
 
     print('Unzipping %s data' % dataset)
@@ -88,18 +88,18 @@ def tid_to_int(imdb_id):
 
 
 def analyze():
-    db_connect = sqlite3.connect(Paths.LOCAL_DB)
+    db_connect = sqlite3.connect(definitions.LOCAL_DB)
     db_connect.execute('ANALYZE')
 
 
 def read_basics():
     print('Reading basics to database.')
-    db_connect = sqlite3.connect(Paths.LOCAL_DB)
+    db_connect = sqlite3.connect(definitions.LOCAL_DB)
     db_connect.execute("PRAGMA synchronous = 0")
     db_connect.execute("CREATE TABLE basics(tid TEXT PRIMARY KEY, primaryTitle TEXT, "
                        "year INTEGER, runtimeMinutes INTEGER, genres TEXT)")
 
-    with open(Paths.DB_DATA_REMOTE + 'basics', 'r') as file:
+    with open(definitions.DB_DATA_REMOTE + 'basics', 'r') as file:
         line = file.readline()
         line = file.readline().strip()
 
@@ -119,11 +119,11 @@ def read_basics():
 
 def read_ratings():
     print('Reading ratings to database.')
-    db_connect = sqlite3.connect(Paths.LOCAL_DB)
+    db_connect = sqlite3.connect(definitions.LOCAL_DB)
     db_connect.execute("PRAGMA synchronous = 0")
     db_connect.execute(
         "CREATE TABLE ratings(tid TEXT PRIMARY KEY , averageRating REAL, numVotes INTEGER)")
-    with open(Paths.DB_DATA_REMOTE + 'ratings', 'r') as file:
+    with open(definitions.DB_DATA_REMOTE + 'ratings', 'r') as file:
         line = file.readline()
         line = file.readline().strip()
 
@@ -140,10 +140,10 @@ def read_ratings():
 
 def read_akas():
     print('Reading akas to database.')
-    db_connect = sqlite3.connect(Paths.LOCAL_DB)
+    db_connect = sqlite3.connect(definitions.LOCAL_DB)
     db_connect.execute("PRAGMA synchronous = 0")
     db_connect.execute("CREATE TABLE akas(tid TEXT, title TEXT)")
-    with open(Paths.DB_DATA_REMOTE + 'akas', 'r') as file:
+    with open(definitions.DB_DATA_REMOTE + 'akas', 'r') as file:
         line = file.readline()
         line = file.readline().strip()
 
@@ -164,12 +164,12 @@ def read_akas():
 
 def read_principals():
     print('Reading principals to database.')
-    db_connect = sqlite3.connect(Paths.LOCAL_DB)
+    db_connect = sqlite3.connect(definitions.LOCAL_DB)
     db_connect.execute("PRAGMA synchronous = 0")
     db_connect.execute("CREATE TABLE principals(tid TEXT, "
                        "nid TEXT, category TEXT, characters TEXT,"
                        "PRIMARY KEY (tid,nid,category,characters))")
-    with open(Paths.DB_DATA_REMOTE + 'principals', 'r') as file:
+    with open(definitions.DB_DATA_REMOTE + 'principals', 'r') as file:
         line = file.readline()
         line = file.readline().strip()
 
@@ -190,7 +190,7 @@ def read_principals():
 
 def read_crew():
     print('Reading writers & directors to database.')
-    db_connect = sqlite3.connect(Paths.LOCAL_DB)
+    db_connect = sqlite3.connect(definitions.LOCAL_DB)
     db_connect.execute("PRAGMA synchronous = 0")
     db_connect.execute(
         "CREATE TABLE writers(tid TEXT, "
@@ -200,7 +200,7 @@ def read_crew():
         "CREATE TABLE directors(tid TEXT, "
         "nid TEXT,"
         "PRIMARY KEY (tid,nid))")
-    with open(Paths.DB_DATA_REMOTE + 'crew', 'r') as file:
+    with open(definitions.DB_DATA_REMOTE + 'crew', 'r') as file:
         line = file.readline()
         line = file.readline().strip()
 
@@ -223,10 +223,10 @@ def read_crew():
 
 def read_names():
     print('Reading names to database.')
-    db_connect = sqlite3.connect(Paths.LOCAL_DB)
+    db_connect = sqlite3.connect(definitions.LOCAL_DB)
     db_connect.execute("PRAGMA synchronous = 0")
     db_connect.execute("CREATE TABLE names(nid TEXT PRIMARY KEY, name TEXT)")
-    with open(Paths.DB_DATA_REMOTE + 'names', 'r') as file:
+    with open(definitions.DB_DATA_REMOTE + 'names', 'r') as file:
         line = file.readline()
         line = file.readline().strip()
 

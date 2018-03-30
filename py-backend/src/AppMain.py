@@ -4,7 +4,7 @@ from flask_restful import Api, Resource
 from flask_sqlalchemy import SQLAlchemy
 
 from DatabaseServices import QueryService
-from DatabaseServices.Paths import *
+from definitions import *
 
 
 class MovieQuery(Resource):
