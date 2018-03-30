@@ -28,11 +28,12 @@ function make_query() {
         data: requestJson,
         contentType: "application/json",
         success: function (data) {
+            console.log(data);
             var i;
             var result_length = data.length;
             result_size.text("Results: " + result_length);
             for (i = 0; i < result_length; i++) {
-                search_results.append("<li>" + data[i][1] + "</li>");
+                search_results.append("<li>" + data[i]['primaryTitle'] + "</li>");
             }
         }
     });
