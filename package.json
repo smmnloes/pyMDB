@@ -1,0 +1,22 @@
+{
+  "name": "maxmovierec-frontend",
+  "version": "1.0.0",
+  "description": "angular frontend for maxmovierec",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/smmnloes/MaxMovieRec.git"
+  },
+  "author": "Maximilian Loesch",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/smmnloes/MaxMovieRec/issues"
+  },
+  "homepage": "https://github.com/smmnloes/MaxMovieRec#readme",
+  "dependencies": {
+    "angular": "^1.6.9"
+  }
+}
