@@ -13,6 +13,7 @@ def testquery_rest():
     requests.post(url, json=testquery_data[5])
 
 
+
 def main():
     print("Welcome to Max' Movie Recommendation Engine!")
     print("Starting App...")
@@ -46,6 +47,7 @@ def main():
                 QueryService.get_movies_by_criteria(query)
         elif user_input == 'analyze':
             UpdateService.analyze()
+
 
 
 main()
