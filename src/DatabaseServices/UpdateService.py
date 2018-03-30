@@ -122,8 +122,7 @@ def read_ratings():
     db_connect = sqlite3.connect(Paths.LOCAL_DB)
     db_connect.execute("PRAGMA synchronous = 0")
     db_connect.execute(
-        "CREATE TABLE ratings(tid TEXT PRIMARY KEY , averageRating REAL, numVotes INTEGER, "
-        "FOREIGN KEY (tid) REFERENCES basics(tid))")
+        "CREATE TABLE ratings(tid TEXT PRIMARY KEY , averageRating REAL, numVotes INTEGER)")
     with open(Paths.DB_DATA_REMOTE + 'ratings', 'r') as file:
         line = file.readline()
         line = file.readline().strip()
@@ -143,9 +142,7 @@ def read_akas():
     print('Reading akas to database.')
     db_connect = sqlite3.connect(Paths.LOCAL_DB)
     db_connect.execute("PRAGMA synchronous = 0")
-    db_connect.execute("CREATE TABLE akas(tid TEXT, title TEXT, "
-                       "FOREIGN KEY (tid) REFERENCES basics(tid),"
-                       "PRIMARY KEY (tid,title))")
+    db_connect.execute("CREATE TABLE akas(tid TEXT, title TEXT)")
     with open(Paths.DB_DATA_REMOTE + 'akas', 'r') as file:
         line = file.readline()
         line = file.readline().strip()
@@ -171,8 +168,6 @@ def read_principals():
     db_connect.execute("PRAGMA synchronous = 0")
     db_connect.execute("CREATE TABLE principals(tid TEXT, "
                        "nid TEXT, category TEXT, characters TEXT,"
-                       "FOREIGN KEY (tid) REFERENCES basics(tid),"
-                       "FOREIGN KEY (nid) REFERENCES names(nid),"
                        "PRIMARY KEY (tid,nid,category,characters))")
     with open(Paths.DB_DATA_REMOTE + 'principals', 'r') as file:
         line = file.readline()
@@ -200,14 +195,10 @@ def read_crew():
     db_connect.execute(
         "CREATE TABLE writers(tid TEXT, "
         "nid TEXT,"
-        "FOREIGN KEY (tid) REFERENCES basics(tid),"
-        "FOREIGN KEY (nid) REFERENCES names(nid),"
         "PRIMARY KEY (tid,nid))")
     db_connect.execute(
         "CREATE TABLE directors(tid TEXT, "
         "nid TEXT,"
-        "FOREIGN KEY (tid) REFERENCES basics(tid),"
-        "FOREIGN KEY (nid) REFERENCES names(nid),"
         "PRIMARY KEY (tid,nid))")
     with open(Paths.DB_DATA_REMOTE + 'crew', 'r') as file:
         line = file.readline()
