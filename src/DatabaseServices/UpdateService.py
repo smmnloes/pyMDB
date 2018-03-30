@@ -20,9 +20,9 @@ def update_db():
     try:
         for dataset in DATASETS:
             print('\nProcessing %s data.' % dataset)
-            download_new_data(dataset)
+            # download_new_data(dataset)
             DATASETS_TO_READ_FUNCTIONS.get(dataset)()
-            delete_downloaded_remote_data(dataset)
+            # delete_downloaded_remote_data(dataset)
             print('Finished processing %s data.\n' % dataset)
 
     except (Exception, BaseException) as e:
