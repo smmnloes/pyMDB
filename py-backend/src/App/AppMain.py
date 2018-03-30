@@ -1,18 +1,11 @@
-from flask import Flask, request
+from flask import Flask
 from flask_cors import CORS
-from flask_restful import Api, Resource
+from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 
+from App.RESTControllers import MovieQuery
 from DatabaseServices import QueryService
 from definitions import *
-
-
-class MovieQuery(Resource):
-    def post(self):
-        print("Request: {}".format(request.json))
-        result = QueryService.get_movies_by_criteria(request.json)
-        print("Response: {}".format(result))
-        return result
 
 
 def start_app():
@@ -21,7 +14,7 @@ def start_app():
     api = Api(app)
     api.add_resource(MovieQuery, '/query')
 
-    cors = CORS(app, resources={r"/query": {"origins": "*"}})
+    CORS(app, resources={r"/query": {"origins": "*"}})
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + LOCAL_DB

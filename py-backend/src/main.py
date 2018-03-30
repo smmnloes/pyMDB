@@ -2,7 +2,7 @@ from threading import Thread
 
 import requests
 
-import AppMain
+from App import AppMain
 from DatabaseServices import QueryService
 from DatabaseServices import UpdateService
 from test.Testqueries import testquery_data
