@@ -1,28 +1,12 @@
 import time
 
-from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import aliased
 
-db = None
-basics = None
-names = None
-ratings = None
-writers = None
-directors = None
+from App.AppMain import db, create_app
+from DatabaseServices.DatabaseModel import *
 
-
-def init_query_service():
-    db.metadata.reflect(db.engine)
-    base = automap_base(metadata=db.metadata)
-    base.prepare()
-    base.query = db.session.query_property()
-
-    global basics, names, ratings, writers, directors
-    basics = base.classes.basics
-    names = base.classes.names
-    ratings = base.classes.ratings
-    writers = base.classes.writers
-    directors = base.classes.directors
+app = create_app()
+app.app_context().push()
 
 
 def millis():
@@ -38,31 +22,31 @@ def result2dict(result):
 
 def get_movies_by_criteria(request):
     query = db.session.query()
-    query = query.add_columns(ratings.averageRating, basics.primaryTitle, basics.tid, basics.runtimeMinutes,
-                              basics.genres, basics.year)
-    query = query.filter(ratings.tid == basics.tid)
-    names1 = aliased(names)
-    names2 = aliased(names)
+    query = query.add_columns(Ratings.averageRating, Basics.primaryTitle, Basics.tid, Basics.runtimeMinutes,
+                              Basics.genres, Basics.year)
+    query = query.filter(Ratings.tid == Basics.tid)
+    names1 = aliased(Names)
+    names2 = aliased(Names)
     if request['director']:
-        query = query.filter(basics.tid == directors.tid, directors.nid == names1.nid,
+        query = query.filter(Basics.tid == Directors.tid, Directors.nid == names1.nid,
                              names1.name == request['director'])
 
     if request['writer']:
-        query = query.filter(basics.tid == writers.tid, writers.nid == names2.nid,
+        query = query.filter(Basics.tid == Writers.tid, Writers.nid == names2.nid,
                              names2.name == request['writer'])
 
     if request['year_from']:
-        query = query.filter(basics.year >= request['year_from'])
+        query = query.filter(Basics.year >= request['year_from'])
 
     if request['year_to']:
-        query = query.filter(basics.year <= request['year_to'])
+        query = query.filter(Basics.year <= request['year_to'])
 
     if request['minRatingIMDB']:
-        query = query.filter(ratings.averageRating >= request['minRatingIMDB'])
+        query = query.filter(Ratings.averageRating >= request['minRatingIMDB'])
 
     if request['genres']:
         for genre in request['genres'].split(','):
-            query = query.filter(basics.genres.like("%{}%".format(genre)))
+            query = query.filter(Basics.genres.like("%{}%".format(genre)))
 
     print(query)
     time_before = millis()

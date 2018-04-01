@@ -5,13 +5,17 @@ import sqlite3
 import urllib.request
 
 import definitions
+from App.AppMain import create_app
 
-DATASETS = ['basics', 'names', 'akas', 'crew', 'principals', 'ratings']
-DATASETS_TO_FILENAMES = {'basics': 'title.basics.tsv.gz', 'names': 'name.basics.tsv.gz', 'akas': 'title.akas.tsv.gz',
+DATASETS = ['basics', 'names', 'crew', 'principals', 'ratings']
+DATASETS_TO_FILENAMES = {'basics': 'title.basics.tsv.gz', 'names': 'name.basics.tsv.gz',
                          'crew': 'title.crew.tsv.gz', 'principals': 'title.principals.tsv.gz',
                          'ratings': 'title.ratings.tsv.gz'}
 
 VALID_IDS = []
+
+app = create_app()
+app.app_context().push()
 
 
 def update_db():
@@ -94,8 +98,7 @@ def analyze():
 
 def read_basics():
     print('Reading basics to database.')
-    db_connect = sqlite3.connect(definitions.LOCAL_DB)
-    db_connect.execute("PRAGMA synchronous = 0")
+    Basics
     db_connect.execute("CREATE TABLE basics(tid TEXT PRIMARY KEY, primaryTitle TEXT, "
                        "year INTEGER, runtimeMinutes INTEGER, genres TEXT)")
 
@@ -131,30 +134,6 @@ def read_ratings():
             entries = line.split('\t')
             if is_valid_tid(tid_to_int(entries[0])):
                 db_connect.execute("INSERT INTO ratings VALUES (?,?,?)", entries)
-
-            line = file.readline().strip()
-
-    db_connect.commit()
-    db_connect.close()
-
-
-def read_akas():
-    print('Reading akas to database.')
-    db_connect = sqlite3.connect(definitions.LOCAL_DB)
-    db_connect.execute("PRAGMA synchronous = 0")
-    db_connect.execute("CREATE TABLE akas(tid TEXT, title TEXT)")
-    with open(definitions.DB_DATA_REMOTE + 'akas', 'r') as file:
-        line = file.readline()
-        line = file.readline().strip()
-
-        last_valid_id = -1
-        while line:
-            entries = line.split('\t')
-            current_id = tid_to_int(entries[0])
-            if (current_id == last_valid_id) or is_valid_tid(current_id):
-                last_valid_id = current_id
-                entries = entries[0:1] + entries[2:3]
-                db_connect.execute("INSERT OR REPLACE INTO akas VALUES (?,?)", entries)
 
             line = file.readline().strip()
 
@@ -248,6 +227,6 @@ def read_names():
     db_connect.close()
 
 
-DATASETS_TO_READ_FUNCTIONS = {'basics': read_basics, 'names': read_names, 'akas': read_akas,
+DATASETS_TO_READ_FUNCTIONS = {'basics': read_basics, 'names': read_names,
                               'crew': read_crew, 'principals': read_principals,
                               'ratings': read_ratings}
