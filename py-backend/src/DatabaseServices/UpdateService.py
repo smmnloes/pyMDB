@@ -7,6 +7,7 @@ import urllib.request
 import definitions
 from App.AppMain import db, create_app
 
+# DATASETS = ['basics']
 DATASETS = ['basics', 'names', 'crew', 'principals', 'ratings']
 DATASETS_TO_FILENAMES = {'basics': 'title.basics.tsv.gz', 'names': 'name.basics.tsv.gz',
                          'crew': 'title.crew.tsv.gz', 'principals': 'title.principals.tsv.gz',
@@ -116,8 +117,12 @@ def read_basics():
             entries = line.split('\t')
 
             if (entries[1] == "movie") & (entries[4] == "0"):
-                entries = entries[0:1] + entries[2:3] + entries[5:6] + entries[7:]
-                db_connect.execute("INSERT INTO basics VALUES (?,?,?,?,?)", entries)
+                entries_basics = clean_nulls(entries[0:1] + entries[2:3] + entries[5:6] + entries[7:8])
+                genres = entries[8]
+                db_connect.execute("INSERT INTO basics VALUES (?,?,?,?)", entries_basics)
+                if genres != '\\N':
+                    for genre in genres.split(','):
+                        db_connect.execute("INSERT INTO genres VALUES (?,?)", (entries[0], genre))
                 VALID_IDS.append(tid_to_int(entries[0]))
 
             line = file.readline().strip()
@@ -153,14 +158,16 @@ def read_principals():
         line = file.readline()
         line = file.readline().strip()
 
+        rowid = 0
         last_valid_id = -1
         while line:
             entries = line.split('\t')
             current_id = tid_to_int(entries[0])
             if (current_id == last_valid_id) or is_valid_tid(current_id):
                 last_valid_id = current_id
-                entries = entries[0:1] + entries[2:4] + entries[5:]
-                db_connect.execute("INSERT OR REPLACE INTO principals VALUES (?,?,?,?)", entries)
+                entries = clean_nulls(entries[0:1] + entries[2:4] + entries[5:])
+                db_connect.execute("INSERT OR REPLACE INTO principals VALUES (?,?,?,?,?)", [rowid] + entries)
+                rowid += 1
 
             line = file.readline().strip()
 
@@ -179,11 +186,13 @@ def read_crew():
         while line:
             entries = line.split('\t')
             if is_valid_tid(tid_to_int(entries[0])):
-                for director in entries[1].split(','):
-                    db_connect.execute("INSERT INTO directors VALUES (?,?)", (entries[0], director))
+                if entries[1] != '\\N':
+                    for director in entries[1].split(','):
+                        db_connect.execute("INSERT INTO directors VALUES (?,?)", (entries[0], director))
 
-                for writer in entries[2].split(','):
-                    db_connect.execute("INSERT INTO writers VALUES (?,?)", (entries[0], writer))
+                if entries[2] != '\\N':
+                    for writer in entries[2].split(','):
+                        db_connect.execute("INSERT INTO writers VALUES (?,?)", (entries[0], writer))
 
             line = file.readline().strip()
 
@@ -214,6 +223,10 @@ def read_names():
 
     db_connect.commit()
     db_connect.close()
+
+
+def clean_nulls(entries):
+    return [None if entry == '\\N' else entry for entry in entries]
 
 
 DATASETS_TO_READ_FUNCTIONS = {'basics': read_basics, 'names': read_names,

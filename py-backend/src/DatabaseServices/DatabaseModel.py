@@ -7,7 +7,6 @@ class Basics(db.Model):
     primaryTitle = db.Column(db.Text)
     year = db.Column(db.Integer)
     runtimeMinutes = db.Column(db.Integer)
-    genres = db.Column(db.Text)
 
 
 class Ratings(db.Model):
@@ -19,10 +18,11 @@ class Ratings(db.Model):
 
 class Principals(db.Model):
     __tablename__ = 'principals'
-    tid = db.Column(db.Text, primary_key=True)
-    nid = db.Column(db.Text, primary_key=True)
-    category = db.Column(db.Text, primary_key=True)
-    characters = db.Column(db.Text, primary_key=True)
+    rowid = db.Column(db.Integer, primary_key=True)
+    tid = db.Column(db.Text)
+    nid = db.Column(db.Text)
+    category = db.Column(db.Text)
+    characters = db.Column(db.Text)
 
 
 class Writers(db.Model):
@@ -41,3 +41,10 @@ class Names(db.Model):
     __tablename__ = 'names'
     nid = db.Column(db.Text, primary_key=True)
     name = db.Column(db.Text, index=True)
+
+
+class Genres(db.Model):
+    __tablename__ = 'genres'
+    tid = db.Column(db.Text, primary_key=True)
+    genre = db.Column(db.Text, primary_key=True)
+

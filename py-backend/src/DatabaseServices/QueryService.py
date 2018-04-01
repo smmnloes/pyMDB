@@ -19,16 +19,17 @@ def result2dict(result):
 def get_movies_by_criteria(request):
     query = db.session.query()
     query = query.add_columns(Basics.primaryTitle, Basics.tid, Basics.runtimeMinutes,
-                              Basics.genres, Basics.year)
-    names1 = aliased(Names)
-    names2 = aliased(Names)
+                              Basics.year)
+
     if request['director']:
-        query = query.filter(Basics.tid == Directors.tid, Directors.nid == names1.nid,
-                             names1.name == request['director'])
+        names_alias = aliased(Names)
+        query = query.filter(Basics.tid == Directors.tid, Directors.nid == names_alias.nid,
+                             names_alias.name == request['director'])
 
     if request['writer']:
-        query = query.filter(Basics.tid == Writers.tid, Writers.nid == names2.nid,
-                             names2.name == request['writer'])
+        names_alias = aliased(Names)
+        query = query.filter(Basics.tid == Writers.tid, Writers.nid == names_alias.nid,
+                             names_alias.name == request['writer'])
 
     if request['year_from']:
         query = query.filter(Basics.year >= request['year_from'])
@@ -41,7 +42,8 @@ def get_movies_by_criteria(request):
 
     if request['genres']:
         for genre in request['genres'].split(','):
-            query = query.filter(Basics.genres.like("%{}%".format(genre)))
+            genres_alias = aliased(Genres)
+            query = query.filter(genres_alias.tid == Basics.tid, genres_alias.genre == genre)
 
     print(query)
     time_before = millis()
