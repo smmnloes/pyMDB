@@ -2,24 +2,42 @@ import time
 
 from sqlalchemy.orm import aliased
 
+from App.AppMain import create_app
 from DatabaseServices.DatabaseModel import *
+
+app = create_app()
+app.app_context().push()
 
 
 def millis():
     return int(round(time.time() * 1000))
 
 
-def result2dict(result):
-    d = {}
-    for i in range(0, len(result)):
-        d[result._fields[i]] = result[i]
-    return d
+def results_to_dict_list(results):
+    dict_list = []
+    last_tid = -1
+    as_dict = None
+    for result in results:
+        if result[0] != last_tid:
+            last_tid = result[0]
+            if as_dict is not None:
+                dict_list.append(as_dict)
+            as_dict = {'tid': result[0].tid,
+                       'primaryTitle': result[0].primaryTitle,
+                       'year': result[0].year,
+                       'runtimeMinutes': result[0].runtimeMinutes,
+                       'averageRating': result[1],
+                       'genres': [result[2]]
+                       }
+        else:
+            as_dict['genres'].append(result[2])
+
+    return dict_list
 
 
 def get_movies_by_criteria(request):
-    query = db.session.query()
-    query = query.add_columns(Basics.primaryTitle, Basics.tid, Basics.runtimeMinutes,
-                              Basics.year)
+    query = db.session.query(Basics).outerjoin(Ratings, Genres)
+    query = query.add_columns(Ratings.averageRating, Genres.genre)
 
     if request['director']:
         names_alias = aliased(Names)
@@ -49,8 +67,7 @@ def get_movies_by_criteria(request):
     time_before = millis()
     results = query.all()
     print("Time taken: " + str(millis() - time_before) + "ms")
-    results_dict_list = []
-    for r in results:
-        results_dict_list.append(result2dict(r))
+
+    results_dict_list = results_to_dict_list(results)
     print("Results: {}".format(len(results)))
     return results_dict_list
