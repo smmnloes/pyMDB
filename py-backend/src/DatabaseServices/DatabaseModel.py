@@ -1,4 +1,7 @@
-from App.AppMain import db
+from App.AppMain import db, create_app
+
+app = create_app()
+app.app_context().push()
 
 
 class Basics(db.Model):
