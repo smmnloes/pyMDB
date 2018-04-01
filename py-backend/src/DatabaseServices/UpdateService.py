@@ -5,7 +5,6 @@ import sqlite3
 import urllib.request
 
 import definitions
-from DatabaseServices.DatabaseModel import *
 
 DATASETS = ['basics', 'names', 'crew', 'principals', 'ratings']
 DATASETS_TO_FILENAMES = {'basics': 'title.basics.tsv.gz', 'names': 'name.basics.tsv.gz',
@@ -17,15 +16,14 @@ VALID_IDS = []
 
 def update_db():
     backup_local_db()
-    db.create_all()
+
     try:
         for dataset in DATASETS:
-            if dataset == 'basics':
-                print('\nProcessing %s data.' % dataset)
-                # download_new_data(dataset)
-                DATASETS_TO_READ_FUNCTIONS.get(dataset)()
-                # delete_downloaded_remote_data(dataset)
-                print('Finished processing %s data.\n' % dataset)
+            print('\nProcessing %s data.' % dataset)
+            # download_new_data(dataset)
+            DATASETS_TO_READ_FUNCTIONS.get(dataset)()
+            # delete_downloaded_remote_data(dataset)
+            print('Finished processing %s data.\n' % dataset)
 
     except (Exception, BaseException) as e:
         print("Error while updating: {}".format(e))
@@ -96,28 +94,27 @@ def analyze():
 
 def read_basics():
     print('Reading basics to database.')
+    db_connect = sqlite3.connect(definitions.LOCAL_DB)
+    db_connect.execute("PRAGMA synchronous = 0")
+    db_connect.execute("CREATE TABLE basics(tid TEXT PRIMARY KEY, primaryTitle TEXT, "
+                       "year INTEGER, runtimeMinutes INTEGER, genres TEXT)")
 
     with open(definitions.DB_DATA_REMOTE + 'basics', 'r') as file:
         line = file.readline()
         line = file.readline().strip()
-        counter = 0
 
         while line:
             entries = line.split('\t')
 
             if (entries[1] == "movie") & (entries[4] == "0"):
-                new_entry = Basics(tid=entries[0], primaryTitle=entries[2], year=entries[5],
-                                   runtimeMinutes=entries[7], genres=entries[8])
-                db.session.add(new_entry)
-                counter += 1
-                if counter == 1000:
-                    counter = 0
-                    db.session.flush()
-
+                entries = entries[0:1] + entries[2:3] + entries[5:6] + entries[7:]
+                db_connect.execute("INSERT INTO basics VALUES (?,?,?,?,?)", entries)
                 VALID_IDS.append(tid_to_int(entries[0]))
 
             line = file.readline().strip()
-        db.session.commit()
+
+        db_connect.commit()
+        db_connect.close()
 
 
 def read_ratings():

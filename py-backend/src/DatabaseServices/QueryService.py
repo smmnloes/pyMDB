@@ -2,7 +2,6 @@ import time
 
 from sqlalchemy.orm import aliased
 
-from App.AppMain import db, create_app
 from DatabaseServices.DatabaseModel import *
 
 app = create_app()
