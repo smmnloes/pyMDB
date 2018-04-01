@@ -117,12 +117,9 @@ def read_basics():
             entries = line.split('\t')
 
             if (entries[1] == "movie") & (entries[4] == "0"):
-                entries_basics = clean_nulls(entries[0:1] + entries[2:3] + entries[5:6] + entries[7:8])
+                entries_basics = clean_nulls(entries[0:1] + entries[2:3] + entries[5:6] + entries[7:])
                 genres = entries[8]
-                db_connect.execute("INSERT INTO basics VALUES (?,?,?,?)", entries_basics)
-                if genres != '\\N':
-                    for genre in genres.split(','):
-                        db_connect.execute("INSERT INTO genres VALUES (?,?)", (entries[0], genre))
+                db_connect.execute("INSERT INTO basics VALUES (?,?,?,?,?)", entries_basics)
                 VALID_IDS.append(tid_to_int(entries[0]))
 
             line = file.readline().strip()

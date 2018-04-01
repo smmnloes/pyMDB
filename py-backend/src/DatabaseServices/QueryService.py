@@ -15,29 +15,23 @@ def millis():
 
 def results_to_dict_list(results):
     dict_list = []
-    last_tid = -1
-    as_dict = None
+
     for result in results:
-        if result[0] != last_tid:
-            last_tid = result[0]
-            if as_dict is not None:
-                dict_list.append(as_dict)
-            as_dict = {'tid': result[0].tid,
-                       'primaryTitle': result[0].primaryTitle,
-                       'year': result[0].year,
-                       'runtimeMinutes': result[0].runtimeMinutes,
-                       'averageRating': result[1],
-                       'genres': [result[2]]
-                       }
-        else:
-            as_dict['genres'].append(result[2])
+        as_dict = {'tid': result[0].tid,
+                   'primaryTitle': result[0].primaryTitle,
+                   'year': result[0].year,
+                   'runtimeMinutes': result[0].runtimeMinutes,
+                   'genres': result[0].genres.split(','),
+                   'averageRating': result[1]
+                   }
+        dict_list.append(as_dict)
 
     return dict_list
 
 
 def get_movies_by_criteria(request):
-    query = db.session.query(Basics).outerjoin(Ratings, Genres)
-    query = query.add_columns(Ratings.averageRating, Genres.genre)
+    query = db.session.query(Basics).outerjoin(Ratings)
+    query = query.add_columns(Ratings.averageRating)
 
     if request['director']:
         names_alias = aliased(Names)
@@ -60,8 +54,7 @@ def get_movies_by_criteria(request):
 
     if request['genres']:
         for genre in request['genres'].split(','):
-            genres_alias = aliased(Genres)
-            query = query.filter(genres_alias.tid == Basics.tid, genres_alias.genre == genre)
+            query = query.filter(Basics.genres.like('%{}%'.format(genre)))
 
     print(query)
     time_before = millis()

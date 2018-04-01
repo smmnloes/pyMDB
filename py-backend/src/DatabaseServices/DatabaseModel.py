@@ -7,6 +7,7 @@ class Basics(db.Model):
     primaryTitle = db.Column(db.Text)
     year = db.Column(db.Integer)
     runtimeMinutes = db.Column(db.Integer)
+    genres = db.Column(db.Text)
 
 
 class Ratings(db.Model):
@@ -41,9 +42,3 @@ class Names(db.Model):
     __tablename__ = 'names'
     nid = db.Column(db.Text, primary_key=True)
     name = db.Column(db.Text, index=True)
-
-
-class Genres(db.Model):
-    __tablename__ = 'genres'
-    tid = db.Column(db.Text, db.ForeignKey('basics.tid'), primary_key=True)
-    genre = db.Column(db.Text, primary_key=True)
