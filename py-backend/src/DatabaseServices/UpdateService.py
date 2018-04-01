@@ -5,6 +5,7 @@ import sqlite3
 import urllib.request
 
 import definitions
+from App.AppMain import db, create_app
 
 DATASETS = ['basics', 'names', 'crew', 'principals', 'ratings']
 DATASETS_TO_FILENAMES = {'basics': 'title.basics.tsv.gz', 'names': 'name.basics.tsv.gz',
@@ -13,9 +14,13 @@ DATASETS_TO_FILENAMES = {'basics': 'title.basics.tsv.gz', 'names': 'name.basics.
 
 VALID_IDS = []
 
+app = create_app()
+app.app_context().push()
+
 
 def update_db():
     backup_local_db()
+    db.create_all()
 
     try:
         for dataset in DATASETS:
@@ -30,6 +35,12 @@ def update_db():
         restore_db_last_version()
 
     analyze()
+
+
+def get_db_connect():
+    db_connect = sqlite3.connect(definitions.LOCAL_DB)
+    db_connect.execute("PRAGMA synchronous = 0")
+    return db_connect
 
 
 def backup_local_db():
@@ -94,10 +105,7 @@ def analyze():
 
 def read_basics():
     print('Reading basics to database.')
-    db_connect = sqlite3.connect(definitions.LOCAL_DB)
-    db_connect.execute("PRAGMA synchronous = 0")
-    db_connect.execute("CREATE TABLE basics(tid TEXT PRIMARY KEY, primaryTitle TEXT, "
-                       "year INTEGER, runtimeMinutes INTEGER, genres TEXT)")
+    db_connect = get_db_connect()
 
     with open(definitions.DB_DATA_REMOTE + 'basics', 'r') as file:
         line = file.readline()
@@ -119,10 +127,8 @@ def read_basics():
 
 def read_ratings():
     print('Reading ratings to database.')
-    db_connect = sqlite3.connect(definitions.LOCAL_DB)
-    db_connect.execute("PRAGMA synchronous = 0")
-    db_connect.execute(
-        "CREATE TABLE ratings(tid TEXT PRIMARY KEY , averageRating REAL, numVotes INTEGER)")
+    db_connect = get_db_connect()
+
     with open(definitions.DB_DATA_REMOTE + 'ratings', 'r') as file:
         line = file.readline()
         line = file.readline().strip()
@@ -140,11 +146,8 @@ def read_ratings():
 
 def read_principals():
     print('Reading principals to database.')
-    db_connect = sqlite3.connect(definitions.LOCAL_DB)
-    db_connect.execute("PRAGMA synchronous = 0")
-    db_connect.execute("CREATE TABLE principals(tid TEXT, "
-                       "nid TEXT, category TEXT, characters TEXT,"
-                       "PRIMARY KEY (tid,nid,category,characters))")
+    db_connect = get_db_connect()
+
     with open(definitions.DB_DATA_REMOTE + 'principals', 'r') as file:
         line = file.readline()
         line = file.readline().strip()
@@ -166,16 +169,8 @@ def read_principals():
 
 def read_crew():
     print('Reading writers & directors to database.')
-    db_connect = sqlite3.connect(definitions.LOCAL_DB)
-    db_connect.execute("PRAGMA synchronous = 0")
-    db_connect.execute(
-        "CREATE TABLE writers(tid TEXT, "
-        "nid TEXT,"
-        "PRIMARY KEY (tid,nid))")
-    db_connect.execute(
-        "CREATE TABLE directors(tid TEXT, "
-        "nid TEXT,"
-        "PRIMARY KEY (tid,nid))")
+    db_connect = get_db_connect()
+
     with open(definitions.DB_DATA_REMOTE + 'crew', 'r') as file:
         line = file.readline()
         line = file.readline().strip()
@@ -191,17 +186,14 @@ def read_crew():
 
             line = file.readline().strip()
 
-    db_connect.execute("CREATE INDEX directors_ix ON directors (nid)")
-    db_connect.execute("CREATE INDEX writers_ix ON writers (nid)")
     db_connect.commit()
     db_connect.close()
 
 
 def read_names():
     print('Reading names to database.')
-    db_connect = sqlite3.connect(definitions.LOCAL_DB)
-    db_connect.execute("PRAGMA synchronous = 0")
-    db_connect.execute("CREATE TABLE names(nid TEXT PRIMARY KEY, name TEXT)")
+    db_connect = get_db_connect()
+
     with open(definitions.DB_DATA_REMOTE + 'names', 'r') as file:
         line = file.readline()
         line = file.readline().strip()
@@ -219,7 +211,6 @@ def read_names():
 
             line = file.readline().strip()
 
-    db_connect.execute("CREATE INDEX names_ix ON names (name)")
     db_connect.commit()
     db_connect.close()
 
