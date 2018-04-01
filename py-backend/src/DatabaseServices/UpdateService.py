@@ -26,11 +26,12 @@ def update_db():
 
     try:
         for dataset in DATASETS:
-            print('\nProcessing %s data.' % dataset)
+            print('\nProcessing {} data.'.format(dataset))
             # download_new_data(dataset)
+            print('Reading {} to database.'.format(dataset))
             DATASETS_TO_READ_FUNCTIONS.get(dataset)()
             # delete_downloaded_remote_data(dataset)
-            print('Finished processing %s data.\n' % dataset)
+            print('Finished processing {} data.\n'.format(dataset))
 
     except (Exception, BaseException) as e:
         print("Error while updating: {}".format(e))
@@ -54,7 +55,7 @@ def backup_local_db():
 
 
 def delete_downloaded_remote_data(dataset):
-    print('Deleting local %s file' % dataset)
+    print('Deleting local {} file'.format(dataset))
     os.remove(definitions.DB_DATA_REMOTE + dataset)
 
 
@@ -69,11 +70,11 @@ def restore_db_last_version():
 def download_new_data(dataset):
     unzipped_path = definitions.DB_DATA_REMOTE + dataset
     zipped_path = unzipped_path + '_zipped'
-    print('Downloading %s data.' % dataset)
+    print('Downloading {} data.'.format(dataset))
     urllib.request.urlretrieve(definitions.URL_IMDB_DATA + DATASETS_TO_FILENAMES.get(dataset),
                                zipped_path)
 
-    print('Unzipping %s data' % dataset)
+    print('Unzipping {} data'.format(dataset))
     with gzip.open(zipped_path) as zipped_file:
         with open(unzipped_path, 'wb') as unzipped_file:
             unzipped_file.write(zipped_file.read())
@@ -106,7 +107,6 @@ def analyze():
 
 
 def read_basics():
-    print('Reading basics to database.')
     db_connect = get_db_connect()
 
     with open(definitions.DB_DATA_REMOTE + 'basics', 'r') as file:
@@ -132,7 +132,6 @@ def read_basics():
 
 
 def read_ratings():
-    print('Reading ratings to database.')
     db_connect = get_db_connect()
 
     with open(definitions.DB_DATA_REMOTE + 'ratings', 'r') as file:
@@ -151,7 +150,6 @@ def read_ratings():
 
 
 def read_principals():
-    print('Reading principals to database.')
     db_connect = get_db_connect()
 
     with open(definitions.DB_DATA_REMOTE + 'principals', 'r') as file:
@@ -176,7 +174,6 @@ def read_principals():
 
 
 def read_crew():
-    print('Reading writers & directors to database.')
     db_connect = get_db_connect()
 
     with open(definitions.DB_DATA_REMOTE + 'crew', 'r') as file:
@@ -201,7 +198,6 @@ def read_crew():
 
 
 def read_names():
-    print('Reading names to database.')
     db_connect = get_db_connect()
 
     with open(definitions.DB_DATA_REMOTE + 'names', 'r') as file:
