@@ -4,9 +4,6 @@ from sqlalchemy.orm import aliased
 
 from DatabaseServices.DatabaseModel import *
 
-app = create_app()
-app.app_context().push()
-
 
 def millis():
     return int(round(time.time() * 1000))
@@ -21,9 +18,8 @@ def result2dict(result):
 
 def get_movies_by_criteria(request):
     query = db.session.query()
-    query = query.add_columns(Ratings.averageRating, Basics.primaryTitle, Basics.tid, Basics.runtimeMinutes,
+    query = query.add_columns(Basics.primaryTitle, Basics.tid, Basics.runtimeMinutes,
                               Basics.genres, Basics.year)
-    query = query.filter(Ratings.tid == Basics.tid)
     names1 = aliased(Names)
     names2 = aliased(Names)
     if request['director']:
@@ -41,7 +37,7 @@ def get_movies_by_criteria(request):
         query = query.filter(Basics.year <= request['year_to'])
 
     if request['minRatingIMDB']:
-        query = query.filter(Ratings.averageRating >= request['minRatingIMDB'])
+        query = query.filter(Ratings.averageRating >= request['minRatingIMDB'], Ratings.tid == Basics.tid)
 
     if request['genres']:
         for genre in request['genres'].split(','):
