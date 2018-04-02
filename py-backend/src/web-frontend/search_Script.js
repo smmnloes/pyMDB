@@ -5,6 +5,7 @@ function make_query() {
     var year_to = parseInt($('#year_to_input').val());
     var genres = $('#genres_input').val();
     var minRatingIMDB = parseFloat($('#minRatingIMDB_input').val());
+    var principals = $('#principals_input').val();
     var search_results = $('#results_list');
     var result_size = $('#result_size');
 
@@ -15,8 +16,9 @@ function make_query() {
         "writer": writer,
         "year_from": year_from,
         "year_to": year_to,
-        "genres": genres,
-        "minRatingIMDB": minRatingIMDB
+        "genres": (genres === '') ? null : genres.split(','),
+        "minRatingIMDB": minRatingIMDB,
+        "principals": (principals === '') ? null : principals.split(',')
     };
 
     var requestJson = JSON.stringify(requestBody);

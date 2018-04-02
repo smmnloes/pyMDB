@@ -19,11 +19,8 @@ class Ratings(db.Model):
 
 class Principals(db.Model):
     __tablename__ = 'principals'
-    rowid = db.Column(db.Integer, primary_key=True)
-    tid = db.Column(db.Text, db.ForeignKey('basics.tid'))
-    nid = db.Column(db.Text, db.ForeignKey('names.nid'))
-    category = db.Column(db.Text)
-    characters = db.Column(db.Text)
+    tid = db.Column(db.Text, db.ForeignKey('basics.tid'), primary_key=True)
+    nid = db.Column(db.Text, db.ForeignKey('names.nid'), primary_key=True, index=True)
 
 
 class Writers(db.Model):

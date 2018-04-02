@@ -43,6 +43,7 @@ def main():
                 print(r)
         elif user_input == 'queryall':
             for query in testquery_data:
+                print("\n\n\n" + str(query) + "\n")
                 QueryService.get_movies_by_criteria(query)
         elif user_input == 'analyze':
             UpdateService.analyze()

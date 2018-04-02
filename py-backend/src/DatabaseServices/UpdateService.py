@@ -7,8 +7,8 @@ import urllib.request
 import definitions
 from App.AppMain import db, create_app
 
-# DATASETS = ['basics']
-DATASETS = ['basics', 'names', 'crew', 'principals', 'ratings']
+# DATASETS = ['basics', 'principals']
+DATASETS = ['basics', 'principals', 'names', 'crew', 'ratings']
 DATASETS_TO_FILENAMES = {'basics': 'title.basics.tsv.gz', 'names': 'name.basics.tsv.gz',
                          'crew': 'title.crew.tsv.gz', 'principals': 'title.principals.tsv.gz',
                          'ratings': 'title.ratings.tsv.gz'}
@@ -153,16 +153,14 @@ def read_principals():
         line = file.readline()
         line = file.readline().strip()
 
-        rowid = 0
         last_valid_id = -1
         while line:
             entries = line.split('\t')
-            current_id = tid_to_int(entries[0])
-            if (current_id == last_valid_id) or is_valid_tid(current_id):
-                last_valid_id = current_id
-                entries = clean_nulls(entries[0:1] + entries[2:4] + entries[5:])
-                db_connect.execute("INSERT OR REPLACE INTO principals VALUES (?,?,?,?,?)", [rowid] + entries)
-                rowid += 1
+            if entries[3] in ['actor', 'actress', 'self']:
+                current_id = tid_to_int(entries[0])
+                if (current_id == last_valid_id) or is_valid_tid(current_id):
+                    last_valid_id = current_id
+                    db_connect.execute("INSERT OR REPLACE INTO principals VALUES (?,?)", (entries[0], entries[2]))
 
             line = file.readline().strip()
 
