@@ -1,16 +1,9 @@
 from threading import Thread
 
-import requests
-
 from App import AppMain
 from DatabaseServices import QueryService
 from DatabaseServices import UpdateService
 from test.Testqueries import testquery_data
-
-
-def testquery_rest():
-    url = "http://localhost:5002/query"
-    requests.post(url, json=testquery_data[5])
 
 
 def main():
@@ -35,17 +28,9 @@ def main():
         elif user_input == 'read':
             next_input = input('Read which dataset? ')
             UpdateService.DATASETS_TO_READ_FUNCTIONS.get(next_input)()
-        elif user_input == 'queryrest':
-            testquery_rest()
-        elif user_input == 'querylocal':
-            result = QueryService.get_movies_by_criteria(testquery_data[5])
-            for r in result:
-                print(r)
         elif user_input == 'queryall':
             for query in testquery_data:
                 QueryService.get_movies_by_criteria(query)
-        elif user_input == 'analyze':
-            UpdateService.analyze()
 
 
 main()
