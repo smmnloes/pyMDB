@@ -18,7 +18,8 @@ def results_to_dict_list(results):
                    'runtimeMinutes': result[0].runtimeMinutes,
                    'genres': None if result[0].genres is None else result[0].genres.split(','),
                    'averageRating': result[1],
-                   'principals': get_principals_for_tid(result[0].tid)
+                   'principals': get_principals_for_tid(result[0].tid),
+                   'directors': get_directors_for_tid(result[0].tid)
                    }
         dict_list.append(as_dict)
 
@@ -30,8 +31,13 @@ def get_principals_for_tid(tid):
     return [x[0] for x in query.all()]
 
 
+def get_directors_for_tid(tid):
+    query = db.session.query().add_columns(Names.name).filter(Directors.tid == tid, Names.nid == Directors.nid)
+    return [x[0] for x in query.all()]
+
+
 def get_movies_by_criteria(request):
-    print('Request: \n' + str(request)+'\n')
+    print('Request: \n' + str(request) + '\n')
     query = db.session.query(Basics).outerjoin(Ratings)
     query = query.add_columns(Ratings.averageRating)
 
