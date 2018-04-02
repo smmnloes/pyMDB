@@ -82,4 +82,11 @@ testquery_data = [{"director": "dummyquery",
                    "genres": "",
                    "minRatingIMDB": "",
                    "principals": ["Christoph Waltz"]},
+                  {"director": "Ethan Coen",
+                   "writer": "",
+                   "year_from": "",
+                   "year_to": "",
+                   "genres": "",
+                   "minRatingIMDB": "",
+                   "principals": ["Jeff Bridges"]}
                   ]
