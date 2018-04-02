@@ -17,7 +17,7 @@ def create_app():
     app = Flask(__name__)
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + LOCAL_DB
-    CORS(app, resources={r"/query": {"origins": "*"}})
+    CORS(app, resources={r"/query": {'methods': ['POST']}})
     db.init_app(app)
     api = Api(app)
 
