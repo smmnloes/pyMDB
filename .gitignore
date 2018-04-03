@@ -1,4 +1,3 @@
 *.db
-.idea
 src/__pycache__/
 *.pyc
