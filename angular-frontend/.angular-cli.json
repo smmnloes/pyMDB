@@ -19,9 +19,16 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
-        "styles.css"
+        "styles.css",
+        "../foundation/css/foundation.css",
+        "../foundation/css/app.css"
       ],
-      "scripts": [],
+      "scripts": [
+        "../foundation/js/vendor/jquery.js",
+        "../foundation/js/vendor/what-input.js",
+        "../foundation/js/vendor/foundation.js",
+        "../foundation/js/app.js"
+      ],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",
