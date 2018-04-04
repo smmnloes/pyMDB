@@ -1,36 +1,57 @@
-<table class="search-filter">
-  <tr>
-    <th><span>Director</span></th>
-    <th><span>Writer</span></th>
-    <th><span>Principals</span></th>
-    <th><span>Year</span></th>
-    <th><span>Genres</span></th>
-    <th><span>min.IMDB-Rating</span></th>
-  </tr>
-  <tr>
-    <td><input type="text" id="director"></td>
-    <td><input type="text" id="writer"></td>
-    <td>
-      <div id="principals">
-        <input type="text">
-        <input type="text">
-        <input type="text">
+<form>
+  <div class="grid-x grid-padding-x">
+    <div class="large-12 cell">
+      <label>Input Label</label>
+      <input type="text" placeholder="large-12.cell">
+    </div>
+  </div>
+  <div class="grid-x grid-padding-x">
+    <div class="large-4 medium-4 cell">
+      <label>Input Label</label>
+      <input type="text" placeholder="large-4.cell">
+    </div>
+    <div class="large-4 medium-4 cell">
+      <label>Input Label</label>
+      <input type="text" placeholder="large-4.cell">
+    </div>
+    <div class="large-4 medium-4 cell">
+      <div class="grid-x">
+        <label>Input Label</label>
+        <div class="input-group">
+          <input type="text" placeholder="small-9.cell" class="input-group-field">
+          <span class="input-group-label">.com</span>
+        </div>
       </div>
-    </td>
-    <td>
-      <div id="year_from_to">
-        <input id="year_from" type="number" min="1800" max="2020">
-        <input id="year_to" type="number" min="1800" max="2020">
-      </div>
-    </td>
-    <td>
-      <select id="genres">
-        <option value="genre1">Adventudddddre</option>
+    </div>
+  </div>
+  <div class="grid-x grid-padding-x">
+    <div class="large-12 cell">
+      <label>Select Box</label>
+      <select>
+        <option value="husker">Husker</option>
+        <option value="starbuck">Starbuck</option>
+        <option value="hotdog">Hot Dog</option>
+        <option value="apollo">Apollo</option>
       </select>
-    </td>
-    <td>
-      <input type="number" id="rating" min="0" max="10" step="0.1">
-    </td>
-  </tr>
+    </div>
+  </div>
+  <div class="grid-x grid-padding-x">
+    <div class="large-6 medium-6 cell">
+      <label>Choose Your Favorite</label>
+      <input type="radio" name="pokemon" value="Red" id="pokemonRed"><label for="pokemonRed">Radio 1</label>
+      <input type="radio" name="pokemon" value="Blue" id="pokemonBlue"><label for="pokemonBlue">Radio 2</label>
+    </div>
+    <div class="large-6 medium-6 cell">
+      <label>Check these out</label>
+      <input id="checkbox1" type="checkbox"><label for="checkbox1">Checkbox 1</label>
+      <input id="checkbox2" type="checkbox"><label for="checkbox2">Checkbox 2</label>
+    </div>
+  </div>
+  <div class="grid-x grid-padding-x">
+    <div class="large-12 cell">
+      <label>Textarea Label</label>
+      <textarea placeholder="small-12.cell"></textarea>
+    </div>
+  </div>
+</form>
 
-</table>
