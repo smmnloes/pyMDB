@@ -1,3 +1,4 @@
 *.db
 src/__pycache__/
 *.pyc
+npm-debug.log
