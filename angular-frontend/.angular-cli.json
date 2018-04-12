@@ -21,6 +21,7 @@
       "styles": [
         "styles.css",
         "../foundation/css/foundation.css"
+
       ],
       "scripts": [
         "../foundation/js/vendor/jquery.js",
