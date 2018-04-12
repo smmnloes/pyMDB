@@ -20,8 +20,7 @@
       "prefix": "app",
       "styles": [
         "styles.css",
-        "../foundation/css/foundation.css",
-        "../foundation/css/app.css"
+        "../foundation/css/foundation.css"
       ],
       "scripts": [
         "../foundation/js/vendor/jquery.js",

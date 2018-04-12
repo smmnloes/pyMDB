@@ -1,23 +1,37 @@
-<form>
-  <div class="row">
-    <div class="column small-4">
-      <label for="director">Director</label>
-      <input id="director" type="text">
-    </div>
-    <div class="column small-4">
-      <label for="writer">Writer</label>
-      <input id="writer" type="text">
-    </div>
-  </div>
-  <div class="row">
+<div class="search-filter">
+  <form>
+    <div class="grid-container">
 
-    <div class="column small-4">
-      <label for="genres">Genres</label>
-      <input id="genres" type="text">
+      <div class="grid-x">
+        <div class="cell medium-6 small-12 large-3">
+          <label for="director">Director</label>
+          <input id="director" type="text">
+        </div>
+        <div class="cell medium-6 small-12 large-3">
+          <label for="writer">Writer</label>
+          <input id="writer" type="text">
+        </div>
+
+
+        <div class="cell medium-8 small-12 large-3">
+          <label for="genres">Genres</label>
+          <input id="genres" type="text">
+        </div>
+        <div class="cell medium-4 small-12 large-3">
+          <label for="rating">Rating</label>
+          <input id="rating" type="text">
+        </div>
+      </div>
+      <div>
+        <label for="years">Year</label>
+        <div id="years">
+          <label for="year_from">from</label>
+          <input id="year_from" type="number" min="1800" max="2020">
+          <label for="year_to">to</label>
+          <input id="year_to" type="number" min="1800" max="2020">
+        </div>
+      </div>
     </div>
-    <div class="column small-4">
-      <label for="rating">Rating</label>
-      <input id="rating" type="text">
-    </div>
-  </div>
-</form>
+
+  </form>
+</div>
