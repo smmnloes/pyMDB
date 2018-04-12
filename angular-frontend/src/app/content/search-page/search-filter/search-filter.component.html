@@ -1,37 +1,54 @@
 <div class="search-filter">
   <form>
     <div class="grid-container">
+      <div class="grid-y">
+        <div class="cell">
+          <div class="grid-x">
 
-      <div class="grid-x">
-        <div class="cell medium-6 small-12 large-3">
-          <label for="director">Director</label>
-          <input id="director" type="text">
-        </div>
-        <div class="cell medium-6 small-12 large-3">
-          <label for="writer">Writer</label>
-          <input id="writer" type="text">
-        </div>
+            <div class="cell small-12 medium-6 large-4">
+              <label for="director">Director</label>
+              <input id="director" type="text">
+            </div>
+
+            <div class="cell small-12 medium-6 large-4">
+              <label for="writer">Writer</label>
+              <input id="writer" type="text">
+            </div>
 
 
-        <div class="cell medium-8 small-12 large-3">
-          <label for="genres">Genres</label>
-          <input id="genres" type="text">
+            <div class="cell small-12 medium-5 large-4">
+              <label for="genres">Genres</label>
+              <input id="genres" type="text">
+            </div>
+
+            <div class="cell small-4 medium-2 large-4">
+              <label for="rating">Rating</label>
+              <input id="rating" type="number" step="0.1" min="0" max="10">
+            </div>
+
+            <div class="cell small-8 medium-5 large-8">
+              <div class="grid-x">
+                <div class="cell small-6">
+                  <label for="year_from">min. year</label>
+                  <input id="year_from" type="number" min="1800" max="2020">
+                </div>
+                <div class="cell small-6">
+                  <label for="year_to">max. year</label>
+                  <input id="year_to" type="number" min="1800" max="2020">
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="cell medium-4 small-12 large-3">
-          <label for="rating">Rating</label>
-          <input id="rating" type="text">
-        </div>
-      </div>
-      <div>
-        <label for="years">Year</label>
-        <div id="years">
-          <label for="year_from">from</label>
-          <input id="year_from" type="number" min="1800" max="2020">
-          <label for="year_to">to</label>
-          <input id="year_to" type="number" min="1800" max="2020">
+        <div class="cell">
+          <label for="principals">Top-billed actors</label>
+          <div class="grid-x" id="principals">
+            <input type="text" class="cell small-12 medium-4" id="p1">
+            <input type="text" class="cell small-12 medium-4" id="p2">
+            <input type="text" class="cell small-12 medium-4" id="p3">
+          </div>
         </div>
       </div>
     </div>
-
   </form>
 </div>
