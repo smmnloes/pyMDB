@@ -5,32 +5,32 @@
         <div class="cell">
           <div class="grid-x">
 
-            <div class="cell small-12 medium-6 large-4">
+            <div class="cell small-12 medium-5">
               <label for="director">Director</label>
               <input id="director" type="text">
             </div>
 
-            <div class="cell small-12 medium-6 large-4">
+            <div class="cell small-12 medium-5 medium-offset-2">
               <label for="writer">Writer</label>
               <input id="writer" type="text">
             </div>
 
 
-            <div class="cell small-12 medium-5 large-4">
+            <div class="cell small-12 medium-8 medium-offset-2">
               <label for="genres">Genres</label>
-              <select id="genres" class="genres">
-                <option>Adventure</option>
-                <option>Action</option>
-                <option>Sci-Fi</option>
-              </select>
+              <angular2-multiselect id="genres" name="genres" [data]="genreList" [(ngModel)]="selectedGenres"
+                                    [settings]="dropdownSettings"
+                                    (onSelect)="onItemSelect($event)"
+                                    (onSelectAll)=" onSelectAll($event)">
+              </angular2-multiselect>
+
             </div>
 
-            <div class="cell small-4 medium-2 large-4">
+            <div class="cell small-4 medium-2 medium-offset-2">
               <label for="rating">Rating</label>
               <input id="rating" type="number" step="0.1" min="0" max="10">
             </div>
-
-            <div class="cell small-8 medium-5 large-8">
+            <div class="cell small-8 medium-6">
               <div class="grid-x">
                 <div class="cell small-6">
                   <label for="year_from">min. year</label>
@@ -47,9 +47,9 @@
         <div class="cell">
           <label for="principals">Top-billed actors</label>
           <div class="grid-x" id="principals">
-            <input type="text" class="cell small-12 medium-4" id="p1">
-            <input type="text" class="cell small-12 medium-4" id="p2">
-            <input type="text" class="cell small-12 medium-4" id="p3">
+            <input type="text" class="cell large-4" id="p1">
+            <input type="text" class="cell large-4" id="p2">
+            <input type="text" class="cell large-4" id="p3">
           </div>
         </div>
       </div>
