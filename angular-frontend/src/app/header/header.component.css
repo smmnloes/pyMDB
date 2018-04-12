@@ -1,7 +1,16 @@
 .header {
-  background:indianred;
-  color:white;
+  background: indianred;
+  color: white;
   width: 100%;
-  height: 50px;
-  text-align:center;
+
+  text-align: center;
+}
+
+a {
+  color: white;
+}
+
+h1 {
+  font-size:3em;
+  color:black;
 }
