@@ -25,10 +25,6 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
   propagateChange = (_: any) => {
   };
 
-  writeValue(value: any) {
-    this.selectedItems = value;
-  }
-
   registerOnChange(fn) {
     this.propagateChange = fn;
   }
@@ -36,6 +32,8 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
   registerOnTouched() {
   }
 
+  writeValue() {
+  }
 
   constructor() {
   }
@@ -69,15 +67,10 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
     }
 
     this.propagate();
-
-    console.log(item);
-    console.log(this.selectedItems);
   }
 
   onItemDeselect(item: any) {
     this.propagate();
-    console.log(item);
-    console.log(this.selectedItems);
   }
 
   propagate() {
