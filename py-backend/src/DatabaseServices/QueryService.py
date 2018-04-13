@@ -66,9 +66,10 @@ def get_movies_by_criteria(request):
 
     if request['principals']:
         for principal in request['principals']:
-            names = aliased(Names)
-            principals = aliased(Principals)
-            query = query.filter(Basics.tid == principals.tid, principals.nid == names.nid, names.name == principal)
+            if principal:
+                names = aliased(Names)
+                principals = aliased(Principals)
+                query = query.filter(Basics.tid == principals.tid, principals.nid == names.nid, names.name == principal)
 
     print(query)
 
