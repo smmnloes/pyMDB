@@ -22,12 +22,7 @@ export class SearchFormComponent implements OnInit {
   }
 
   onSubmit() {
-    let result = this.queryService.makeQuery(this.searchModel);
-    result.subscribe(data => {
-        console.log(data)
-      },
-      err => console.error(err),
-      () => console.log('SUCCESS!'))
+    this.queryService.makeQuery(this.searchModel);
   }
 
 }
