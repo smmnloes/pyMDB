@@ -3,11 +3,11 @@ import {SearchModel} from "./search-model";
 import {QueryService} from "../../../query.service";
 
 @Component({
-  selector: 'app-search-filter',
-  templateUrl: './search-filter.component.html',
-  styleUrls: ['./search-filter.component.css']
+  selector: 'app-search-form',
+  templateUrl: './search-form.component.html',
+  styleUrls: ['./search-form.component.css']
 })
-export class SearchFilterComponent implements OnInit {
+export class SearchFormComponent implements OnInit {
   searchModel: SearchModel;
 
   @Input()
@@ -22,7 +22,12 @@ export class SearchFilterComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.searchModel);
+    let result = this.queryService.makeQuery(this.searchModel);
+    result.subscribe(data => {
+        console.log(data)
+      },
+      err => console.error(err),
+      () => console.log('SUCCESS!'))
   }
 
 }
