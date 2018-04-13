@@ -40,18 +40,37 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
   }
 
   ngOnInit() {
-    this.genreList = [
-      {"id": 1, "itemName": "India"},
-      {"id": 2, "itemName": "Singapore"},
-      {"id": 3, "itemName": "Australia"},
-      {"id": 4, "itemName": "Canada"},
-      {"id": 5, "itemName": "South Korea"},
-      {"id": 6, "itemName": "Germany"},
-      {"id": 7, "itemName": "France"},
-      {"id": 8, "itemName": "Russia"},
-      {"id": 9, "itemName": "Italy"},
-      {"id": 10, "itemName": "Sweden"}
+    this.genreList = [{'itemName': 'Horror', 'id': 0},
+      {'itemName': 'Music', 'id': 1},
+      {'itemName': 'Documentary', 'id': 2},
+      {'itemName': 'Film-Noir', 'id': 3},
+      {'itemName': 'News', 'id': 4},
+      {'itemName': 'Comedy', 'id': 5},
+      {'itemName': 'Animation', 'id': 6},
+      {'itemName': 'Sport', 'id': 7},
+      {'itemName': 'Family', 'id': 8},
+      {'itemName': 'Thriller', 'id': 9},
+      {'itemName': 'History', 'id': 10},
+      {'itemName': 'Mystery', 'id': 11},
+      {'itemName': 'Game-Show', 'id': 12},
+      {'itemName': 'War', 'id': 13},
+      {'itemName': 'Romance', 'id': 14},
+      {'itemName': 'Crime', 'id': 15},
+      {'itemName': 'Short', 'id': 16},
+      {'itemName': 'Fantasy', 'id': 17},
+      {'itemName': 'Western', 'id': 18},
+      {'itemName': 'Musical', 'id': 19},
+      {'itemName': 'Sci-Fi', 'id': 20},
+      {'itemName': 'Action', 'id': 21},
+      {'itemName': 'Biography', 'id': 22},
+      {'itemName': 'Adult', 'id': 23},
+      {'itemName': 'Talk-Show', 'id': 24},
+      {'itemName': 'Drama', 'id': 25},
+      {'itemName': 'Adventure', 'id': 26},
+      {'itemName': 'Reality-TV', 'id': 27},
     ];
+
+
     this.selectedGenres = [];
     this.dropdownSettings = {
       singleSelection: false,

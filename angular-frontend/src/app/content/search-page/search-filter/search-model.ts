@@ -5,9 +5,7 @@ export class SearchModel {
               public rating: number,
               public min_year: number,
               public max_year: number,
-              public principal_1: string,
-              public principal_2: string,
-              public principal_3: string,
+              public principals: string[]
   ) {
   }
 }
