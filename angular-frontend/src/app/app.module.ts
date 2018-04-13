@@ -11,7 +11,6 @@ import {SearchResultsComponent} from './content/search-page/search-results/searc
 import {AngularMultiSelectModule} from "angular2-multiselect-dropdown/angular2-multiselect-dropdown";
 import {MultiselectComponent} from './content/search-page/search-filter/multiselect/multiselect.component';
 
-
 @NgModule({
   declarations: [
     AppComponent,
