@@ -11,22 +11,22 @@
               ></app-multiselect>
             </div>
 
-            <div class="cell small-4 medium-2 medium-offset-2">
-              <label for="rating">Rating</label>
+            <div class="cell small-4 medium-3 medium-offset-2">
+              <label for="rating">min. Rating</label>
               <input id="rating" type="number" step="0.1" min="0" max="10" name="rating"
                      [(ngModel)]="searchModel.rating">
             </div>
-            <div class="cell small-8 medium-6">
+            <div class="cell small-8 medium-5">
               <div class="grid-x">
                 <div class="cell small-6">
                   <label for="year_from">min. year</label>
                   <input id="year_from" type="number" min="1800" max="2020" name="year_from"
-                         [(ngModel)]="searchModel.min_year">
+                         [(ngModel)]="searchModel.year_from">
                 </div>
                 <div class="cell small-6">
                   <label for="year_to">max. year</label>
                   <input id="year_to" type="number" min="1800" max="2020" name="year_to"
-                         [(ngModel)]="searchModel.max_year">
+                         [(ngModel)]="searchModel.year_to">
                 </div>
               </div>
             </div>
