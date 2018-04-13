@@ -14,6 +14,7 @@
             <div class="cell small-4 medium-3 medium-offset-2">
               <label for="rating">min. Rating</label>
               <input id="rating" type="number" step="0.1" min="0" max="10" name="rating"
+                     placeholder="5.5"
                      [(ngModel)]="searchModel.minRatingIMDB">
             </div>
             <div class="cell small-8 medium-5">
@@ -21,11 +22,13 @@
                 <div class="cell small-6">
                   <label for="year_from">min. year</label>
                   <input id="year_from" type="number" min="1800" max="2020" name="year_from"
+                         placeholder="1965"
                          [(ngModel)]="searchModel.year_from">
                 </div>
                 <div class="cell small-6">
                   <label for="year_to">max. year</label>
                   <input id="year_to" type="number" min="1800" max="2020" name="year_to"
+                         placeholder="2010"
                          [(ngModel)]="searchModel.year_to">
                 </div>
               </div>
@@ -33,13 +36,13 @@
 
             <div class="cell small-12 medium-5">
               <label for="director">Director</label>
-              <input id="director" type="text" name="director"
+              <input id="director" type="text" name="director" placeholder="Steven Spielberg"
                      [(ngModel)]="searchModel.director">
             </div>
 
             <div class="cell small-12 medium-5 medium-offset-2">
               <label for="writer">Writer</label>
-              <input id="writer" type="text" name="writer"
+              <input id="writer" type="text" name="writer" placeholder="Thomas Keneally"
                      [(ngModel)]="searchModel.writer">
             </div>
           </div>
@@ -48,6 +51,7 @@
           <label for="principals">Top-billed actors</label>
           <div class="grid-x" id="principals">
             <input type="text" class="cell large-4" id="p1" name="p1"
+                   placeholder="Liam Neeson"
                    [(ngModel)]="searchModel.principals[0]">
             <input type="text" class="cell large-4" id="p2" name="p2"
                    [(ngModel)]="searchModel.principals[1]">
