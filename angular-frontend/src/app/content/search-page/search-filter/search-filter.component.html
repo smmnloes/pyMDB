@@ -1,27 +1,13 @@
 <div class="search-filter">
-  <form>
+  <form (ngSubmit)="onSubmit()">
     <div class="grid-container">
       <div class="grid-y">
         <div class="cell">
           <div class="grid-x">
 
-            <div class="cell small-12 medium-5">
-              <label for="director">Director</label>
-              <input id="director" type="text" name="director"
-                     [(ngModel)]="searchModel.director">
-            </div>
-
-            <div class="cell small-12 medium-5 medium-offset-2">
-              <label for="writer">Writer</label>
-              <input id="writer" type="text" name="writer"
-                     [(ngModel)]="searchModel.writer">
-            </div>
-
-
             <div class="cell small-12 medium-8 medium-offset-2">
               <label for="genres">Genres</label>
               <app-multiselect id="genres" name="genres" [(ngModel)]="searchModel.genres"
-                               (ngModelChange)=" onChange($event)"
               ></app-multiselect>
             </div>
 
@@ -35,14 +21,26 @@
                 <div class="cell small-6">
                   <label for="year_from">min. year</label>
                   <input id="year_from" type="number" min="1800" max="2020" name="year_from"
-                  [(ngModel)]="searchModel.min_year">
+                         [(ngModel)]="searchModel.min_year">
                 </div>
                 <div class="cell small-6">
                   <label for="year_to">max. year</label>
                   <input id="year_to" type="number" min="1800" max="2020" name="year_to"
-                  [(ngModel)]="searchModel.max_year">
+                         [(ngModel)]="searchModel.max_year">
                 </div>
               </div>
+            </div>
+
+            <div class="cell small-12 medium-5">
+              <label for="director">Director</label>
+              <input id="director" type="text" name="director"
+                     [(ngModel)]="searchModel.director">
+            </div>
+
+            <div class="cell small-12 medium-5 medium-offset-2">
+              <label for="writer">Writer</label>
+              <input id="writer" type="text" name="writer"
+                     [(ngModel)]="searchModel.writer">
             </div>
           </div>
         </div>
@@ -50,15 +48,16 @@
           <label for="principals">Top-billed actors</label>
           <div class="grid-x" id="principals">
             <input type="text" class="cell large-4" id="p1" name="p1"
-            [(ngModel)]="searchModel.principal_1">
+                   [(ngModel)]="searchModel.principals[0]">
             <input type="text" class="cell large-4" id="p2" name="p2"
-            [(ngModel)]="searchModel.principal_2">
+                   [(ngModel)]="searchModel.principals[1]">
             <input type="text" class="cell large-4" id="p3" name="p3"
-            [(ngModel)]="searchModel.principal_3">
+                   [(ngModel)]="searchModel.principals[2]">
           </div>
         </div>
         <div class="cell">
-          <button class="button" name="submitbutton" type="submit">Search!</button>
+          <button class="button" name="submitbutton" type="submit">Search!
+          </button>
         </div>
       </div>
     </div>
