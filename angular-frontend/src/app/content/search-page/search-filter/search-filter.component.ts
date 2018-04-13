@@ -17,10 +17,11 @@ export class SearchFilterComponent implements OnInit {
 
   ngOnInit() {
     this.searchModel = new SearchModel("", "", [], 5.0,
-      1900, 2020, "", "", "");
+      1900, 2020, ["", "", ""]);
   }
 
-  onChange(){
+  onSubmit() {
     console.log(this.searchModel);
   }
+
 }
