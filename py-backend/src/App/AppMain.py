@@ -22,5 +22,5 @@ def create_app():
     api = Api(app)
 
     from App.RESTControllers import MovieQuery
-    api.add_resource(MovieQuery, '/query')
+    api.add_resource(MovieQuery, '/api/query')
     return app
