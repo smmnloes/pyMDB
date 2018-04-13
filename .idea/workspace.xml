@@ -1,23 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e3b59820-bd6a-4e96-9092-155573d5497e" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/angular-frontend/src/app/content/search-page/search-form/multiselect/multiselect.component.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/angular-frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/angular-frontend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/angular-frontend/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/angular-frontend/src/app/app.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/angular-frontend/src/app/content/search-page/search-filter/multiselect/IMDBgenres.ts" beforeDir="false" afterPath="$PROJECT_DIR$/angular-frontend/src/app/content/search-page/search-form/multiselect/IMDBgenres.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/angular-frontend/src/app/content/search-page/search-filter/multiselect/multiselect.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/angular-frontend/proxy.conf.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/angular-frontend/src/app/content/search-page/search-filter/multiselect/multiselect.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/angular-frontend/src/app/content/search-page/search-form/multiselect/multiselect.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/angular-frontend/src/app/content/search-page/search-filter/multiselect/multiselect.component.spec.ts" beforeDir="false" afterPath="$PROJECT_DIR$/angular-frontend/src/app/content/search-page/search-form/multiselect/multiselect.component.spec.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/angular-frontend/src/app/content/search-page/search-filter/multiselect/multiselect.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/angular-frontend/src/app/content/search-page/search-form/multiselect/multiselect.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/angular-frontend/src/app/content/search-page/search-filter/search-filter.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/angular-frontend/src/app/content/search-page/search-form/search-form.component.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/angular-frontend/src/app/content/search-page/search-filter/search-filter.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/angular-frontend/src/app/content/search-page/search-form/search-form.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/angular-frontend/src/app/content/search-page/search-filter/search-filter.component.spec.ts" beforeDir="false" afterPath="$PROJECT_DIR$/angular-frontend/src/app/content/search-page/search-form/search-form.component.spec.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/angular-frontend/src/app/content/search-page/search-filter/search-filter.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/angular-frontend/src/app/content/search-page/search-form/search-form.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/angular-frontend/src/app/content/search-page/search-filter/search-model.ts" beforeDir="false" afterPath="$PROJECT_DIR$/angular-frontend/src/app/content/search-page/search-form/search-model.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/angular-frontend/src/app/content/search-page/search-page.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/angular-frontend/src/app/content/search-page/search-page.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/angular-frontend/src/app/query.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/angular-frontend/src/app/query.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/py-backend/src/App/AppMain.py" beforeDir="false" afterPath="$PROJECT_DIR$/py-backend/src/App/AppMain.py" afterDir="false" />
+    <list default="true" id="e3b59820-bd6a-4e96-9092-155573d5497e" name="Default" comment="REST calls working">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/angular-frontend/src/app/content/search-page/search-form/search-form.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/angular-frontend/src/app/content/search-page/search-form/search-form.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/angular-frontend/src/app/content/search-page/search-form/search-form.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/angular-frontend/src/app/content/search-page/search-form/search-form.component.ts" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -27,7 +15,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/pyMDB$main.coverage" NAME="main Coverage Results" MODIFIED="1523637557126" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/py-backend/src" />
+    <SUITE FILE_PATH="coverage/pyMDB$main.coverage" NAME="main Coverage Results" MODIFIED="1523639757209" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/py-backend/src" />
     <SUITE FILE_PATH="coverage/pyMDB$scratch.coverage" NAME="scratch Coverage Results" MODIFIED="1523628710334" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$APPLICATION_CONFIG_DIR$/scratches" />
   </component>
   <component name="DatabaseView">
@@ -49,8 +37,11 @@
       <file leaf-file-name="search-form.component.ts" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/angular-frontend/src/app/content/search-page/search-form/search-form.component.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="440">
-              <caret line="32" lean-forward="true" selection-start-line="32" selection-end-line="32" />
+            <state relative-caret-position="176">
+              <caret line="20" column="16" selection-start-line="20" selection-start-column="16" selection-end-line="20" selection-end-column="16" />
+              <folding>
+                <element signature="e#0#55#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -58,8 +49,8 @@
       <file leaf-file-name="query.service.ts" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/angular-frontend/src/app/query.service.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="286">
-              <caret line="16" column="27" selection-start-line="16" selection-start-column="27" selection-end-line="16" selection-end-column="27" />
+            <state relative-caret-position="374">
+              <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
               <folding>
                 <element signature="e#0#41#0" expanded="true" />
               </folding>
@@ -96,14 +87,20 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AppMain.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="AppMain.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/py-backend/src/App/AppMain.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="342">
               <caret line="24" column="35" selection-start-line="24" selection-start-column="35" selection-end-line="24" selection-end-column="35" />
-              <folding>
-                <element signature="e#0#23#0" expanded="true" />
-              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="QueryService.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/py-backend/src/DatabaseServices/QueryService.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1584">
+              <caret line="72" lean-forward="true" selection-start-line="72" selection-end-line="72" />
             </state>
           </provider>
         </entry>
@@ -111,8 +108,17 @@
       <file leaf-file-name="search-form.component.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/angular-frontend/src/app/content/search-page/search-form/search-form.component.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-198">
-              <caret line="27" column="49" selection-start-line="27" selection-start-column="49" selection-end-line="27" selection-end-column="49" />
+            <state relative-caret-position="308">
+              <caret line="53" column="43" selection-start-line="53" selection-start-column="43" selection-end-line="53" selection-end-column="43" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="110">
+              <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
             </state>
           </provider>
         </entry>
@@ -120,26 +126,6 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/py-backend/src/web-frontend/index.html">
           <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file leaf-file-name="package.json" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/angular-frontend/package.json">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="132">
-              <caret line="6" column="53" selection-start-line="6" selection-start-column="53" selection-end-line="6" selection-end-column="53" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="multiselect.component.spec.ts" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/angular-frontend/src/app/content/search-page/search-form/multiselect/multiselect.component.spec.ts">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <folding>
-                <element signature="e#0#71#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
         </entry>
       </file>
     </leaf>
@@ -195,7 +181,6 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/py-backend/src/DatabaseServices/UpdateService.py" />
-        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$APPLICATION_CONFIG_DIR$/consoles/db/52c6cc81-6779-4471-907c-36d57c966393/console.sql" />
         <option value="$PROJECT_DIR$/angular-frontend/src/app/app-header/app-header.component.css" />
         <option value="$PROJECT_DIR$/angular-frontend/src/app/app-header/app-header.component.html" />
@@ -234,12 +219,15 @@
         <option value="$PROJECT_DIR$/angular-frontend/src/app/content/search-page/search-filter/search-filter.component.ts" />
         <option value="$PROJECT_DIR$/angular-frontend/src/app/app.module.ts" />
         <option value="$PROJECT_DIR$/angular-frontend/src/app/content/search-page/search-form/search-form.component.css" />
-        <option value="$PROJECT_DIR$/angular-frontend/src/app/content/search-page/search-form/search-form.component.ts" />
         <option value="$PROJECT_DIR$/angular-frontend/package.json" />
         <option value="$PROJECT_DIR$/angular-frontend/src/app/content/search-page/search-form/search-model.ts" />
         <option value="$PROJECT_DIR$/angular-frontend/src/app/query.service.ts" />
         <option value="$PROJECT_DIR$/angular-frontend/proxy.conf.json" />
         <option value="$PROJECT_DIR$/py-backend/src/App/AppMain.py" />
+        <option value="$PROJECT_DIR$/py-backend/src/DatabaseServices/QueryService.py" />
+        <option value="$PROJECT_DIR$/angular-frontend/src/app/content/search-page/search-form/search-form.component.ts" />
+        <option value="$PROJECT_DIR$/angular-frontend/src/app/content/search-page/search-form/search-form.component.html" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -324,36 +312,6 @@
               <item name="search-page" type="462c0819:PsiDirectoryNode" />
               <item name="search-form" type="462c0819:PsiDirectoryNode" />
               <item name="multiselect" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="pyMDB" type="b2602c69:ProjectViewProjectNode" />
-              <item name="pyMDB" type="462c0819:PsiDirectoryNode" />
-              <item name="DB_Data_Remote" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="pyMDB" type="b2602c69:ProjectViewProjectNode" />
-              <item name="pyMDB" type="462c0819:PsiDirectoryNode" />
-              <item name="py-backend" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="pyMDB" type="b2602c69:ProjectViewProjectNode" />
-              <item name="pyMDB" type="462c0819:PsiDirectoryNode" />
-              <item name="py-backend" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="pyMDB" type="b2602c69:ProjectViewProjectNode" />
-              <item name="pyMDB" type="462c0819:PsiDirectoryNode" />
-              <item name="py-backend" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="pyMDB" type="b2602c69:ProjectViewProjectNode" />
-              <item name="pyMDB" type="462c0819:PsiDirectoryNode" />
-              <item name="py-backend" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="web-frontend" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -792,7 +750,14 @@
       <option name="project" value="LOCAL" />
       <updated>1523634420750</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="REST calls working">
+      <created>1523638215445</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1523638215445</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TodoView">
@@ -813,10 +778,10 @@
       <window_info anchor="bottom" id="Database Changes" order="11" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="9" sideWeight="0.49895832" weight="0.29081082" />
       <window_info anchor="bottom" id="Python Console" order="14" />
-      <window_info active="true" anchor="bottom" id="Run" order="5" sideWeight="0.72612196" visible="true" weight="0.35783783" />
+      <window_info anchor="bottom" id="Run" order="5" sideWeight="0.72612196" visible="true" weight="0.23783784" />
       <window_info anchor="bottom" id="Terminal" order="13" weight="0.32972974" />
       <window_info anchor="bottom" id="TypeScript" order="0" weight="0.32972974" />
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4983871" visible="true" weight="0.33229166" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4983871" visible="true" weight="0.33229166" />
       <window_info anchor="bottom" id="Docker" order="10" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="4" />
       <window_info anchor="bottom" id="Find" order="4" weight="0.32972974" />
@@ -889,22 +854,17 @@
     <MESSAGE value="cleanup" />
     <MESSAGE value="cosmetics, change variable name for year" />
     <MESSAGE value="start query service" />
-    <option name="LAST_COMMIT_MESSAGE" value="start query service" />
+    <MESSAGE value="REST calls working, renaming" />
+    <MESSAGE value="REST calls working" />
+    <option name="LAST_COMMIT_MESSAGE" value="REST calls working" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="1" />
+      <option name="time" value="2" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/52c6cc81-6779-4471-907c-36d57c966393/console.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="22">
-          <caret line="1" selection-start-line="1" selection-end-line="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/.idea/dataSources/c62c37ff-bfac-4be0-b3d8-bd99f5ba75f0.xml" />
     <entry file="file://$PROJECT_DIR$/angular-frontend/package-lock.json">
       <provider selected="true" editor-type-id="text-editor">
@@ -1071,13 +1031,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="66">
-          <caret line="3" column="13" selection-start-line="3" selection-start-column="13" selection-end-line="3" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/angular-frontend/src/app/content/search-page/search-form/multiselect/IMDBgenres.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="331">
@@ -1146,20 +1099,7 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/angular-frontend/src/app/content/search-page/search-form/multiselect/multiselect.component.spec.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#71#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/angular-frontend/src/app/content/search-page/search-form/search-form.component.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="440">
-          <caret line="32" lean-forward="true" selection-start-line="32" selection-end-line="32" />
-        </state>
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/angular-frontend/package.json">
       <provider selected="true" editor-type-id="text-editor">
@@ -1170,37 +1110,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/py-backend/src/web-frontend/index.html">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/angular-frontend/src/app/content/search-page/search-form/search-model.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="88">
-          <caret line="4" column="34" selection-start-line="4" selection-start-column="34" selection-end-line="4" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/angular-frontend/src/app/content/search-page/search-form/search-form.component.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-198">
-          <caret line="27" column="49" selection-start-line="27" selection-start-column="49" selection-end-line="27" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/angular-frontend/src/app/query.service.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="16" column="27" selection-start-line="16" selection-start-column="27" selection-end-line="16" selection-end-column="27" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/angular-frontend/proxy.conf.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="22">
-          <caret line="1" column="9" selection-start-line="1" selection-start-column="9" selection-end-line="1" selection-end-column="9" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/py-backend/src/App/RESTControllers.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -1215,9 +1124,61 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="342">
           <caret line="24" column="35" selection-start-line="24" selection-start-column="35" selection-end-line="24" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/py-backend/src/DatabaseServices/QueryService.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1584">
+          <caret line="72" lean-forward="true" selection-start-line="72" selection-end-line="72" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/angular-frontend/proxy.conf.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="22">
+          <caret line="1" column="9" selection-start-line="1" selection-start-column="9" selection-end-line="1" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/angular-frontend/src/app/content/search-page/search-form/search-model.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="88">
+          <caret line="4" column="34" selection-start-line="4" selection-start-column="34" selection-end-line="4" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/angular-frontend/src/app/query.service.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
           <folding>
-            <element signature="e#0#23#0" expanded="true" />
+            <element signature="e#0#41#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/angular-frontend/src/app/content/search-page/search-form/search-form.component.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="20" column="16" selection-start-line="20" selection-start-column="16" selection-end-line="20" selection-end-column="16" />
+          <folding>
+            <element signature="e#0#55#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/angular-frontend/src/app/content/search-page/search-form/search-form.component.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="308">
+          <caret line="53" column="43" selection-start-line="53" selection-start-column="43" selection-end-line="53" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="110">
+          <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
         </state>
       </provider>
     </entry>

@@ -17,8 +17,8 @@ export class SearchFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.searchModel = new SearchModel("", "", [], 5.0,
-      1900, 2020, ["", "", ""]);
+    this.searchModel = new SearchModel("", "", [], null,
+      null, null, ["", "", ""]);
   }
 
   onSubmit() {
