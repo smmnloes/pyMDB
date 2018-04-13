@@ -1,4 +1,4 @@
-<div class="search-filter">
+<div class="search-form">
   <form (ngSubmit)="onSubmit()">
     <div class="grid-container">
       <div class="grid-y">
@@ -14,7 +14,7 @@
             <div class="cell small-4 medium-3 medium-offset-2">
               <label for="rating">min. Rating</label>
               <input id="rating" type="number" step="0.1" min="0" max="10" name="rating"
-                     [(ngModel)]="searchModel.rating">
+                     [(ngModel)]="searchModel.minRatingIMDB">
             </div>
             <div class="cell small-8 medium-5">
               <div class="grid-x">
