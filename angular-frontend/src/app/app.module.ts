@@ -9,6 +9,7 @@ import {SearchPageComponent} from './content/search-page/search-page.component';
 import {SearchFilterComponent} from './content/search-page/search-filter/search-filter.component';
 import {SearchResultsComponent} from './content/search-page/search-results/search-results.component';
 import {AngularMultiSelectModule} from "angular2-multiselect-dropdown/angular2-multiselect-dropdown";
+import {MultiselectComponent} from './content/search-page/search-filter/multiselect/multiselect.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import {AngularMultiSelectModule} from "angular2-multiselect-dropdown/angular2-m
     ContentComponent,
     SearchPageComponent,
     SearchFilterComponent,
-    SearchResultsComponent
+    SearchResultsComponent,
+    MultiselectComponent
   ],
   imports: [
     BrowserModule,
