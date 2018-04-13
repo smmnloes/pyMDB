@@ -1,16 +1,40 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, forwardRef, OnInit} from '@angular/core';
+import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
 
 @Component({
   selector: 'app-multiselect',
+  exportAs: 'multiselect',
   templateUrl: './multiselect.component.html',
-  styleUrls: ['./multiselect.component.css']
-})
-export class MultiselectComponent implements OnInit {
+  styleUrls: ['./multiselect.component.css'],
 
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => MultiselectComponent),
+      multi: true
+    }
+  ]
+})
+export class MultiselectComponent implements OnInit, ControlValueAccessor {
   genreList = [];
   selectedGenres = [];
   dropdownSettings = {};
   MAX_NUMBER_SELECTION = 3;
+
+  propagateChange = (_: any) => {
+  };
+
+  writeValue(value: any) {
+    this.selectedGenres = value;
+  }
+
+  registerOnChange(fn) {
+    this.propagateChange = fn;
+  }
+
+  registerOnTouched() {
+  }
+
 
   constructor() {
   }
@@ -51,6 +75,13 @@ export class MultiselectComponent implements OnInit {
       }
       this.selectedGenres = new_array;
     }
+    this.propagateChange(this.selectedGenres);
+    console.log(item);
+    console.log(this.selectedGenres);
+  }
+
+  onItemDeselect(item: any) {
+    this.propagateChange(this.selectedGenres);
     console.log(item);
     console.log(this.selectedGenres);
   }
