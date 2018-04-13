@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {SearchModel} from "./search-model";
+import {QueryService} from "../../../query.service";
 
 @Component({
   selector: 'app-search-filter',
@@ -12,7 +13,7 @@ export class SearchFilterComponent implements OnInit {
   @Input()
   genres: string[];
 
-  constructor() {
+  constructor(private queryService: QueryService) {
   }
 
   ngOnInit() {

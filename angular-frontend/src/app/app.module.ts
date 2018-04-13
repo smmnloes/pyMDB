@@ -10,6 +10,7 @@ import {SearchFilterComponent} from './content/search-page/search-filter/search-
 import {SearchResultsComponent} from './content/search-page/search-results/search-results.component';
 import {AngularMultiSelectModule} from "angular2-multiselect-dropdown/angular2-multiselect-dropdown";
 import {MultiselectComponent} from './content/search-page/search-filter/multiselect/multiselect.component';
+import {QueryService} from "./query.service";
 
 @NgModule({
   declarations: [
@@ -26,7 +27,7 @@ import {MultiselectComponent} from './content/search-page/search-filter/multisel
     AngularMultiSelectModule,
     FormsModule
   ],
-  providers: [],
+  providers: [QueryService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
