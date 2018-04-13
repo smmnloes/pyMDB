@@ -16,8 +16,8 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
   ]
 })
 export class MultiselectComponent implements OnInit, ControlValueAccessor {
-  genreList = [];
-  selectedGenres = [];
+  dropdownList = [];
+  selectedItems = [];
   dropdownSettings = {};
   MAX_NUMBER_SELECTION = 3;
 
@@ -25,7 +25,7 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
   };
 
   writeValue(value: any) {
-    this.selectedGenres = value;
+    this.selectedItems = value;
   }
 
   registerOnChange(fn) {
@@ -40,7 +40,7 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
   }
 
   ngOnInit() {
-    this.genreList = [{'itemName': 'Horror', 'id': 0},
+    this.dropdownList = [{'itemName': 'Horror', 'id': 0},
       {'itemName': 'Music', 'id': 1},
       {'itemName': 'Documentary', 'id': 2},
       {'itemName': 'Film-Noir', 'id': 3},
@@ -70,8 +70,8 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
       {'itemName': 'Reality-TV', 'id': 27},
     ];
 
+    this.selectedItems = [];
 
-    this.selectedGenres = [];
     this.dropdownSettings = {
       singleSelection: false,
       text: `Select Genres (max. ${this.MAX_NUMBER_SELECTION})`,
@@ -85,24 +85,35 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
 
 
   onItemSelect(item: any) {
-    if (this.selectedGenres.length > this.MAX_NUMBER_SELECTION) {
+    if (this.selectedItems.length > this.MAX_NUMBER_SELECTION) {
       let i = 0;
       let new_array = [];
       while (i < this.MAX_NUMBER_SELECTION) {
-        new_array[i] = this.selectedGenres[i];
+        new_array[i] = this.selectedItems[i];
         i++;
       }
-      this.selectedGenres = new_array;
+      this.selectedItems = new_array;
     }
-    this.propagateChange(this.selectedGenres);
+
+    this.propagate();
+
     console.log(item);
-    console.log(this.selectedGenres);
+    console.log(this.selectedItems);
   }
 
   onItemDeselect(item: any) {
-    this.propagateChange(this.selectedGenres);
+    this.propagate();
     console.log(item);
-    console.log(this.selectedGenres);
+    console.log(this.selectedItems);
+  }
+
+  propagate() {
+    let onlyNames: string[] = [];
+
+    for (let item of this.selectedItems) {
+      onlyNames.push(item['itemName']);
+    }
+    this.propagateChange(onlyNames);
   }
 
 }
