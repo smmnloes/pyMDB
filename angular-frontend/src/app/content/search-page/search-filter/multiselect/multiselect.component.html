@@ -1,4 +1,5 @@
 <angular2-multiselect id="genres" [data]="genreList" [(ngModel)]="selectedGenres"
                       [settings]="dropdownSettings"
-                      (onSelect)="onItemSelect($event)">
+                      (onSelect)="onItemSelect($event)"
+                      (onDeSelect)="onItemDeselect($event)">
 </angular2-multiselect>

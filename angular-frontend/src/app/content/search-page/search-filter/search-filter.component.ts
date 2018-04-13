@@ -1,4 +1,5 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {SearchModel} from "./search-model";
 
 @Component({
   selector: 'app-search-filter',
@@ -6,12 +7,20 @@ import {Component, OnInit} from '@angular/core';
   styleUrls: ['./search-filter.component.css']
 })
 export class SearchFilterComponent implements OnInit {
+  searchModel: SearchModel;
+
+  @Input()
+  genres: string[];
 
   constructor() {
   }
 
   ngOnInit() {
-
+    this.searchModel = new SearchModel("", "", [], 5.0,
+      1900, 2020, "", "", "");
   }
 
+  onChange(){
+    console.log(this.searchModel);
+  }
 }
