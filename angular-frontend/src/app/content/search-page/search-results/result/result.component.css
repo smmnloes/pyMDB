@@ -1,4 +1,10 @@
-.result{
-  background-color:slategrey;
-  color:white;
+.result {
+  background-color: slategrey;
+  color: white;
+}
+
+p {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
