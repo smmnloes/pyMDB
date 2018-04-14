@@ -4,10 +4,12 @@ import os
 import sqlite3
 import urllib.request
 
+from unidecode import unidecode
+
 import definitions
 from App.AppMain import db, create_app
 
-# DATASETS = ['basics', 'principals']
+# DATASETS = ['basics', 'names']
 DATASETS = ['basics', 'principals', 'names', 'crew', 'ratings']
 DATASETS_TO_FILENAMES = {'basics': 'title.basics.tsv.gz', 'names': 'name.basics.tsv.gz',
                          'crew': 'title.crew.tsv.gz', 'principals': 'title.principals.tsv.gz',
@@ -97,8 +99,8 @@ def one_is_valid_tid(to_check):
     return False
 
 
-def tid_to_int(imdb_id):
-    return int(imdb_id[2:])
+def tid_nid_to_int(tid_nid):
+    return int(tid_nid[2:])
 
 
 def analyze():
@@ -116,11 +118,12 @@ def read_basics():
         while line:
             entries = line.split('\t')
 
+            # only add movies which aren't adult
             if (entries[1] == "movie") & (entries[4] == "0"):
                 entries_basics = clean_nulls(entries[0:1] + entries[2:3] + entries[5:6] + entries[7:])
-                genres = entries[8]
+                entries_basics[0] = tid_nid_to_int(entries_basics[0])
                 db_connect.execute("INSERT INTO basics VALUES (?,?,?,?,?)", entries_basics)
-                VALID_IDS.append(tid_to_int(entries[0]))
+                VALID_IDS.append(entries_basics[0])
 
             line = file.readline().strip()
 
@@ -137,7 +140,8 @@ def read_ratings():
 
         while line:
             entries = line.split('\t')
-            if is_valid_tid(tid_to_int(entries[0])):
+            entries[0] = tid_nid_to_int(entries[0])
+            if is_valid_tid(entries[0]):
                 db_connect.execute("INSERT INTO ratings VALUES (?,?,?)", entries)
 
             line = file.readline().strip()
@@ -157,9 +161,11 @@ def read_principals():
         while line:
             entries = line.split('\t')
             if entries[3] in ['actor', 'actress', 'self']:
-                current_id = tid_to_int(entries[0])
+                entries[0] = tid_nid_to_int(entries[0])
+                current_id = entries[0]
                 if (current_id == last_valid_id) or is_valid_tid(current_id):
                     last_valid_id = current_id
+                    entries[2] = tid_nid_to_int(entries[2])
                     db_connect.execute("INSERT OR REPLACE INTO principals VALUES (?,?)", (entries[0], entries[2]))
 
             line = file.readline().strip()
@@ -177,13 +183,16 @@ def read_crew():
 
         while line:
             entries = line.split('\t')
-            if is_valid_tid(tid_to_int(entries[0])):
+            entries[0] = tid_nid_to_int(entries[0])
+            if is_valid_tid(entries[0]):
                 if entries[1] != '\\N':
                     for director in entries[1].split(','):
+                        director = tid_nid_to_int(director)
                         db_connect.execute("INSERT INTO directors VALUES (?,?)", (entries[0], director))
 
                 if entries[2] != '\\N':
                     for writer in entries[2].split(','):
+                        writer = tid_nid_to_int(writer)
                         db_connect.execute("INSERT INTO writers VALUES (?,?)", (entries[0], writer))
 
             line = file.readline().strip()
@@ -204,11 +213,12 @@ def read_names():
 
             if entries[5] != '\\N':
                 known_for = entries[5].split(',')
-                known_for = [tid_to_int(x) for x in known_for]
+                known_for = [tid_nid_to_int(x) for x in known_for]
 
                 if one_is_valid_tid(known_for):
-                    entries = entries[0:2]
-                    db_connect.execute("INSERT INTO names VALUES (?,?)", entries)
+                    entries[0] = tid_nid_to_int(entries[0])
+                    name_normalized = unidecode(entries[1]).lower()
+                    db_connect.execute("INSERT INTO names VALUES (?,?,?)", entries[0:2] + [name_normalized])
 
             line = file.readline().strip()
 
