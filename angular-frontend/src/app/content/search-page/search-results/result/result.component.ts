@@ -7,9 +7,27 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class ResultComponent implements OnInit {
 
-  @Input() movieData: any[];
+  _movieData: any[];
 
   constructor() {
+  }
+
+  @Input()
+  set movieData(movieData: any[]) {
+    this.prettify(movieData);
+    this._movieData = movieData;
+  }
+
+  get movieData() {
+    return this._movieData;
+  }
+
+  private prettify(movieData: any[]) {
+    for (let director of movieData['directors']) {
+      director = director + " ";
+    }
+    console.log(movieData['directors']);
+
   }
 
   ngOnInit() {
