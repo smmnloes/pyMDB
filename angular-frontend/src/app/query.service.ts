@@ -9,7 +9,7 @@ const httpOptions = {
 
 @Injectable()
 export class QueryService {
-  result$: Observable<object[]>;
+  result$: Observable<any[]>;
   observer;
 
 
