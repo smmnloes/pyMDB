@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e3b59820-bd6a-4e96-9092-155573d5497e" name="Default" comment="implement queryService">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="e3b59820-bd6a-4e96-9092-155573d5497e" name="Default" comment="implement queryService" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -45,7 +42,7 @@
         <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="88">
-              <caret line="4" column="1" selection-start-line="4" selection-start-column="1" selection-end-line="4" selection-end-column="1" />
+              <caret line="4" column="6" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
             </state>
           </provider>
         </entry>
@@ -788,7 +785,14 @@
       <option name="project" value="LOCAL" />
       <updated>1523651097013</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="implement queryService">
+      <created>1523651258793</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1523651258793</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="TodoView">
@@ -802,14 +806,13 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="-1" width="1920" height="1054" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="15" weight="0.32972974" />
       <window_info anchor="bottom" id="Event Log" order="12" sideWeight="0.5015625" side_tool="true" weight="0.32864866" />
       <window_info anchor="bottom" id="Database Changes" order="11" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="9" sideWeight="0.49895832" weight="0.29081082" />
+      <window_info anchor="bottom" id="Version Control" order="9" sideWeight="0.49895832" visible="true" weight="0.29081082" />
       <window_info anchor="bottom" id="Python Console" order="14" />
-      <window_info anchor="bottom" id="Run" order="5" sideWeight="0.72612196" visible="true" weight="0.23783784" />
+      <window_info anchor="bottom" id="Run" order="5" sideWeight="0.72612196" weight="0.23783784" />
       <window_info anchor="bottom" id="Terminal" order="13" weight="0.32972974" />
       <window_info anchor="bottom" id="TypeScript" order="0" weight="0.32972974" />
       <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4983871" visible="true" weight="0.3328125" />
@@ -1217,7 +1220,7 @@
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="88">
-          <caret line="4" column="1" selection-start-line="4" selection-start-column="1" selection-end-line="4" selection-end-column="1" />
+          <caret line="4" column="6" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
         </state>
       </provider>
     </entry>
