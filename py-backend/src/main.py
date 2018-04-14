@@ -7,7 +7,7 @@ from test.Testqueries import testquery_data
 
 
 def main():
-    print("Welcome to Max' Movie Recommendation Engine!")
+    print("Welcome to pyMDB!")
     print("Starting App...")
     thread = Thread(target=AppMain.start_app)
     thread.start()

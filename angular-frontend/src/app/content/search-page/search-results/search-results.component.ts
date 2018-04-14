@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {QueryService} from "../../../query.service";
-import {Observable} from "rxjs/Observable";
 
 @Component({
   selector: 'app-search-results',
@@ -12,13 +11,12 @@ export class SearchResultsComponent implements OnInit {
   constructor(private queryService: QueryService) {
   }
 
-  result$: Observable<object[]>;
-
-  results:object[];
+  results: any[];
 
   ngOnInit() {
-    this.result$ = this.queryService.result$;
-    this.result$.subscribe(data => {
+
+    this.queryService.result$.subscribe(data => {
+      console.log(data);
       this.results = data;
     })
   }
