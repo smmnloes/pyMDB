@@ -1,6 +1,7 @@
 from time import time
 
 from sqlalchemy.orm import aliased
+from unidecode import unidecode
 
 from App.AppMain import create_app
 from DatabaseServices.DatabaseModel import *
@@ -38,20 +39,26 @@ def get_directors_for_tid(tid):
     return [x[0] for x in query.all()]
 
 
+def normalize(to_normalize):
+    return unidecode(to_normalize).lower()
+
+
 def get_movies_by_criteria(request):
-    print('Request: \n' + str(request) + '\n')
+    # print('Request: \n' + str(request) + '\n')
     query = db.session.query(Basics).outerjoin(Ratings)
     query = query.add_columns(Ratings.averageRating)
 
     if request['director']:
+        director_normalized = normalize(request['director'])
         names_alias = aliased(Names)
         query = query.filter(Basics.tid == Directors.tid, Directors.nid == names_alias.nid,
-                             names_alias.name == request['director'])
+                             names_alias.name_normalized == director_normalized)
 
     if request['writer']:
+        writer_normalized = normalize(request['writer'])
         names_alias = aliased(Names)
         query = query.filter(Basics.tid == Writers.tid, Writers.nid == names_alias.nid,
-                             names_alias.name == request['writer'])
+                             names_alias.name_normalized == writer_normalized)
 
     if request['year_from']:
         query = query.filter(Basics.year >= request['year_from'])
@@ -69,13 +76,15 @@ def get_movies_by_criteria(request):
     if request['principals']:
         for principal in request['principals']:
             if principal:
+                principal_normalized = normalize(principal)
                 names = aliased(Names)
                 principals = aliased(Principals)
-                query = query.filter(Basics.tid == principals.tid, principals.nid == names.nid, names.name == principal)
+                query = query.filter(Basics.tid == principals.tid, principals.nid == names.nid,
+                                     names.name_normalized == principal_normalized)
 
     query = query.order_by(Basics.primaryTitle).limit(RESULT_LIMIT)
 
-    print(query)
+    # print(query)
 
     time_before = time()
     results = query.all()
@@ -86,6 +95,6 @@ def get_movies_by_criteria(request):
     print("Result processing time: " + str((time() - time_before) * 1000) + "ms")
 
     print("\nResults: {}".format(len(results)))
-    print(results_dict_list)
+    # print(results_dict_list)
     print('\n\n\n')
     return results_dict_list
