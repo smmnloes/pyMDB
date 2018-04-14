@@ -1,5 +1,8 @@
 <div class="search-results-container">
   <ul class="results-list">
+    <li *ngFor="let result of results">
+      <app-result [movieData]="result"></app-result>
+    </li>
 
   </ul>
 </div>
