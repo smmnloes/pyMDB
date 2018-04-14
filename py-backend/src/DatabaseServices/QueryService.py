@@ -8,6 +8,8 @@ from DatabaseServices.DatabaseModel import *
 app = create_app()
 app.app_context().push()
 
+RESULT_LIMIT = 100
+
 
 def results_to_dict_list(results):
     dict_list = []
@@ -70,6 +72,8 @@ def get_movies_by_criteria(request):
                 names = aliased(Names)
                 principals = aliased(Principals)
                 query = query.filter(Basics.tid == principals.tid, principals.nid == names.nid, names.name == principal)
+
+    query = query.order_by(Basics.primaryTitle).limit(RESULT_LIMIT)
 
     print(query)
 
