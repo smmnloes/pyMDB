@@ -8,6 +8,7 @@ class Basics(db.Model):
     year = db.Column(db.Integer)
     runtimeMinutes = db.Column(db.Integer)
     genres = db.Column(db.Text)
+    title_nomalized = db.Column(db.Text)
 
 
 class Ratings(db.Model):
