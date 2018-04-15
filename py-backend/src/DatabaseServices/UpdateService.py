@@ -4,10 +4,9 @@ import os
 import sqlite3
 import urllib.request
 
-from unidecode import unidecode
-
 import definitions
 from App.AppMain import db, create_app
+from DatabaseServices.QueryService import normalize
 
 # DATASETS = ['basics', 'names']
 DATASETS = ['basics', 'principals', 'names', 'crew', 'ratings']
@@ -39,7 +38,9 @@ def update_db():
         print("Error while updating: {}".format(e))
         restore_db_last_version()
 
+    print("Analyzing.")
     analyze()
+    print("Update complete!")
 
 
 def get_db_connect():
@@ -122,7 +123,9 @@ def read_basics():
             if (entries[1] == "movie") & (entries[4] == "0"):
                 entries_basics = clean_nulls(entries[0:1] + entries[2:3] + entries[5:6] + entries[7:])
                 entries_basics[0] = tid_nid_to_int(entries_basics[0])
-                db_connect.execute("INSERT INTO basics VALUES (?,?,?,?,?)", entries_basics)
+                title_normalized = normalize(entries_basics[1])
+                db_connect.execute("INSERT INTO basics VALUES (?,?,?,?,?,?)",
+                                   entries_basics + [title_normalized])
                 VALID_IDS.append(entries_basics[0])
 
             line = file.readline().strip()
@@ -217,7 +220,7 @@ def read_names():
 
                 if one_is_valid_tid(known_for):
                     entries[0] = tid_nid_to_int(entries[0])
-                    name_normalized = unidecode(entries[1]).lower()
+                    name_normalized = normalize(entries[1])
                     db_connect.execute("INSERT INTO names VALUES (?,?,?)", entries[0:2] + [name_normalized])
 
             line = file.readline().strip()

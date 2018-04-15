@@ -44,9 +44,13 @@ def normalize(to_normalize):
 
 
 def get_movies_by_criteria(request):
-    # print('Request: \n' + str(request) + '\n')
+    print('Request: \n' + str(request) + '\n')
     query = db.session.query(Basics).outerjoin(Ratings)
     query = query.add_columns(Ratings.averageRating)
+
+    if request['title']:
+        title_normalized = normalize(request['title'])
+        query = query.filter(Basics.title_nomalized.like('%{}%'.format(title_normalized)))
 
     if request['director']:
         director_normalized = normalize(request['director'])
@@ -95,6 +99,6 @@ def get_movies_by_criteria(request):
     print("Result processing time: " + str((time() - time_before) * 1000) + "ms")
 
     print("\nResults: {}".format(len(results)))
-    # print(results_dict_list)
+    print(results_dict_list)
     print('\n\n\n')
     return results_dict_list
