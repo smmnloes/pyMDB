@@ -6,6 +6,12 @@
           <div class="grid-x">
 
             <div class="cell small-12 medium-8 medium-offset-2">
+              <label for="title">Title</label>
+              <input id="title" type="text" name="title" placeholder="Schindler's List"
+                     [(ngModel)]="searchModel.title">
+            </div>
+
+            <div class="cell small-12 medium-8 medium-offset-2">
               <label for="genres">Genres</label>
               <app-multiselect id="genres" name="genres" [(ngModel)]="searchModel.genres"
               ></app-multiselect>
