@@ -3,7 +3,8 @@
     <th colspan="2" class="title">{{movieData['primaryTitle']}}</th>
     <tr>
       <td colspan="2"><span class="rating"
-        *ngIf="movieData['averageRating']!=null"> &#9733; {{movieData['averageRating'].toFixed(1)}}</span>
+                            *ngIf="movieData['averageRating']!=null" title="IMDB rating">
+                      &#9733; {{movieData['averageRating'].toFixed(1)}}</span>
         <span class="genres" *ngIf="movieData['genres']!=null"> {{movieData['genres'].join(', ')}}</span>
       </td>
     </tr>
