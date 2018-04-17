@@ -83,10 +83,11 @@ def get_movies_by_criteria(request):
                 principal_normalized = normalize(principal)
                 names = aliased(Names)
                 principals = aliased(Principals)
-                query = query.filter(Basics.tid == principals.tid, principals.nid == names.nid,
-                                     names.name_normalized == principal_normalized)
+                query = query.filter(names.name_normalized == principal_normalized, principals.nid == names.nid,
+                                     Basics.tid == principals.tid
+                                     )
 
-    query = query.order_by(Basics.primaryTitle).limit(RESULT_LIMIT)
+    query = query.order_by(Basics.title_nomalized).limit(RESULT_LIMIT)
 
     # print(query)
 
