@@ -21,23 +21,23 @@ class Ratings(db.Model):
 class Principals(db.Model):
     __tablename__ = 'principals'
     tid = db.Column(db.Integer, db.ForeignKey('basics.tid'), primary_key=True)
-    nid = db.Column(db.Integer, db.ForeignKey('names.nid'), primary_key=True, index=True)
+    nid = db.Column(db.Integer, db.ForeignKey('names.nid'), primary_key=True)
 
 
 class Writers(db.Model):
     __tablename__ = 'writers'
     tid = db.Column(db.Integer, db.ForeignKey('basics.tid'), primary_key=True)
-    nid = db.Column(db.Integer, db.ForeignKey('names.nid'), primary_key=True, index=True)
+    nid = db.Column(db.Integer, db.ForeignKey('names.nid'), primary_key=True)
 
 
 class Directors(db.Model):
     __tablename__ = 'directors'
-    tid = db.Column(db.Integer, db.ForeignKey('basics.tid'), primary_key=True)
+    tid = db.Column(db.Integer, db.ForeignKey('basics.tid'), primary_key=True, index=True)
     nid = db.Column(db.Integer, db.ForeignKey('names.nid'), primary_key=True, index=True)
 
 
 class Names(db.Model):
     __tablename__ = 'names'
-    nid = db.Column(db.Integer, primary_key=True)
+    nid = db.Column(db.Integer, primary_key=True, index=True)
     name = db.Column(db.Text)
     name_normalized = db.Column(db.Text, index=True)

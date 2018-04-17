@@ -99,6 +99,6 @@ def get_movies_by_criteria(request):
     print("Result processing time: " + str((time() - time_before) * 1000) + "ms")
 
     print("\nResults: {}".format(len(results)))
-    print(results_dict_list)
-    print('\n\n\n')
+    # print(results_dict_list)
+    print('\n')
     return results_dict_list
