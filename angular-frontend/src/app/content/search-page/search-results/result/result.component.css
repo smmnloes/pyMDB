@@ -1,19 +1,26 @@
 .result {
   background-color: slategrey;
 
-  margin-bottom:10px;
-}
-
-.title {
-  font-weight:bold;
+  margin-bottom: 10px;
 }
 
 .result-text {
-  text-align:right;
+  text-align: left;
 }
 
-p {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.genres {
+  font-style: italic;
+}
+
+td {
+  vertical-align: top;
+}
+
+.category {
+  width: 50px;
+}
+
+th {
+  text-align: left;
+  padding: 10px;
 }
