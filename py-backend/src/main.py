@@ -29,8 +29,11 @@ def main():
             next_input = input('Read which dataset? ')
             UpdateService.DATASETS_TO_READ_FUNCTIONS.get(next_input)()
         elif user_input == 'queryall':
+            i = 1
             for query in testquery_data:
+                print('#{}'.format(i))
                 QueryService.get_movies_by_criteria(query)
+                i += 1
 
 
 main()

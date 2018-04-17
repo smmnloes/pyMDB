@@ -4,3 +4,4 @@ src/__pycache__/
 npm-debug.log
 .idea/
 workspace.xml
+performance_logs/
