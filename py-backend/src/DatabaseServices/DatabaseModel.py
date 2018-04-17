@@ -8,26 +8,26 @@ class Basics(db.Model):
     year = db.Column(db.Integer)
     runtimeMinutes = db.Column(db.Integer)
     genres = db.Column(db.Text)
-    title_nomalized = db.Column(db.Text)
+    title_nomalized = db.Column(db.Text, index=True)
 
 
 class Ratings(db.Model):
     __tablename__ = 'ratings'
-    tid = db.Column(db.Integer, db.ForeignKey('basics.tid'), primary_key=True)
-    averageRating = db.Column(db.REAL)
+    tid = db.Column(db.Integer, db.ForeignKey('basics.tid'), primary_key=True, index=True)
+    averageRating = db.Column(db.REAL, index=True)
     numVotes = db.Column(db.Integer)
 
 
 class Principals(db.Model):
     __tablename__ = 'principals'
-    tid = db.Column(db.Integer, db.ForeignKey('basics.tid'), primary_key=True)
-    nid = db.Column(db.Integer, db.ForeignKey('names.nid'), primary_key=True)
+    tid = db.Column(db.Integer, db.ForeignKey('basics.tid'), primary_key=True, index=True)
+    nid = db.Column(db.Integer, db.ForeignKey('names.nid'), primary_key=True, index=True)
 
 
 class Writers(db.Model):
     __tablename__ = 'writers'
-    tid = db.Column(db.Integer, db.ForeignKey('basics.tid'), primary_key=True)
-    nid = db.Column(db.Integer, db.ForeignKey('names.nid'), primary_key=True)
+    tid = db.Column(db.Integer, db.ForeignKey('basics.tid'), primary_key=True, index=True)
+    nid = db.Column(db.Integer, db.ForeignKey('names.nid'), primary_key=True, index=True)
 
 
 class Directors(db.Model):
