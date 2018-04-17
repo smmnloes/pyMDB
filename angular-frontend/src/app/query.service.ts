@@ -23,9 +23,15 @@ export class QueryService {
   makeQuery(queryData) {
     this.http.post('api/query', queryData, httpOptions).subscribe(
       data => {
-        this.observer.next(data);
+        let data_array = <any[]>data;
+        this.processData(data_array);
+        this.observer.next(data_array);
       }
     );
+  }
+
+  private processData(data: any[]) {
+
   }
 
 
