@@ -10,6 +10,11 @@
 
 .genres {
   font-style: italic;
+  float:left;
+}
+
+.rating {
+  float:right;
 }
 
 td {
@@ -23,4 +28,6 @@ td {
 th {
   text-align: left;
   padding: 10px;
+  color:white;
 }
+
