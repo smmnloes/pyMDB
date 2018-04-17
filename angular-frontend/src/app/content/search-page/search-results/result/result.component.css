@@ -1,6 +1,15 @@
 .result {
   background-color: slategrey;
-  color: white;
+
+  margin-bottom:10px;
+}
+
+.title {
+  font-weight:bold;
+}
+
+.result-text {
+  text-align:right;
 }
 
 p {

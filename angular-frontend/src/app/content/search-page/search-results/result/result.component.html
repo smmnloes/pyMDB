@@ -1,5 +1,21 @@
 <div class="result">
-  <p><strong>Title: </strong>{{movieData['primaryTitle']}}</p>
-  <p>Directors: {{movieData['directors'].join(', ')}}</p>
-  <p>Rating: {{movieData['averageRating']}}</p>
+  <table>
+    <th class="title">{{movieData['primaryTitle']}}</th>
+    <tr *ngIf="movieData['directors'].length >0">
+      <td>Directors:</td>
+      <td class="result-text">{{movieData['directors'].join(', ')}}</td>
+    </tr>
+    <tr *ngIf="movieData['averageRating']!=null">
+      <td>Rating:</td>
+      <td class="result-text">{{movieData['averageRating']}}</td>
+    </tr>
+    <tr *ngIf="movieData['genres']!=null">
+      <td>Genres:</td>
+      <td class="result-text">{{movieData['genres'].join(',')}}</td>
+    </tr>
+    <tr *ngIf="movieData['principals'].length >0">
+      <td>Starring:</td>
+      <td class="result-text">{{movieData['principals'].join(', ')}}</td>
+    </tr>
+  </table>
 </div>
