@@ -9,7 +9,7 @@ from DatabaseServices.DatabaseModel import *
 app = create_app()
 app.app_context().push()
 
-RESULT_LIMIT = 100
+RESULT_LIMIT = 20
 
 
 def results_to_dict_list(results):
