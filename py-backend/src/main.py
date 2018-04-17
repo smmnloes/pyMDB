@@ -35,5 +35,4 @@ def main():
                 QueryService.get_movies_by_criteria(query)
                 i += 1
 
-
 main()

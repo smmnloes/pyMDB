@@ -3,27 +3,27 @@
     <div class="grid-container">
       <div class="grid-y">
         <div class="cell">
-          <div class="grid-x">
+          <div class="grid-x grid-margin-x">
 
-            <div class="cell small-12 medium-8 medium-offset-2">
+            <div class="cell small-12">
               <label for="title">Title</label>
               <input id="title" type="text" name="title" placeholder="Schindler's List"
                      [(ngModel)]="searchModel.title">
             </div>
 
-            <div class="cell small-12 medium-8 medium-offset-2">
+            <div class="cell small-12 large-6">
               <label for="genres">Genres</label>
               <app-multiselect id="genres" name="genres" [(ngModel)]="searchModel.genres"
               ></app-multiselect>
             </div>
 
-            <div class="cell small-4 medium-3 medium-offset-2">
+            <div class="cell small-4 medium-4 large-2">
               <label for="rating">min. Rating</label>
               <input id="rating" type="number" step="0.1" min="0" max="10" name="rating"
                      placeholder="5.5"
                      [(ngModel)]="searchModel.minRatingIMDB">
             </div>
-            <div class="cell small-8 medium-5">
+            <div class="cell small-8 medium-8 large-4">
               <div class="grid-x">
                 <div class="cell small-6">
                   <label for="year_from">min. year</label>
@@ -40,13 +40,13 @@
               </div>
             </div>
 
-            <div class="cell small-12 medium-5">
+            <div class="cell small-12 medium-6">
               <label for="director">Director</label>
               <input id="director" type="text" name="director" placeholder="Steven Spielberg"
                      [(ngModel)]="searchModel.director">
             </div>
 
-            <div class="cell small-12 medium-5 medium-offset-2">
+            <div class="cell small-12 medium-6">
               <label for="writer">Writer</label>
               <input id="writer" type="text" name="writer" placeholder="Thomas Keneally"
                      [(ngModel)]="searchModel.writer">
