@@ -2,15 +2,13 @@
   <table>
     <th colspan="2" class="title">{{movieData['primaryTitle']}}</th>
     <tr>
-      <td *ngIf="movieData['averageRating']!=null">
-        &#9733; {{movieData['averageRating'].toFixed(1)}}
-      </td>
-      <td class="genres" *ngIf="movieData['genres']!=null">
-        {{movieData['genres'].join(', ')}}
+      <td colspan="2"><span class="rating"
+        *ngIf="movieData['averageRating']!=null"> &#9733; {{movieData['averageRating'].toFixed(1)}}</span>
+        <span class="genres" *ngIf="movieData['genres']!=null"> {{movieData['genres'].join(', ')}}</span>
       </td>
     </tr>
     <tr *ngIf="movieData['directors'].length >0">
-      <td class="category">Directors:</td>
+      <td class="category">Director<span *ngIf="movieData['directors'].length>1">s</span>:</td>
       <td class="result-text">{{movieData['directors'].join(', ')}}</td>
     </tr>
 
