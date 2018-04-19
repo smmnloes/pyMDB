@@ -46,6 +46,7 @@ def update_db():
 def get_db_connect():
     db_connect = sqlite3.connect(definitions.LOCAL_DB)
     db_connect.execute("PRAGMA synchronous = 0")
+    db_connect.execute("PRAGMA default_cache_size = 40000")
     return db_connect
 
 
