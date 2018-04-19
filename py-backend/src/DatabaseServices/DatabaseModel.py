@@ -13,7 +13,7 @@ class Basics(db.Model):
     title_nomalized = db.Column(db.Text)
 
 
-Index('idx_basics', Basics.title_nomalized, Basics.tid, unique=True)
+Index('idx_basics', Basics.title_nomalized)
 
 
 class Ratings(db.Model):
@@ -23,7 +23,7 @@ class Ratings(db.Model):
     numVotes = db.Column(db.Integer)
 
 
-Index('idx_ratings', Ratings.tid, Ratings.averageRating, unique=True)
+Index(Ratings.averageRating)
 
 
 class Principals(db.Model):
@@ -32,25 +32,16 @@ class Principals(db.Model):
     nid = db.Column(db.Integer, db.ForeignKey('names.nid'), primary_key=True)
 
 
-Index('idx_principals', Principals.tid, Principals.nid, unique=True)
-
-
 class Writers(db.Model):
     __tablename__ = 'writers'
     tid = db.Column(db.Integer, db.ForeignKey('basics.tid'), primary_key=True)
     nid = db.Column(db.Integer, db.ForeignKey('names.nid'), primary_key=True)
 
 
-Index('idx_writers', Writers.tid, Writers.nid, unique=True)
-
-
 class Directors(db.Model):
     __tablename__ = 'directors'
     tid = db.Column(db.Integer, db.ForeignKey('basics.tid'), primary_key=True)
     nid = db.Column(db.Integer, db.ForeignKey('names.nid'), primary_key=True)
-
-
-Index('idx_directors', Directors.tid, Directors.nid, unique=True)
 
 
 class Names(db.Model):
@@ -60,4 +51,4 @@ class Names(db.Model):
     name_normalized = db.Column(db.Text)
 
 
-Index('idx_names', Names.nid, Names.name_normalized, unique=True)
+Index('idx_names', Names.name_normalized)
