@@ -23,13 +23,13 @@ class Ratings(db.Model):
     numVotes = db.Column(db.Integer)
 
 
-Index(Ratings.averageRating)
-
-
 class Principals(db.Model):
     __tablename__ = 'principals'
     tid = db.Column(db.Integer, db.ForeignKey('basics.tid'), primary_key=True)
     nid = db.Column(db.Integer, db.ForeignKey('names.nid'), primary_key=True)
+
+
+Index('idx_principals', Principals.nid)
 
 
 class Writers(db.Model):
@@ -38,10 +38,16 @@ class Writers(db.Model):
     nid = db.Column(db.Integer, db.ForeignKey('names.nid'), primary_key=True)
 
 
+Index('idx_writers', Writers.nid)
+
+
 class Directors(db.Model):
     __tablename__ = 'directors'
     tid = db.Column(db.Integer, db.ForeignKey('basics.tid'), primary_key=True)
     nid = db.Column(db.Integer, db.ForeignKey('names.nid'), primary_key=True)
+
+
+Index('idx_directors', Directors.nid)
 
 
 class Names(db.Model):
@@ -51,4 +57,4 @@ class Names(db.Model):
     name_normalized = db.Column(db.Text)
 
 
-Index('idx_names', Names.name_normalized)
+Index('idx_names', Names.name_normalized, Names.nid)
