@@ -90,7 +90,7 @@ def get_movies_by_criteria(request, get_number=False):
         return query.count()
 
     page_size = request['page_size']
-    current_page = request['current_page']
+    current_page = request['currentPage']
     query = query.order_by(Basics.title_nomalized).limit(page_size).offset((current_page - 1) * page_size)
 
     # print(query)

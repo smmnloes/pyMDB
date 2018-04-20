@@ -9,6 +9,6 @@ class MovieQuery(Resource):
         return QueryService.get_movies_by_criteria(request.json)
 
 
-class NrOfResults(Resource):
+class ResultCount(Resource):
     def post(self):
         return QueryService.get_number_results(request.json)
