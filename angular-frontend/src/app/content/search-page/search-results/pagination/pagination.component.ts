@@ -10,6 +10,8 @@ export class PaginationComponent implements OnInit {
   @Input()
   current_page: number;
   pages: number[];
+  nr_of_results: number;
+  max_nr_pages:number;
 
   constructor(private queryService: QueryService) {
     this.pages = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -19,6 +21,10 @@ export class PaginationComponent implements OnInit {
     // this.current_page = 1;
     this.queryService.new_query$.subscribe(is_new_query => {
       if (is_new_query) this.current_page = 1
+    });
+    this.queryService.nr_results$.subscribe(nr_results => {
+      this.nr_of_results = nr_results;
+      this.max_nr_pages = Math.ceil(nr_results / this.queryService.PAGE_SIZE);
     })
   }
 
@@ -49,12 +55,16 @@ export class PaginationComponent implements OnInit {
 
   onClickFirst() {
     this.current_page = 1;
+    this.loadNewPage();
   }
 
   getPages() {
     let pages: number[] = [];
     let lower_limit = this.current_page > 5 ? this.current_page - 5 : 1;
-    let upper_limit = this.current_page > 5 ? this.current_page + 4 : 10;
+    let upper_limit = (this.current_page > 5 ? this.current_page + 4 : 10);
+    if (upper_limit > this.max_nr_pages) {
+      upper_limit = this.max_nr_pages;
+    }
 
     for (let i = lower_limit; i <= upper_limit; i++) {
       pages.push(i);

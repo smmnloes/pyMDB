@@ -41,8 +41,9 @@ def normalize(to_normalize):
     return unidecode(to_normalize).lower()
 
 
-def get_movies_by_criteria(request):
+def get_movies_by_criteria(request, get_number=False):
     print('Request: \n' + str(request) + '\n')
+
     query = db.session.query(Basics).outerjoin(Ratings)
     query = query.add_columns(Ratings.averageRating)
 
@@ -85,6 +86,9 @@ def get_movies_by_criteria(request):
                                      Basics.tid == principals.tid
                                      )
 
+    if get_number:
+        return query.count()
+
     page_size = request['page_size']
     current_page = request['current_page']
     query = query.order_by(Basics.title_nomalized).limit(page_size).offset((current_page - 1) * page_size)
@@ -103,3 +107,7 @@ def get_movies_by_criteria(request):
     print(results_dict_list)
     print('\n')
     return results_dict_list
+
+
+def get_number_results(request):
+    return get_movies_by_criteria(request, get_number=True)
