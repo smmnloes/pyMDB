@@ -6,5 +6,9 @@ from DatabaseServices import QueryService
 
 class MovieQuery(Resource):
     def post(self):
-        result = QueryService.get_movies_by_criteria(request.json)
-        return result
+        return QueryService.get_movies_by_criteria(request.json)
+
+
+class NrOfResults(Resource):
+    def post(self):
+        return QueryService.get_number_results(request.json)
