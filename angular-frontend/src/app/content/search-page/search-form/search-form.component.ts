@@ -24,7 +24,7 @@ export class SearchFormComponent implements OnInit {
   }
 
   onSubmit() {
-    this.queryService.makeQuery(this.searchModel);
+    this.queryService.makeQuery(this.searchModel, true);
   }
 
 }
