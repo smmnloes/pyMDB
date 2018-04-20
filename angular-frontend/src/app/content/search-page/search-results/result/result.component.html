@@ -1,22 +1,24 @@
 <div class="result">
   <table>
     <th colspan="2" class="title">{{movieData['primaryTitle']}}</th>
+    <tbody>
     <tr>
       <td colspan="2"><span class="rating"
-                            *ngIf="movieData['averageRating']!=null" title="IMDB rating">
+                            *ngIf="movieData['averageRating'] != null" title="IMDB rating">
                       &#9733; {{movieData['averageRating'].toFixed(1)}}</span>
         <span class="genres" *ngIf="movieData['genres']!=null"> {{movieData['genres'].join(', ')}}</span>
       </td>
     </tr>
-    <tr *ngIf="movieData['directors'].length >0">
+    <tr *ngIf="movieData['directors'].length > 0">
       <td class="category">Director<span *ngIf="movieData['directors'].length>1">s</span>:</td>
       <td class="result-text">{{movieData['directors'].join(', ')}}</td>
     </tr>
 
 
-    <tr *ngIf="movieData['principals'].length >0">
+    <tr *ngIf="movieData['principals'].length > 0">
       <td class="category">Starring:</td>
       <td class="result-text">{{movieData['principals'].join(', ')}}</td>
     </tr>
+    </tbody>
   </table>
 </div>

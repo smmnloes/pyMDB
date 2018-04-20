@@ -1,8 +1,9 @@
 .result {
   background-color: slategrey;
-  margin-bottom: 10px;
-  box-shadow: 5px 5px #888888;
+  margin-bottom:30px;
+  border-radius: 5px;
 }
+
 
 .result-text {
   text-align: left;
@@ -23,11 +24,13 @@ td {
 
 .category {
   width: 50px;
+  font-weight: bold;
 }
 
 th {
   text-align: left;
   padding: 10px;
   color: white;
+  font-size:1.2em;
 }
 
