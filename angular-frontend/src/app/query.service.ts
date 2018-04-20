@@ -11,26 +11,29 @@ const httpOptions = {
 
 @Injectable()
 export class QueryService {
-  result$: Observable<any[]>;
-  result_observer: Observer<any[]>;
-  new_query$: Observable<boolean>;
-  new_query_observer: Observer<boolean>;
-  nr_results$: Observable<number>;
-  nr_results_observer: Observer<number>;
+  results$: Observable<any[]>;
+  resultsObserver: Observer<any[]>;
+
+  newQuery: Observable<boolean>;
+  newQueryObserver: Observer<boolean>;
+
+  resultCount$: Observable<number>;
+  resultCountObserver: Observer<number>;
+
   lastQuery: SearchModel = null;
 
   PAGE_SIZE = 20;
 
 
   constructor(private http: HttpClient) {
-    this.result$ = new Observable((observer) => {
-      this.result_observer = observer;
+    this.results$ = new Observable((observer) => {
+      this.resultsObserver = observer;
     });
-    this.new_query$ = new Observable((observer) => {
-      this.new_query_observer = observer;
+    this.newQuery = new Observable((observer) => {
+      this.newQueryObserver = observer;
     });
-    this.nr_results$ = new Observable((observer) => {
-      this.nr_results_observer = observer;
+    this.resultCount$ = new Observable((observer) => {
+      this.resultCountObserver = observer;
     })
   }
 
@@ -41,15 +44,15 @@ export class QueryService {
 
     this.http.post('api/query', queryData, httpOptions).subscribe(
       data => {
-        this.result_observer.next(<any[]>data);
-        this.new_query_observer.next(new_query);
+        this.resultsObserver.next(<any[]>data);
+        this.newQueryObserver.next(new_query);
       }
     );
 
     if (new_query) {
-      this.http.post('api/nr_of_results', queryData, httpOptions).subscribe(nr_of_results => {
-        this.nr_results_observer.next(<number>nr_of_results);
-        console.log(nr_of_results)
+      this.http.post('api/result_count', queryData, httpOptions).subscribe(resultCount => {
+        this.resultCountObserver.next(<number>resultCount);
+        console.log(resultCount)
       })
     }
 
@@ -57,7 +60,11 @@ export class QueryService {
   }
 
   loadPage(page: number) {
-    this.lastQuery.current_page = page;
+    this.lastQuery.currentPage = page;
     this.makeQuery(this.lastQuery, false);
   }
+
+
+
 }
+

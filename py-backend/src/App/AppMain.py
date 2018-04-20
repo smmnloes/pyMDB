@@ -21,7 +21,7 @@ def create_app():
     db.init_app(app)
     api = Api(app)
 
-    from App.RESTControllers import MovieQuery,NrOfResults
+    from App.RESTControllers import MovieQuery, ResultCount
     api.add_resource(MovieQuery, '/api/query')
-    api.add_resource(NrOfResults, '/api/nr_of_results')
+    api.add_resource(ResultCount, '/api/result_count')
     return app

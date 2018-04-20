@@ -14,6 +14,11 @@
   float: left;
 }
 
+.runtime {
+  float:left;
+  margin-right:15px;
+}
+
 .rating {
   float: right;
 }

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {QueryService} from "../../../../query.service";
 
 @Component({
@@ -7,46 +7,42 @@ import {QueryService} from "../../../../query.service";
   styleUrls: ['./pagination.component.css']
 })
 export class PaginationComponent implements OnInit {
-  @Input()
-  current_page: number;
-  pages: number[];
-  nr_of_results: number;
-  max_nr_pages:number;
+  private currentPage: number;
+  private resultCount: number;
+  private maxPageCount: number;
 
   constructor(private queryService: QueryService) {
-    this.pages = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   }
 
   ngOnInit() {
-    // this.current_page = 1;
-    this.queryService.new_query$.subscribe(is_new_query => {
-      if (is_new_query) this.current_page = 1
+    this.queryService.newQuery.subscribe(isNewQuery => {
+      if (isNewQuery) this.currentPage = 1
     });
-    this.queryService.nr_results$.subscribe(nr_results => {
-      this.nr_of_results = nr_results;
-      this.max_nr_pages = Math.ceil(nr_results / this.queryService.PAGE_SIZE);
+    this.queryService.resultCount$.subscribe(resultCount => {
+      this.resultCount = resultCount;
+      this.maxPageCount = Math.ceil(resultCount / this.queryService.PAGE_SIZE);
     })
   }
 
-  onClickPageNr(new_page: number) {
-    if (this.current_page != new_page) {
-      this.current_page = new_page;
+  onClickPageNr(newPage: number) {
+    if (this.currentPage != newPage) {
+      this.currentPage = newPage;
       this.loadNewPage();
     }
   }
 
   onClickNext() {
-    this.current_page++;
+    this.currentPage++;
     this.loadNewPage();
   }
 
   onClickPrev() {
-    this.current_page--;
+    this.currentPage--;
     this.loadNewPage();
   }
 
   loadNewPage() {
-    this.queryService.loadPage(this.current_page);
+    this.queryService.loadPage(this.currentPage);
   }
 
   resultsAvailable() {
@@ -54,19 +50,18 @@ export class PaginationComponent implements OnInit {
   }
 
   onClickFirst() {
-    this.current_page = 1;
+    this.currentPage = 1;
     this.loadNewPage();
   }
 
   getPages() {
     let pages: number[] = [];
-    let lower_limit = this.current_page > 5 ? this.current_page - 5 : 1;
-    let upper_limit = (this.current_page > 5 ? this.current_page + 4 : 10);
-    if (upper_limit > this.max_nr_pages) {
-      upper_limit = this.max_nr_pages;
-    }
+    let minPage = this.currentPage > 5 ? this.currentPage - 5 : 1;
+    let maxPage = (this.currentPage > 5 ? this.currentPage + 4 : 10);
 
-    for (let i = lower_limit; i <= upper_limit; i++) {
+    maxPage = maxPage > this.maxPageCount ? this.maxPageCount : maxPage;
+
+    for (let i = minPage; i <= maxPage; i++) {
       pages.push(i);
     }
 

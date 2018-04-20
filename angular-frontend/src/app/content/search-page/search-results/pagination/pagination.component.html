@@ -1,15 +1,15 @@
-<p *ngIf="nr_of_results!=null">{{nr_of_results}} Results!</p>
+<p *ngIf="resultCount!=null">{{resultCount}} Results!</p>
 <ul class="pagination" *ngIf="resultsAvailable()">
   <li>
-    <button type="button" [class.disabled]="current_page == 1" (click)="onClickFirst()">First</button>
+    <button type="button" [class.disabled]="currentPage == 1" (click)="onClickFirst()">First</button>
   </li>
   <li>
-    <button type="button" [class.disabled]="current_page == 1" (click)="onClickPrev()">Previous</button>
+    <button type="button" [class.disabled]="currentPage == 1" (click)="onClickPrev()">Previous</button>
   </li>
-  <li *ngFor="let page of getPages()" [class.current]="page==current_page">
+  <li *ngFor="let page of getPages()" [class.current]="page==currentPage">
     <button type="button" (click)="onClickPageNr(page)">{{page}}</button>
   </li>
   <li>
-    <button type="button" [class.disabled]="current_page == max_nr_pages" (click)="onClickNext()">Next</button>
+    <button type="button" [class.disabled]="currentPage == maxPageCount" (click)="onClickNext()">Next</button>
   </li>
 </ul>
