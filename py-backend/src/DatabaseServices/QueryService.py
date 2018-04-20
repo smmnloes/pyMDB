@@ -9,6 +9,8 @@ from DatabaseServices.DatabaseModel import *
 app = create_app()
 app.app_context().push()
 
+MIN_NUM_VOTES = 5000
+
 
 def results_to_dict_list(results):
     dict_list = []
@@ -70,7 +72,8 @@ def get_movies_by_criteria(request, get_number=False):
         query = query.filter(Basics.year <= request['year_to'])
 
     if request['minRatingIMDB']:
-        query = query.filter(Ratings.averageRating >= request['minRatingIMDB'], Ratings.tid == Basics.tid)
+        query = query.filter(Ratings.averageRating >= request['minRatingIMDB'], Ratings.tid == Basics.tid,
+                             Ratings.numVotes > MIN_NUM_VOTES)
 
     if request['genres']:
         for genre in request['genres']:

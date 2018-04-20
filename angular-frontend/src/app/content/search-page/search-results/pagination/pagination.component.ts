@@ -32,13 +32,17 @@ export class PaginationComponent implements OnInit {
   }
 
   onClickNext() {
-    this.currentPage++;
-    this.loadNewPage();
+    if (this.currentPage < this.maxPageCount) {
+      this.currentPage++;
+      this.loadNewPage();
+    }
   }
 
   onClickPrev() {
-    this.currentPage--;
-    this.loadNewPage();
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.loadNewPage();
+    }
   }
 
   loadNewPage() {
