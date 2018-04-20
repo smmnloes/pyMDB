@@ -12,9 +12,9 @@ const httpOptions = {
 @Injectable()
 export class QueryService {
   result$: Observable<any[]>;
-  result_observer: Observer;
+  result_observer: Observer<any[]>;
   new_query$: Observable<boolean>;
-  query_observer: Observer;
+  query_observer: Observer<boolean>;
   lastQuery: SearchModel = null;
 
 
@@ -29,10 +29,11 @@ export class QueryService {
 
 
   makeQuery(queryData: SearchModel, new_query:boolean) {
-    this.lastQuery = Object.assign({}, queryData);
+    this.lastQuery = queryData.clone();
+
     this.http.post('api/query', queryData, httpOptions).subscribe(
       data => {
-        this.result_observer.next(data);
+        this.result_observer.next(<any[]>data);
         this.query_observer.next(new_query);
       }
     );
