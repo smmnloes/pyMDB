@@ -16,14 +16,17 @@ export class PaginationComponent implements OnInit {
   }
 
   ngOnInit() {
+    // this.current_page = 1;
     this.queryService.new_query$.subscribe(is_new_query => {
       if (is_new_query) this.current_page = 1
     })
   }
 
-  onClickPageNr(page: number) {
-    this.current_page = page;
-    this.loadNewPage();
+  onClickPageNr(new_page: number) {
+    if (this.current_page != new_page) {
+      this.current_page = new_page;
+      this.loadNewPage();
+    }
   }
 
   onClickNext() {
@@ -42,6 +45,22 @@ export class PaginationComponent implements OnInit {
 
   resultsAvailable() {
     return this.queryService.lastQuery != null;
+  }
+
+  onClickFirst() {
+    this.current_page = 1;
+  }
+
+  getPages() {
+    let pages: number[] = [];
+    let lower_limit = this.current_page > 5 ? this.current_page - 5 : 1;
+    let upper_limit = this.current_page > 5 ? this.current_page + 4 : 10;
+
+    for (let i = lower_limit; i <= upper_limit; i++) {
+      pages.push(i);
+    }
+
+    return pages;
   }
 
 }
