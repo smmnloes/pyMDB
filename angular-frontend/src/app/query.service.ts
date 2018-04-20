@@ -14,7 +14,7 @@ export class QueryService {
   private resultsSource = new Subject<any[]>();
   results$ = this.resultsSource.asObservable();
 
-  private newQuerySource = new Subject<boolean>()
+  private newQuerySource = new Subject<boolean>();
   newQuery$ = this.newQuerySource.asObservable();
 
   resultCountSource = new Subject<number>();
@@ -22,7 +22,7 @@ export class QueryService {
 
   lastQuery: SearchModel = null;
 
-  PAGE_SIZE = 20;
+  PAGE_SIZE = 15;
 
 
   constructor(private http: HttpClient) {
