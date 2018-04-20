@@ -1,5 +1,4 @@
-<app-pagination [current_page]="results==null ? 1 : results[current_page]"></app-pagination>
-
 <div class="search-results-container">
+  <app-pagination></app-pagination>
   <app-result *ngFor="let result of results" [movieData]="result"></app-result>
 </div>
