@@ -2,15 +2,20 @@
   background: indianred;
   color: white;
   width: 100%;
-
+  padding:20px;
   text-align: center;
+  box-shadow: 0 5px 10px darkslategray;
 }
 
-a {
+nav a {
+  font-size:1.2em;
   color: white;
+
 }
 
 .header h1 {
-  font-size:3em;
+  font-size:4em;
   color:black;
+    font-style:italic;
+  font-weight:bold;
 }

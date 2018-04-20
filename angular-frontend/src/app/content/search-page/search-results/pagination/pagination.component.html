@@ -12,4 +12,7 @@
   <li>
     <button type="button" [class.disabled]="currentPage == maxPageCount" (click)="onClickNext()">Next</button>
   </li>
+  <li>
+    <button type="button" [class.disabled]="currentPage == maxPageCount" (click)="onClickLast()">Last</button>
+  </li>
 </ul>

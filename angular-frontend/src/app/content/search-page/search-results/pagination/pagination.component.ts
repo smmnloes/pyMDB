@@ -54,8 +54,17 @@ export class PaginationComponent implements OnInit {
   }
 
   onClickFirst() {
-    this.currentPage = 1;
-    this.loadNewPage();
+    if (this.currentPage != 1) {
+      this.currentPage = 1;
+      this.loadNewPage();
+    }
+  }
+
+   onClickLast() {
+    if (this.currentPage != this.maxPageCount) {
+      this.currentPage = this.maxPageCount;
+      this.loadNewPage();
+    }
   }
 
   getPages() {
