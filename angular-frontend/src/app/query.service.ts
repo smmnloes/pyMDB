@@ -1,6 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs/Observable";
+import {SearchModel} from "./content/search-page/search-form/search-model";
+import {Observer} from "rxjs/Observer";
 
 
 const httpOptions = {
@@ -10,29 +12,34 @@ const httpOptions = {
 @Injectable()
 export class QueryService {
   result$: Observable<any[]>;
-  observer;
+  result_observer: Observer;
+  new_query$: Observable<boolean>;
+  query_observer: Observer;
+  lastQuery: SearchModel = null;
 
 
   constructor(private http: HttpClient) {
     this.result$ = new Observable((observer) => {
-      this.observer = observer;
+      this.result_observer = observer;
+    });
+    this.new_query$ = new Observable((observer) => {
+      this.query_observer = observer;
     })
   }
 
 
-  makeQuery(queryData) {
+  makeQuery(queryData: SearchModel, new_query:boolean) {
+    this.lastQuery = Object.assign({}, queryData);
     this.http.post('api/query', queryData, httpOptions).subscribe(
       data => {
-        let data_array = <any[]>data;
-        this.processData(data_array);
-        this.observer.next(data_array);
+        this.result_observer.next(data);
+        this.query_observer.next(new_query);
       }
     );
   }
 
-  private processData(data: any[]) {
-
+  loadPage(page: number) {
+    this.lastQuery.current_page = page;
+    this.makeQuery(this.lastQuery, false);
   }
-
-
 }

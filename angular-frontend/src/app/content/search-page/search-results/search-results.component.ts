@@ -8,7 +8,9 @@ import {QueryService} from "../../../query.service";
 })
 export class SearchResultsComponent implements OnInit {
 
+
   constructor(private queryService: QueryService) {
+
   }
 
   results: any[];
