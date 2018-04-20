@@ -13,6 +13,7 @@ import {AngularMultiSelectModule} from "angular2-multiselect-dropdown/angular2-m
 import {MultiselectComponent} from './content/search-page/search-form/multiselect/multiselect.component';
 import {QueryService} from "./query.service";
 import {ResultComponent} from './content/search-page/search-results/result/result.component';
+import {PaginationComponent} from './content/search-page/search-results/pagination/pagination.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import {ResultComponent} from './content/search-page/search-results/result/resul
     SearchFormComponent,
     SearchResultsComponent,
     MultiselectComponent,
-    ResultComponent
+    ResultComponent,
+    PaginationComponent
   ],
   imports: [
     BrowserModule,

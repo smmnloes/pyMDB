@@ -1,0 +1,11 @@
+<ul class="pagination" *ngIf="resultsAvailable()">
+  <li [class.disabled]="current_page == 1">
+    <button type="button" (click)="onClickPrev()">Previous</button>
+  </li>
+  <li *ngFor="let page of pages" [class.current]="page==current_page">
+    <button type="button" (click)="onClickPageNr(page)">{{page}}</button>
+  </li>
+  <li>
+    <button type="button" (click)="onClickNext()">Next</button>
+  </li>
+</ul>
