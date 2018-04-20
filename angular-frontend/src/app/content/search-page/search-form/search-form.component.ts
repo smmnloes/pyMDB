@@ -10,6 +10,8 @@ import {QueryService} from "../../../query.service";
 export class SearchFormComponent implements OnInit {
   searchModel: SearchModel;
 
+  PAGE_SIZE = 20;
+
   @Input()
   genres: string[];
 
@@ -18,7 +20,7 @@ export class SearchFormComponent implements OnInit {
 
   ngOnInit() {
     this.searchModel = new SearchModel("", "", [], null,
-      null, null, ["", "", ""], "");
+      null, null, ["", "", ""], "", this.PAGE_SIZE, 1);
   }
 
   onSubmit() {

@@ -9,8 +9,6 @@ from DatabaseServices.DatabaseModel import *
 app = create_app()
 app.app_context().push()
 
-RESULT_LIMIT = 20
-
 
 def results_to_dict_list(results):
     dict_list = []
@@ -87,7 +85,9 @@ def get_movies_by_criteria(request):
                                      Basics.tid == principals.tid
                                      )
 
-    query = query.order_by(Basics.title_nomalized).limit(RESULT_LIMIT)
+    page_size = request['page_size']
+    current_page = request['current_page']
+    query = query.order_by(Basics.title_nomalized).limit(page_size).offset((current_page - 1) * page_size)
 
     # print(query)
 

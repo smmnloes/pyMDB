@@ -1,9 +1,3 @@
 <div class="search-results-container">
-  <p *ngIf="results">{{results.length}} Results!</p>
-
-  <div *ngFor="let result of results">
-    <app-result [movieData]="result"></app-result>
-  </div>
-
-
+  <app-result *ngFor="let result of results" [movieData]="result"></app-result>
 </div>

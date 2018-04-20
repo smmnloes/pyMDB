@@ -6,7 +6,9 @@ export class SearchModel {
               public year_from: number,
               public year_to: number,
               public principals: string[],
-              public title: string
+              public title: string,
+              public page_size: number,
+              public current_page: number
   ) {
   }
 }
