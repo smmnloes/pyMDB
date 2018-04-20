@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Observable} from "rxjs/Observable";
 import {SearchModel} from "./content/search-page/search-form/search-model";
-import {Observer} from "rxjs/Observer";
+import {Subject} from "rxjs/Subject";
 
 
 const httpOptions = {
@@ -11,14 +10,15 @@ const httpOptions = {
 
 @Injectable()
 export class QueryService {
-  results$: Observable<any[]>;
-  resultsObserver: Observer<any[]>;
 
-  newQuery: Observable<boolean>;
-  newQueryObserver: Observer<boolean>;
+  private resultsSource = new Subject<any[]>();
+  results$ = this.resultsSource.asObservable();
 
-  resultCount$: Observable<number>;
-  resultCountObserver: Observer<number>;
+  private newQuerySource = new Subject<boolean>()
+  newQuery$ = this.newQuerySource.asObservable();
+
+  resultCountSource = new Subject<number>();
+  resultCount$ = this.resultCountSource.asObservable();
 
   lastQuery: SearchModel = null;
 
@@ -26,32 +26,23 @@ export class QueryService {
 
 
   constructor(private http: HttpClient) {
-    this.results$ = new Observable((observer) => {
-      this.resultsObserver = observer;
-    });
-    this.newQuery = new Observable((observer) => {
-      this.newQueryObserver = observer;
-    });
-    this.resultCount$ = new Observable((observer) => {
-      this.resultCountObserver = observer;
-    })
   }
 
 
-  makeQuery(queryData: SearchModel, new_query: boolean) {
+  makeQuery(queryData: SearchModel, isNewQuery: boolean) {
     queryData.page_size = this.PAGE_SIZE;
     this.lastQuery = queryData.clone();
 
     this.http.post('api/query', queryData, httpOptions).subscribe(
       data => {
-        this.resultsObserver.next(<any[]>data);
-        this.newQueryObserver.next(new_query);
+        this.resultsSource.next(<any[]>data);
+        this.newQuerySource.next(isNewQuery);
       }
     );
 
-    if (new_query) {
+    if (isNewQuery) {
       this.http.post('api/result_count', queryData, httpOptions).subscribe(resultCount => {
-        this.resultCountObserver.next(<number>resultCount);
+        this.resultCountSource.next(<number>resultCount);
         console.log(resultCount)
       })
     }
@@ -63,7 +54,6 @@ export class QueryService {
     this.lastQuery.currentPage = page;
     this.makeQuery(this.lastQuery, false);
   }
-
 
 
 }
