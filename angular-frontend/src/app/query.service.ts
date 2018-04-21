@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {SearchModel} from "./content/search-page/search-form/search-model";
 import {Subject} from "rxjs/Subject";
-import {resultModel} from "./content/search-page/search-results/result/resultModel";
+import {ResultModel} from "./content/search-page/search-results/result/result-model";
 
 
 const httpOptions = {
@@ -12,11 +12,11 @@ const httpOptions = {
 @Injectable()
 export class QueryService {
 
-  private resultsSource = new Subject<resultModel[]>();
+  private resultsSource = new Subject<ResultModel[]>();
   results$ = this.resultsSource.asObservable();
 
-  private newQuerySource = new Subject<boolean>();
-  newQuery$ = this.newQuerySource.asObservable();
+  private isNewQuerySource = new Subject<boolean>();
+  isNewQuery$ = this.isNewQuerySource.asObservable();
 
   resultCountSource = new Subject<number>();
   resultCount$ = this.resultCountSource.asObservable();
@@ -25,20 +25,21 @@ export class QueryService {
 
   PAGE_SIZE = 15;
 
-  resultCache: resultModel[][] = [];
+  cachedPages: ResultModel[][] = [];
 
   constructor(private http: HttpClient) {
   }
 
 
   makeQuery(queryData: SearchModel, isNewQuery: boolean) {
+
+
     if (isNewQuery) {
-      this.resultCache = [];
+      this.cachedPages = [];
     } else {
-      let storedResult = this.resultCache[queryData.currentPage];
-      if (storedResult != null) {
-        console.log('returning stored data!');
-        this.resultsSource.next(storedResult);
+      let cachedResult = this.cachedPages[queryData.currentPage];
+      if (cachedResult != null) {
+        this.resultsSource.next(cachedResult);
         return;
       }
     }
@@ -48,33 +49,29 @@ export class QueryService {
 
     this.http.post('api/query', queryData, httpOptions).subscribe(
       data => {
-        let processedResult: resultModel[] = QueryService.processResult(data);
+        let processedResult: ResultModel[] = QueryService.processResult(data);
         this.resultsSource.next(processedResult);
 
-        if (this.resultCache[queryData.currentPage] == null) {
-          console.log('writing new data to array');
-          this.resultCache[queryData.currentPage] = processedResult;
+        if (this.cachedPages[queryData.currentPage] == null) {
+          this.cachedPages[queryData.currentPage] = processedResult;
         }
 
-        console.log(this.resultCache);
-
-        this.newQuerySource.next(isNewQuery);
+        this.isNewQuerySource.next(isNewQuery);
       }
     );
 
     if (isNewQuery) {
       this.http.post('api/result_count', queryData, httpOptions).subscribe(resultCount => {
-
         this.resultCountSource.next(<number>resultCount);
       })
     }
 
   }
 
-  static processResult(data): resultModel[] {
-    let results: resultModel[] = [];
+  static processResult(data): ResultModel[] {
+    let results: ResultModel[] = [];
     for (let result of data) {
-      results.push(new resultModel(
+      results.push(new ResultModel(
         result.averageRating,
         result.directors,
         result.genres,
