@@ -1,3 +1,6 @@
 # TODO:
-# BUG: Disabled buttons clickable
+
 # sort-by feature
+# proper logging
+# details page
+# admin stuff
