@@ -1,10 +1,12 @@
 export class resultModel {
-  averageRating:number;
-  directors:string[];
-  genres:string[];
-  primaryTitle:string;
-  principals:string[];
-  runtimeMinutes:number;
-  tid:string;
-  year:number;
+
+  constructor(public averageRating: number,
+              public directors: string[],
+              public genres: string[],
+              public primaryTitle: string,
+              public principals: string[],
+              public runtimeMinutes: number,
+              public tid: string,
+              public year: number) {
+  }
 }
