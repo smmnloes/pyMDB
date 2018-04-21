@@ -1,20 +1,15 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {resultModel} from "./resultModel";
+import {Component, Input} from '@angular/core';
+import {ResultModel} from "./result-model";
 
 @Component({
   selector: 'app-result',
   templateUrl: './result.component.html',
   styleUrls: ['./result.component.css']
 })
-export class ResultComponent implements OnInit {
+export class ResultComponent {
 
   @Input()
-  movieData: resultModel;
+  movieData: ResultModel;
 
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 
 }

@@ -1,4 +1,4 @@
-export class resultModel {
+export class ResultModel {
 
   constructor(public averageRating: number,
               public directors: string[],

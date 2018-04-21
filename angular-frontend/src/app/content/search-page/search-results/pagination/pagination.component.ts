@@ -15,7 +15,7 @@ export class PaginationComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.queryService.newQuery$.subscribe(isNewQuery => {
+    this.queryService.isNewQuery$.subscribe(isNewQuery => {
       if (isNewQuery) this.currentPage = 1
     });
     this.queryService.resultCount$.subscribe(resultCount => {
