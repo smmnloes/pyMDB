@@ -75,14 +75,14 @@ export class QueryService {
     let results: resultModel[] = [];
     for (let result of data) {
       results.push(new resultModel(
-        result['averageRating'],
-        result['directors'],
-        result['genres'],
-        result['primaryTitle'],
-        result['principals'],
-        result['runtimeMinutes'],
-        result['tid'],
-        result['year']
+        result.averageRating,
+        result.directors,
+        result.genres,
+        result.primaryTitle,
+        result.principals,
+        result.runtimeMinutes,
+        result.tid,
+        result.year
       ));
 
     }
