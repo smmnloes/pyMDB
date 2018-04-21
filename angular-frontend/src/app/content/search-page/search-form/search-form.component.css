@@ -10,6 +10,8 @@ label {
   font-weight:bold;
 }
 
-
+.round-edges {
+  border-radius: 5px;
+}
 
 
