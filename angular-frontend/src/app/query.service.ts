@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {SearchModel} from "./content/search-page/search-form/search-model";
 import {Subject} from "rxjs/Subject";
+import {resultModel} from "./content/search-page/search-results/result/resultModel";
 
 
 const httpOptions = {
@@ -11,7 +12,7 @@ const httpOptions = {
 @Injectable()
 export class QueryService {
 
-  private resultsSource = new Subject<any[]>();
+  private resultsSource = new Subject<resultModel[]>();
   results$ = this.resultsSource.asObservable();
 
   private newQuerySource = new Subject<boolean>();
@@ -35,7 +36,7 @@ export class QueryService {
 
     this.http.post('api/query', queryData, httpOptions).subscribe(
       data => {
-        this.resultsSource.next(<any[]>data);
+        this.resultsSource.next(this.processResult(data));
         this.newQuerySource.next(isNewQuery);
       }
     );
@@ -43,11 +44,28 @@ export class QueryService {
     if (isNewQuery) {
       this.http.post('api/result_count', queryData, httpOptions).subscribe(resultCount => {
         this.resultCountSource.next(<number>resultCount);
-        console.log(resultCount)
       })
     }
 
 
+  }
+
+  processResult(data): resultModel[] {
+    let results:resultModel[] = [];
+    for (let result of data) {
+      results.push(new resultModel(
+        result['averageRating'],
+        result['directors'],
+        result['genres'],
+        result['primaryTitle'],
+        result['principals'],
+        result['runtimeMinutes'],
+        result['tid'],
+        result['year']
+      ));
+
+    }
+    return results;
   }
 
   loadPage(page: number) {

@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {resultModel} from "./resultModel";
 
 @Component({
   selector: 'app-result',
@@ -8,7 +9,7 @@ import {Component, Input, OnInit} from '@angular/core';
 export class ResultComponent implements OnInit {
 
   @Input()
-  movieData: any[];
+  movieData: resultModel;
 
   constructor() {
   }
