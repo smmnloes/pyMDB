@@ -20,7 +20,7 @@ export class PaginationComponent implements OnInit {
     });
     this.queryService.resultCount$.subscribe(resultCount => {
       this.resultCount = resultCount;
-      this.maxPageCount = Math.ceil(resultCount / this.queryService.PAGE_SIZE);
+      this.maxPageCount = Math.ceil(<number>resultCount / this.queryService.PAGE_SIZE);
     })
   }
 
@@ -60,7 +60,7 @@ export class PaginationComponent implements OnInit {
     }
   }
 
-   onClickLast() {
+  onClickLast() {
     if (this.currentPage != this.maxPageCount) {
       this.currentPage = this.maxPageCount;
       this.loadNewPage();
