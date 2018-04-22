@@ -3,13 +3,9 @@ from time import time
 from sqlalchemy.orm import aliased
 from unidecode import unidecode
 
-from App.AppMain import create_app
 from DatabaseServices.DatabaseModel import *
 
-app = create_app()
-app.app_context().push()
-
-MIN_NUM_VOTES = 5000
+MIN_NUM_VOTES = 1000
 
 
 def results_to_dict_list(results):
