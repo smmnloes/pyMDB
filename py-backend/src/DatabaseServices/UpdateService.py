@@ -37,6 +37,7 @@ def update_db():
     except (Exception, BaseException) as e:
         print("Error while updating: {}".format(e))
         restore_db_last_version()
+        return
 
     print("Analyzing.")
     analyze()
