@@ -1,5 +1,6 @@
 from time import time
 
+from sqlalchemy import asc, desc
 from sqlalchemy.orm import aliased
 from unidecode import unidecode
 
@@ -88,9 +89,17 @@ def get_movies_by_criteria(request, get_count=False):
     if get_count:
         return query.count()
 
+    sort_by = request['sortBy']
+    if sort_by == 'Title':
+        query = query.order_by(asc(Basics.primaryTitle))
+    elif sort_by == 'Year':
+        query = query.order_by(desc(Basics.year))
+    elif sort_by == 'Rating':
+        query = query.order_by(desc(Ratings.averageRating))
+
     page_size = request['page_size']
     current_page = request['currentPage']
-    query = query.order_by(Basics.title_nomalized).limit(page_size).offset((current_page - 1) * page_size)
+    query = query.limit(page_size).offset((current_page - 1) * page_size)
 
     # print(query)
 

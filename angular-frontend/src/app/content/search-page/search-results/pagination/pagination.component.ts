@@ -15,12 +15,13 @@ export class PaginationComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.queryService.isNewQuery$.subscribe(isNewQuery => {
-      if (isNewQuery) this.currentPage = 1
-    });
+    // if a new result count is published, a new query has been made -> reset current page,
+    // calculate new maxPageCount
+
     this.queryService.resultCount$.subscribe(resultCount => {
       this.resultCount = resultCount;
       this.maxPageCount = Math.ceil(<number>resultCount / this.queryService.PAGE_SIZE);
+      this.currentPage = 1;
     })
   }
 

@@ -10,19 +10,33 @@ import {QueryService} from "../../../query.service";
 export class SearchFormComponent implements OnInit {
   searchModel: SearchModel;
 
+  private sortCriteria: string[];
+
+
   @Input()
   genres: string[];
 
   constructor(private queryService: QueryService) {
+    this.sortCriteria = [
+      'Title', 'Year', 'Rating'
+    ];
+
   }
 
   ngOnInit() {
     this.searchModel = new SearchModel("", "", [], null,
-      null, null, ["", "", ""], "", null, 1, 'title');
+      null, null, ["", "", ""], "", null, 1, this.sortCriteria[0]);
   }
 
   onSubmit() {
     this.queryService.makeQuery(this.searchModel, true);
+  }
+
+
+  onClickSortBy() {
+    if (this.queryService.lastQuery != null) {
+      this.queryService.changeSortBy(this.searchModel.sortBy);
+    }
   }
 
 }

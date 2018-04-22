@@ -66,8 +66,18 @@
           </div>
         </div>
         <div class="cell">
-          <button class="button round-edges" name="submitbutton" type="submit">Search!
-          </button>
+          <div class="grid-x">
+            <div class="cell small-3">
+              <button class="button button-custom" name="submitbutton" type="submit">Search!
+              </button>
+            </div>
+            <div class="cell small-3 small-offset-6">
+              <label for="sort-by">Sort by:</label>
+              <select id="sort-by" name="sort-by" [(ngModel)]="searchModel.sortBy" (change)="onClickSortBy()">
+                <option *ngFor="let criteria of sortCriteria">{{criteria}}</option>
+              </select>
+            </div>
+          </div>
         </div>
       </div>
     </div>
