@@ -15,9 +15,6 @@ export class QueryService {
   private resultsSource = new Subject<ResultModel[]>();
   results$ = this.resultsSource.asObservable();
 
-  private isNewQuerySource = new Subject<boolean>();
-  isNewQuery$ = this.isNewQuerySource.asObservable();
-
   resultCountSource = new Subject<number>();
   resultCount$ = this.resultCountSource.asObservable();
 
@@ -33,7 +30,8 @@ export class QueryService {
 
   makeQuery(queryData: SearchModel, isNewQuery: boolean) {
 
-
+    // Clear page cache if query is new,
+    // else return cached page if available
     if (isNewQuery) {
       this.cachedPages = [];
     } else {
@@ -56,10 +54,10 @@ export class QueryService {
           this.cachedPages[queryData.currentPage] = processedResult;
         }
 
-        this.isNewQuerySource.next(isNewQuery);
       }
     );
 
+    // get new result count if query is new
     if (isNewQuery) {
       this.http.post('api/result_count', queryData, httpOptions).subscribe(resultCount => {
         this.resultCountSource.next(<number>resultCount);
@@ -89,6 +87,11 @@ export class QueryService {
   loadPage(page: number) {
     this.lastQuery.currentPage = page;
     this.makeQuery(this.lastQuery, false);
+  }
+
+  changeSortBy(criteria: string) {
+    this.lastQuery.sortBy = criteria;
+    this.makeQuery(this.lastQuery, true);
   }
 
 

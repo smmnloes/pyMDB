@@ -1,18 +1,22 @@
-<p *ngIf="resultCount!=null">{{resultCount}} Results!</p>
-<ul class="pagination" *ngIf="resultsAvailable()">
-  <li>
-    <button type="button" [class.disabled]="currentPage == 1" (click)="onClickFirst()">First</button>
-  </li>
-  <li>
-    <button type="button" [class.disabled]="currentPage == 1" (click)="onClickPrev()">Previous</button>
-  </li>
-  <li *ngFor="let page of getPages()" [class.current]="page==currentPage">
-    <button type="button" (click)="onClickPageNr(page)">{{page}}</button>
-  </li>
-  <li>
-    <button type="button" [class.disabled]="currentPage == maxPageCount" (click)="onClickNext()">Next</button>
-  </li>
-  <li>
-    <button type="button" [class.disabled]="currentPage == maxPageCount" (click)="onClickLast()">Last</button>
-  </li>
-</ul>
+<div *ngIf="resultsAvailable()">
+
+  <p class="cell small-4">{{resultCount}} Results!</p>
+
+  <ul class="pagination">
+    <li>
+      <button type="button" [class.disabled]="currentPage == 1" (click)="onClickFirst()">First</button>
+    </li>
+    <li>
+      <button type="button" [class.disabled]="currentPage == 1" (click)="onClickPrev()">Previous</button>
+    </li>
+    <li *ngFor="let page of getPages()" [class.current]="page==currentPage">
+      <button type="button" (click)="onClickPageNr(page)">{{page}}</button>
+    </li>
+    <li>
+      <button type="button" [class.disabled]="currentPage == maxPageCount" (click)="onClickNext()">Next</button>
+    </li>
+    <li>
+      <button type="button" [class.disabled]="currentPage == maxPageCount" (click)="onClickLast()">Last</button>
+    </li>
+  </ul>
+</div>

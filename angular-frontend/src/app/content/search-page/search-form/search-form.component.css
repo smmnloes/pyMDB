@@ -10,7 +10,8 @@ label {
   font-weight:bold;
 }
 
-.round-edges {
+.button-custom {
+  margin-top: 25px;
   border-radius: 5px;
 }
 
