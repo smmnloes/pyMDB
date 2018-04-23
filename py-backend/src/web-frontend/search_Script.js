@@ -35,7 +35,7 @@ function make_query() {
             var result_length = data.length;
             result_size.text("Results: " + result_length);
             for (i = 0; i < result_length; i++) {
-                search_results.append("<li>" + data[i]['primaryTitle'] + "</li>");
+                search_results.append("<li>" + data[i]['primary_title'] + "</li>");
             }
         }
     });

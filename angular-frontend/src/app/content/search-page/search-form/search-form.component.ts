@@ -35,7 +35,7 @@ export class SearchFormComponent implements OnInit {
 
   onClickSortBy() {
     if (this.queryService.lastQuery != null) {
-      this.queryService.changeSortBy(this.searchModel.sortBy);
+      this.queryService.changeSortBy(this.searchModel.sort_by);
     }
   }
 

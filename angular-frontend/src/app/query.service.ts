@@ -35,7 +35,7 @@ export class QueryService {
     if (isNewQuery) {
       this.cachedPages = [];
     } else {
-      let cachedResult = this.cachedPages[queryData.currentPage];
+      let cachedResult = this.cachedPages[queryData.current_page];
       if (cachedResult != null) {
         this.resultsSource.next(cachedResult);
         return;
@@ -50,8 +50,8 @@ export class QueryService {
         let processedResult: ResultModel[] = QueryService.processResult(data);
         this.resultsSource.next(processedResult);
 
-        if (this.cachedPages[queryData.currentPage] == null) {
-          this.cachedPages[queryData.currentPage] = processedResult;
+        if (this.cachedPages[queryData.current_page] == null) {
+          this.cachedPages[queryData.current_page] = processedResult;
         }
 
       }
@@ -70,12 +70,12 @@ export class QueryService {
     let results: ResultModel[] = [];
     for (let result of data) {
       results.push(new ResultModel(
-        result.averageRating,
+        result.average_rating,
         result.directors,
         result.genres,
-        result.primaryTitle,
+        result.primary_title,
         result.principals,
-        result.runtimeMinutes,
+        result.runtime_minutes,
         result.tid,
         result.year
       ));
@@ -85,12 +85,12 @@ export class QueryService {
   }
 
   loadPage(page: number) {
-    this.lastQuery.currentPage = page;
+    this.lastQuery.current_page = page;
     this.makeQuery(this.lastQuery, false);
   }
 
   changeSortBy(criteria: string) {
-    this.lastQuery.sortBy = criteria;
+    this.lastQuery.sort_by = criteria;
     this.makeQuery(this.lastQuery, true);
   }
 
