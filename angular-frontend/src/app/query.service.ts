@@ -57,13 +57,16 @@ export class QueryService {
       }
     );
 
-    // get new result count if query is new
     if (isNewQuery) {
-      this.http.post('api/result_count', queryData, httpOptions).subscribe(resultCount => {
-        this.resultCountSource.next(<number>resultCount);
-      })
+      this.getResultCount(queryData);
     }
 
+  }
+
+  private getResultCount(queryData: SearchModel) {
+    this.http.post('api/result_count', queryData, httpOptions).subscribe(resultCount => {
+      this.resultCountSource.next(<number>resultCount);
+    })
   }
 
   static processResult(data): ResultModel[] {
@@ -91,6 +94,7 @@ export class QueryService {
 
   changeSortBy(criteria: string) {
     this.lastQuery.sort_by = criteria;
+    this.lastQuery.current_page = 1;
     this.makeQuery(this.lastQuery, true);
   }
 
