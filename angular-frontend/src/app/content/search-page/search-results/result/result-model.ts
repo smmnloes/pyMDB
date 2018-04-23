@@ -1,11 +1,11 @@
 export class ResultModel {
 
-  constructor(public averageRating: number,
+  constructor(public average_rating: number,
               public directors: string[],
               public genres: string[],
-              public primaryTitle: string,
+              public primary_title: string,
               public principals: string[],
-              public runtimeMinutes: number,
+              public runtime_minutes: number,
               public tid: string,
               public year: number) {
   }

@@ -21,7 +21,7 @@
               <label for="rating">min. Rating</label>
               <input id="rating" type="number" step="0.1" min="0" max="10" name="rating"
                      placeholder="5.5"
-                     [(ngModel)]="searchModel.minRatingIMDB">
+                     [(ngModel)]="searchModel.min_rating_imdb">
             </div>
             <div class="cell small-8 medium-8 large-4">
               <div class="grid-x">
@@ -73,7 +73,7 @@
             </div>
             <div class="cell small-3 small-offset-6">
               <label for="sort-by">Sort by:</label>
-              <select id="sort-by" name="sort-by" [(ngModel)]="searchModel.sortBy" (change)="onClickSortBy()">
+              <select id="sort-by" name="sort-by" [(ngModel)]="searchModel.sort_by" (change)="onClickSortBy()">
                 <option *ngFor="let criteria of sortCriteria">{{criteria}}</option>
               </select>
             </div>

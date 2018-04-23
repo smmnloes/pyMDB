@@ -13,11 +13,11 @@ def results_to_dict_list(results):
     dict_list = []
     for result in results:
         as_dict = {'tid': result[0].tid,
-                   'primaryTitle': result[0].primaryTitle,
+                   'primary_title': result[0].primaryTitle,
                    'year': result[0].year,
-                   'runtimeMinutes': result[0].runtimeMinutes,
+                   'runtime_minutes': result[0].runtimeMinutes,
                    'genres': None if result[0].genres is None else result[0].genres.split(','),
-                   'averageRating': result[1],
+                   'average_rating': result[1],
                    'principals': get_principals_for_tid(result[0].tid),
                    'directors': get_directors_for_tid(result[0].tid)
                    }
@@ -68,8 +68,8 @@ def get_movies_by_criteria(request, get_count=False):
     if request['year_to']:
         query = query.filter(Basics.year <= request['year_to'])
 
-    if request['minRatingIMDB']:
-        query = query.filter(Ratings.averageRating >= request['minRatingIMDB'], Ratings.tid == Basics.tid,
+    if request['min_rating_imdb']:
+        query = query.filter(Ratings.averageRating >= request['min_rating_imdb'], Ratings.tid == Basics.tid,
                              Ratings.numVotes > MIN_NUM_VOTES)
 
     if request['genres']:
@@ -89,7 +89,7 @@ def get_movies_by_criteria(request, get_count=False):
     if get_count:
         return query.count()
 
-    sort_by = request['sortBy']
+    sort_by = request['sort_by']
     if sort_by == 'Title':
         query = query.order_by(asc(Basics.primaryTitle))
     elif sort_by == 'Year':
@@ -98,7 +98,7 @@ def get_movies_by_criteria(request, get_count=False):
         query = query.order_by(desc(Ratings.averageRating))
 
     page_size = request['page_size']
-    current_page = request['currentPage']
+    current_page = request['current_page']
     query = query.limit(page_size).offset((current_page - 1) * page_size)
 
     # print(query)
