@@ -14,6 +14,7 @@ import {MultiselectComponent} from './content/search-page/search-form/multiselec
 import {QueryService} from "./query.service";
 import {ResultComponent} from './content/search-page/search-results/result/result.component';
 import {PaginationComponent} from './content/search-page/search-results/pagination/pagination.component';
+import {DetailService} from "./detail.service";
 
 @NgModule({
   declarations: [
@@ -33,7 +34,7 @@ import {PaginationComponent} from './content/search-page/search-results/paginati
     FormsModule,
     HttpClientModule
   ],
-  providers: [QueryService],
+  providers: [QueryService, DetailService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
