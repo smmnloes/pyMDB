@@ -13,11 +13,11 @@ export class DetailService {
 
   TMDB_ROOT = "https://api.themoviedb.org/3/";
 
-  currentDetailsSource: Subject<Object> = new Subject<Object>();
-  currentDetails$: Observable<Object>;
+  combinedDataSource: Subject<CombinedDataModel> = new Subject<CombinedDataModel>();
+  combinedData$: Observable<CombinedDataModel>;
 
   constructor(private http: HttpClient) {
-    this.currentDetails$ = this.currentDetailsSource.asObservable();
+    this.combinedData$ = this.combinedDataSource.asObservable();
   }
 
   getDetails(movieData: BasicDataModel) {
@@ -30,10 +30,10 @@ export class DetailService {
       if (tmdbID != -1) {
         this.getDetailsAndCastByTmdbId(tmdbID).subscribe(details => {
           dataCombined.detailedData = this.processDetailedData(details);
-          this.currentDetailsSource.next(dataCombined);
+          this.combinedDataSource.next(dataCombined);
         });
       } else {
-        this.currentDetailsSource.next(dataCombined);
+        this.combinedDataSource.next(dataCombined);
       }
 
     });
@@ -41,14 +41,15 @@ export class DetailService {
   }
 
   private processDetailedData(details) {
-    return  new DetailedDataModel(this.processCredits(details['credits']), details['budget'], details['original_language'],
-        details['release_date'], details['poster_path']);
+    return new DetailedDataModel(this.processCredits(details['credits']), details['budget'], details['original_language'],
+      details['release_date'], details['poster_path']);
   }
 
-  private processCredits(credits) {
-    let creditsProcessed:string[][] = [];
 
-    for (let cast of credits['cast']){
+  private processCredits(credits) {
+    let creditsProcessed: string[][] = [];
+
+    for (let cast of credits['cast']) {
       creditsProcessed.push([cast['character'], cast['name']]);
     }
 

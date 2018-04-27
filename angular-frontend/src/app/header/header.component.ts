@@ -13,7 +13,7 @@ export class HeaderComponent implements OnInit {
   constructor(private detailService:DetailService) { }
 
   ngOnInit() {
-    this.detailService.currentDetails$.subscribe(details => this.currentPage = "details");
+    this.detailService.combinedData$.subscribe(details => this.currentPage = "details");
   }
 
   public setCurrentPage(page: string) {
