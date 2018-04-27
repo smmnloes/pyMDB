@@ -1,19 +1,16 @@
 <div class="details-container">
   <div *ngIf="combinedData!=null; else no_data_available">
     <div class="grid-container">
-      <p class="details-title">{{combinedData.basicData.primary_title}}</p>
       <div class="grid-x">
-        <div class="cell poster small-12 medium-4">
-          <img src="{{fullPosterPath$ | async}}">
+        <div class="cell poster small-12 medium-3">
+          <img *ngIf="hasPosterPath();else image_not_found" src="{{fullPosterPath$ | async}}">
+          <ng-template #image_not_found>
+            <img src="../../../../assets/noImg_w185.png">
+          </ng-template>
         </div>
-        <div class="cell medium-8">
-          <div class="basic-data grid-x">
-            <div class="cell medium-4">Runtime:</div>
-            <div class="cell medium-8">{{combinedData.basicData.runtime_minutes}}</div>
-          </div>
+        <div class="cell small-12 medium-9">
+          <app-result [movieData]="combinedData.basicData"></app-result>
         </div>
-
-
       </div>
 
     </div>
