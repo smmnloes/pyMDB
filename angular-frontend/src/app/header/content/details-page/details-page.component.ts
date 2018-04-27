@@ -20,13 +20,17 @@ export class DetailsPageComponent implements OnInit {
 
   ngOnInit() {
     this.detailService.combinedData$.subscribe(combinedData => {
-      if (combinedData == null) {
-        console.log("NO DETAILS FOUND!");
-      } else {
-        this.combinedData = combinedData;
+      this.combinedData = combinedData;
+      if (this.hasDetailData()) {
         this.getFullPosterPath();
+      } else {
+        this.fullPosterPathSource.next("../../../../assets/noImg_w185.png");
       }
     })
+  }
+
+  private hasDetailData() {
+    return this.combinedData.detailedData != null;
   }
 
 

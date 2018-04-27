@@ -1,7 +1,7 @@
 <div class="details-container">
   <div *ngIf="combinedData!=null; else no_data_available">
     <div class="grid-container">
-
+      <p class="details-title">{{combinedData.basicData.primary_title}}</p>
       <div class="grid-x">
         <div class="cell poster">
           <img src="{{fullPosterPath$ | async}}">
