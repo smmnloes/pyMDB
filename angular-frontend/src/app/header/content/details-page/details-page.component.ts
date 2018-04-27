@@ -21,16 +21,19 @@ export class DetailsPageComponent implements OnInit {
   ngOnInit() {
     this.detailService.combinedData$.subscribe(combinedData => {
       this.combinedData = combinedData;
-      if (this.hasDetailData()) {
+      console.log(combinedData);
+      if (this.hasPosterPath()) {
         this.getFullPosterPath();
-      } else {
-        this.fullPosterPathSource.next("../../../../assets/noImg_w185.png");
       }
     })
   }
 
   private hasDetailData() {
     return this.combinedData.detailedData != null;
+  }
+
+  private hasPosterPath() {
+    return this.hasDetailData() && this.combinedData.detailedData.posterPath != null;
   }
 
 
