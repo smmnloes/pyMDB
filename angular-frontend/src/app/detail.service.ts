@@ -53,7 +53,7 @@ export class DetailService {
     let creditsProcessed: string[][] = [];
 
     for (let cast of credits['cast']) {
-      creditsProcessed.push([cast['character'], cast['name']]);
+      creditsProcessed.push([cast['name'], cast['character']]);
     }
 
     return creditsProcessed;
