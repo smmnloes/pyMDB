@@ -1,7 +1,17 @@
 .details-container {
-  background-color:darkgrey;
-  padding:10px;
-  max-width:1000px;
-  margin:auto;
-  border-radius:10px;
+  background-color: darkgrey;
+  padding: 10px;
+  max-width: 1000px;
+  margin: auto;
+  border-radius: 10px;
+}
+
+.poster {
+  background-color: white;
+}
+
+.details-title {
+  text-align: center;
+  font-size: 1.3em;
+  font-weight:bold;
 }
