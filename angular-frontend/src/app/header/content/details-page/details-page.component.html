@@ -1,3 +1,24 @@
-<p>
-  details-page works!
-</p>
+<div class="details-container">
+  <div *ngIf="combinedData!=null; else no_data_available">
+    <div class="grid-container">
+
+      <div class="grid-x">
+        <div class="cell poster">
+          <img src="{{fullPosterPath$ | async}}">
+
+        </div>
+        <div class="cell">
+          <div class="basic-data grid-x">
+
+          </div>
+        </div>
+
+
+      </div>
+
+    </div>
+  </div>
+  <ng-template #no_data_available>
+    <p>NO DATA!</p>
+  </ng-template>
+</div>
