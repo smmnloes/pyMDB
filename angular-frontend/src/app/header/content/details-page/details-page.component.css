@@ -3,6 +3,12 @@
   max-width: 1000px;
   margin: auto;
   border-radius: 10px;
-  padding:20px;
+  padding: 20px;
+  box-shadow: 5px 5px 10px dimgrey;
+}
+
+.error-message {
+  font-weight: bold;
+  text-align: center;
 }
 

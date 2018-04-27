@@ -4,6 +4,7 @@
   max-width:700px;
   margin:auto;
   border-radius:10px;
+  box-shadow:5px 5px 10px dimgrey;
 }
 
 label {
