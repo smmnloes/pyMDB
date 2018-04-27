@@ -5,28 +5,28 @@ import {HttpClientModule} from "@angular/common/http";
 
 import {AppComponent} from './app.component';
 import {HeaderComponent} from './header/header.component';
-import {ContentComponent} from './content/content.component';
-import {SearchPageComponent} from './content/search-page/search-page.component';
-import {SearchFormComponent} from './content/search-page/search-form/search-form.component';
-import {SearchResultsComponent} from './content/search-page/search-results/search-results.component';
+import {SearchPageComponent} from './header/content/search-page/search-page.component';
+import {SearchFormComponent} from './header/content/search-page/search-form/search-form.component';
+import {SearchResultsComponent} from './header/content/search-page/search-results/search-results.component';
 import {AngularMultiSelectModule} from "angular2-multiselect-dropdown/angular2-multiselect-dropdown";
-import {MultiselectComponent} from './content/search-page/search-form/multiselect/multiselect.component';
+import {MultiselectComponent} from './header/content/search-page/search-form/multiselect/multiselect.component';
 import {QueryService} from "./query.service";
-import {ResultComponent} from './content/search-page/search-results/result/result.component';
-import {PaginationComponent} from './content/search-page/search-results/pagination/pagination.component';
+import {ResultComponent} from './header/content/search-page/search-results/result/result.component';
+import {PaginationComponent} from './header/content/search-page/search-results/pagination/pagination.component';
 import {DetailService} from "./detail.service";
+import {DetailsPageComponent} from './header/content/details-page/details-page.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    ContentComponent,
     SearchPageComponent,
     SearchFormComponent,
     SearchResultsComponent,
     MultiselectComponent,
     ResultComponent,
-    PaginationComponent
+    PaginationComponent,
+    DetailsPageComponent
   ],
   imports: [
     BrowserModule,

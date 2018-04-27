@@ -19,3 +19,9 @@ nav a {
     font-style:italic;
   font-weight:bold;
 }
+
+.content {
+  margin: 35px auto auto auto;
+
+  width:80%;
+}

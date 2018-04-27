@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {QueryService} from "../../../../query.service";
+import {QueryService} from "../../../../../query.service";
+
 
 @Component({
   selector: 'app-pagination',

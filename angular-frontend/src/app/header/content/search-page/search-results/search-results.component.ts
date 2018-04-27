@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {QueryService} from "../../../query.service";
 import {Observable} from "rxjs/Observable";
 import {ResultModel} from "./result/result-model";
+import {QueryService} from "../../../../query.service";
 
 @Component({
   selector: 'app-search-results',
