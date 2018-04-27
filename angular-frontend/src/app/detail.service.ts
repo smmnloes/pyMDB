@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {Subject} from "rxjs/Subject";
 import {Observable} from "rxjs/Observable";
 import "rxjs/add/operator/map";
+import {ResultModel} from "./header/content/search-page/search-results/result/result-model";
 
 @Injectable()
 export class DetailService {
@@ -10,31 +11,34 @@ export class DetailService {
 
   TMDB_ROOT = "https://api.themoviedb.org/3/";
 
-  currentDetailsSource: Subject<Object> = new Subject<Object>();
-  currentDetails$: Observable<Object>;
+  currentDetailsSource: Subject<ResultModel> = new Subject<ResultModel>();
+  currentDetails$: Observable<ResultModel>;
 
   constructor(private http: HttpClient) {
     this.currentDetails$ = this.currentDetailsSource.asObservable();
   }
 
-  getDetailsByImdbId(tidAsInt: number) {
+  getDetails(movieData: ResultModel) {
 
-    let imdbIdFormatted = this.getTidFormatted(tidAsInt);
+    let imdbIdFormatted = DetailService.getTidFormatted(movieData.tid);
 
     this.getTmdbID(imdbIdFormatted).subscribe(tmdbID => {
+
       if (tmdbID != -1) {
-        this.getDetailsByTmdbId(tmdbID).subscribe(details => {
-          this.currentDetailsSource.next(details)
-        })
+        this.getDetailsAndCastByTmdbId(tmdbID).subscribe(details => {
+          movieData.detailed_data = details;
+          this.currentDetailsSource.next(movieData);
+        });
       } else {
-        this.currentDetailsSource.next(null);
+        this.currentDetailsSource.next(movieData);
       }
+
 
     });
 
   }
 
-  private getTidFormatted(tidAsInt: number) {
+  private static getTidFormatted(tidAsInt: number) {
     let tidAsString = tidAsInt.toString();
     let numberLeadingZeroes = 7 - tidAsString.length;
     let leadingZeroes = "";
@@ -46,18 +50,30 @@ export class DetailService {
   }
 
   private getTmdbID(tid: string) {
-    return this.http.get(this.TMDB_ROOT + 'find/' + tid + '?api_key='
-      + this.TMDB_API_KEY + "&external_source=imdb_id").map(data => {
-      if (data['movie_results'].length > 0) {
-        return data['movie_results'][0]['id'];
-      } else {
-        // no movie with this imdb-id found in TMDB
-        return -1;
-      }
-    });
+    return this.http.get(
+      this.TMDB_ROOT
+      + 'find/'
+      + tid
+      + '?api_key='
+      + this.TMDB_API_KEY
+      + "&external_source=imdb_id")
+      .map(data => {
+        if (data['movie_results'].length > 0) {
+          return data['movie_results'][0]['id'];
+        } else {
+          // no movie with this imdb-id found in TMDB
+          return -1;
+        }
+      });
   }
 
-  private getDetailsByTmdbId(tmdbID: number) {
-    return this.http.get(this.TMDB_ROOT + 'movie/' + tmdbID + "?api_key=" + this.TMDB_API_KEY)
+  private getDetailsAndCastByTmdbId(tmdbID: number) {
+    return this.http.get(
+      this.TMDB_ROOT
+      + 'movie/'
+      + tmdbID
+      + "?api_key="
+      + this.TMDB_API_KEY
+      + "&append_to_response=credits")
   }
 }

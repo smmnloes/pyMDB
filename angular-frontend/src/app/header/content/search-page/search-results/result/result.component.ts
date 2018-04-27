@@ -20,7 +20,7 @@ export class ResultComponent implements OnInit {
   }
 
   getDetails() {
-    this.detailService.getDetailsByImdbId(this.movieData.tid);
+    this.detailService.getDetails(this.movieData);
   }
 
 }
