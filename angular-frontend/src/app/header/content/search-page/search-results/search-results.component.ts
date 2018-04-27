@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Observable} from "rxjs/Observable";
-import {ResultModel} from "./result/result-model";
+import {BasicDataModel} from "./result/basic-data-model";
 import {QueryService} from "../../../../query.service";
 
 @Component({
@@ -13,10 +13,10 @@ export class SearchResultsComponent implements OnInit {
   constructor(private queryService: QueryService) {
   }
 
-  results: Observable<ResultModel[]>;
+  results: Observable<BasicDataModel[]>;
 
   ngOnInit() {
-    this.results = this.queryService.results$;
+    this.results = this.queryService.basicData$;
   }
 
 

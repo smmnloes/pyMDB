@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ResultModel} from "./result-model";
+import {BasicDataModel} from "./basic-data-model";
 import {DetailService} from "../../../../../detail.service";
 
 
@@ -11,7 +11,7 @@ import {DetailService} from "../../../../../detail.service";
 export class ResultComponent implements OnInit {
 
   @Input()
-  movieData: ResultModel;
+  movieData: BasicDataModel;
 
   constructor(private detailService: DetailService) {
   }

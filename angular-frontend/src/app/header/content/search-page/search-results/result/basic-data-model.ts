@@ -1,4 +1,4 @@
-export class ResultModel {
+export class BasicDataModel {
 
   constructor(public average_rating: number,
               public directors: string[],
@@ -7,7 +7,6 @@ export class ResultModel {
               public principals: string[],
               public runtime_minutes: number,
               public tid: number,
-              public year: number,
-              public detailed_data: Object) {
+              public year: number) {
   }
 }

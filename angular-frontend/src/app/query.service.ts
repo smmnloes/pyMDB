@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Subject} from "rxjs/Subject";
-import {ResultModel} from "./header/content/search-page/search-results/result/result-model";
+import {BasicDataModel} from "./header/content/search-page/search-results/result/basic-data-model";
 import {SearchModel} from "./header/content/search-page/search-form/search-model";
 
 
@@ -12,8 +12,8 @@ const httpOptions = {
 @Injectable()
 export class QueryService {
 
-  private resultsSource = new Subject<ResultModel[]>();
-  results$ = this.resultsSource.asObservable();
+  private basicDataSource = new Subject<BasicDataModel[]>();
+  basicData$ = this.basicDataSource.asObservable();
 
   resultCountSource = new Subject<number>();
   resultCount$ = this.resultCountSource.asObservable();
@@ -22,7 +22,7 @@ export class QueryService {
 
   PAGE_SIZE = 15;
 
-  cachedPages: ResultModel[][] = [];
+  cachedPages: BasicDataModel[][] = [];
 
   constructor(private http: HttpClient) {
   }
@@ -37,7 +37,7 @@ export class QueryService {
     } else {
       let cachedResult = this.cachedPages[queryData.current_page];
       if (cachedResult != null) {
-        this.resultsSource.next(cachedResult);
+        this.basicDataSource.next(cachedResult);
         return;
       }
     }
@@ -47,8 +47,8 @@ export class QueryService {
 
     this.http.post('api/query', queryData, httpOptions).subscribe(
       data => {
-        let processedResult: ResultModel[] = QueryService.processResult(data);
-        this.resultsSource.next(processedResult);
+        let processedResult: BasicDataModel[] = QueryService.processBasicData(data);
+        this.basicDataSource.next(processedResult);
 
         if (this.cachedPages[queryData.current_page] == null) {
           this.cachedPages[queryData.current_page] = processedResult;
@@ -69,10 +69,10 @@ export class QueryService {
     })
   }
 
-  static processResult(data): ResultModel[] {
-    let results: ResultModel[] = [];
+  static processBasicData(data): BasicDataModel[] {
+    let results: BasicDataModel[] = [];
     for (let result of data) {
-      results.push(new ResultModel(
+      results.push(new BasicDataModel(
         result.average_rating,
         result.directors,
         result.genres,
@@ -80,8 +80,7 @@ export class QueryService {
         result.principals,
         result.runtime_minutes,
         result.tid,
-        result.year,
-        null
+        result.year
       ));
 
     }
