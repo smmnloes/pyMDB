@@ -80,7 +80,8 @@ export class QueryService {
         result.principals,
         result.runtime_minutes,
         result.tid,
-        result.year
+        result.year,
+        null
       ));
 
     }

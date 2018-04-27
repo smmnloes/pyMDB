@@ -7,6 +7,7 @@ export class ResultModel {
               public principals: string[],
               public runtime_minutes: number,
               public tid: number,
-              public year: number) {
+              public year: number,
+              public detailed_data: Object) {
   }
 }
