@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {SearchModel} from "./content/search-page/search-form/search-model";
 import {Subject} from "rxjs/Subject";
-import {ResultModel} from "./content/search-page/search-results/result/result-model";
+import {ResultModel} from "./header/content/search-page/search-results/result/result-model";
+import {SearchModel} from "./header/content/search-page/search-form/search-model";
 
 
 const httpOptions = {

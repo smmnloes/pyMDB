@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ResultModel} from "./result-model";
-import {DetailService} from "../../../../detail.service";
+import {DetailService} from "../../../../../detail.service";
+
 
 @Component({
   selector: 'app-result',
@@ -16,14 +17,6 @@ export class ResultComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.detailService.currentDetails$.subscribe(details => {
-      if (details == null) {
-        console.log("ERROR");
-      } else {
-        console.log(details)
-      }
-
-    })
   }
 
   getDetails() {

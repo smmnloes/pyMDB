@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {DetailService} from "../detail.service";
 
 @Component({
   selector: 'app-header',
@@ -7,9 +8,16 @@ import {Component, OnInit} from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor() { }
+  private currentPage: String = "search";
+
+  constructor(private detailService:DetailService) { }
 
   ngOnInit() {
+    this.detailService.currentDetails$.subscribe(details => this.currentPage = "details");
+  }
+
+  public setCurrentPage(page: string) {
+    this.currentPage = page;
   }
 
 }

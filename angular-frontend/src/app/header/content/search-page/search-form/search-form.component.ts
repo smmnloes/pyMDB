@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {SearchModel} from "./search-model";
-import {QueryService} from "../../../query.service";
+import {QueryService} from "../../../../query.service";
+
 
 @Component({
   selector: 'app-search-form',

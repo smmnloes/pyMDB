@@ -3,8 +3,15 @@
     <h1>pyMDB</h1>
   </div>
   <nav>
-    <a href="/">|Search |</a>
-    <a href="/">Details |</a>
-    <a href="/">Admin|</a>
+    <a (click)="setCurrentPage('search')">|Search |</a>
+    <a (click)="setCurrentPage('details')">Details |</a>
+    <a (click)="setCurrentPage('admin')">Admin|</a>
   </nav>
 </div>
+
+<!-- will be dynamically replaced by links in header component -->
+<div class="content">
+  <app-search-page [hidden]="!(currentPage == 'search')"></app-search-page>
+  <app-details-page [hidden]="!(currentPage == 'details')"></app-details-page>
+</div>
+
