@@ -42,7 +42,9 @@ export class DetailService {
   }
 
   private processDetailedData(details) {
+    console.log(details['production_countries']);
     return new DetailedDataModel(this.processCredits(details['credits']), details['budget'], details['original_language'],
+      details['production_countries'].map(element => element['name']),
       new Date(details['release_date']).toLocaleDateString(), details['poster_path']);
   }
 

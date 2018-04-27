@@ -22,6 +22,11 @@
       <td class="result-text">{{basicData.principals.join(', ')}}</td>
     </tr>
 
+     <tr *ngIf="detailedData != null && detailedData.productionCountries.length>0">
+      <td class="category">Countries:</td>
+      <td class="result-text">{{detailedData.productionCountries.join(', ')}}</td>
+    </tr>
+
     <tr *ngIf="detailedData != null && detailedData.originalLanguage!=null">
       <td class="category">Language:</td>
       <td class="result-text">{{detailedData.originalLanguage}}</td>
