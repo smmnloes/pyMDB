@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {BasicDataModel} from "./basic-data-model";
 import {DetailService} from "../../../../../detail.service";
+import {DetailedDataModel} from "./detailed-data-model";
 
 
 @Component({
@@ -11,7 +12,14 @@ import {DetailService} from "../../../../../detail.service";
 export class ResultComponent implements OnInit {
 
   @Input()
-  movieData: BasicDataModel;
+  basicData: BasicDataModel;
+
+  @Input()
+  detailedData: DetailedDataModel;
+
+  @Input()
+  usedOnDetailsPage: boolean = false;
+
 
   constructor(private detailService: DetailService) {
   }
@@ -20,7 +28,9 @@ export class ResultComponent implements OnInit {
   }
 
   getDetails() {
-    this.detailService.getDetails(this.movieData);
+    if (!this.usedOnDetailsPage) {
+      this.detailService.getDetails(this.basicData);
+    }
   }
 
 }

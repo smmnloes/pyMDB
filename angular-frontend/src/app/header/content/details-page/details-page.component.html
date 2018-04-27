@@ -9,7 +9,8 @@
           </ng-template>
         </div>
         <div class="cell small-12 medium-9">
-          <app-result [movieData]="combinedData.basicData"></app-result>
+          <app-result [basicData]="combinedData.basicData" [detailedData]="combinedData.detailedData"
+                      [usedOnDetailsPage]="true"></app-result>
         </div>
       </div>
 
