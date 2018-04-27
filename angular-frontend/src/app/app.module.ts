@@ -15,6 +15,7 @@ import {ResultComponent} from './header/content/search-page/search-results/resul
 import {PaginationComponent} from './header/content/search-page/search-results/pagination/pagination.component';
 import {DetailService} from "./detail.service";
 import {DetailsPageComponent} from './header/content/details-page/details-page.component';
+import {CreditsComponent} from './header/content/details-page/credits/credits.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import {DetailsPageComponent} from './header/content/details-page/details-page.c
     MultiselectComponent,
     ResultComponent,
     PaginationComponent,
-    DetailsPageComponent
+    DetailsPageComponent,
+    CreditsComponent
   ],
   imports: [
     BrowserModule,

@@ -15,6 +15,11 @@
       </div>
 
     </div>
+    <div class="credits" *ngIf="hasDetailData()">
+      <app-credits [credits]="combinedData.detailedData.credits"></app-credits>
+  </div>
+
+
   </div>
   <ng-template #no_data_available>
     <p class="error-message">No Data to display. Please select a movie first!</p>
