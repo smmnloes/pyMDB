@@ -3,13 +3,13 @@
     <div class="grid-container">
       <p class="details-title">{{combinedData.basicData.primary_title}}</p>
       <div class="grid-x">
-        <div class="cell poster">
+        <div class="cell poster small-12 medium-4">
           <img src="{{fullPosterPath$ | async}}">
-
         </div>
-        <div class="cell">
+        <div class="cell medium-8">
           <div class="basic-data grid-x">
-
+            <div class="cell medium-4">Runtime:</div>
+            <div class="cell medium-8">{{combinedData.basicData.runtime_minutes}}</div>
           </div>
         </div>
 
