@@ -6,6 +6,7 @@ import "rxjs/add/operator/map";
 import {BasicDataModel} from "./header/content/search-page/search-results/result/basic-data-model";
 import {DetailedDataModel} from "./header/content/search-page/search-results/result/detailed-data-model";
 import {CombinedDataModel} from "./header/content/search-page/search-results/result/combined-data-model";
+import {Iso639} from "./iso639";
 
 @Injectable()
 export class DetailService {
@@ -42,8 +43,9 @@ export class DetailService {
   }
 
   private processDetailedData(details) {
-    console.log(details['production_countries']);
-    return new DetailedDataModel(this.processCredits(details['credits']), details['budget'], details['original_language'],
+
+    return new DetailedDataModel(this.processCredits(details['credits']), details['budget'],
+      Iso639.getCountry(details['original_language']),
       details['production_countries'].map(element => element['name']),
       new Date(details['release_date']).toLocaleDateString(), details['poster_path']);
   }
