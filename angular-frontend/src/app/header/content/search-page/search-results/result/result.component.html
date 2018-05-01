@@ -1,9 +1,16 @@
 <div class="result">
   <table>
 
+    <ng-container *ngIf="!usedOnDetailsPage;else detail_page_title">
     <th colspan="2" class="result-title"><a (click)="getDetails()">{{basicData.primary_title}}
       <span *ngIf="basicData.year!=null">({{basicData.year}})</span></a>
     </th>
+    </ng-container>
+    <ng-template #detail_page_title>
+      <th colspan="2" class="result-title">{{basicData.primary_title}}
+      <span *ngIf="basicData.year!=null">({{basicData.year}})</span>
+    </th>
+    </ng-template>
     <tbody>
     <tr>
       <td colspan="2">
@@ -22,24 +29,27 @@
       <td class="result-text">{{basicData.principals.join(', ')}}</td>
     </tr>
 
-     <tr *ngIf="detailedData != null && detailedData.productionCountries.length>0">
-      <td class="category">Countries:</td>
-      <td class="result-text">{{detailedData.productionCountries.join(', ')}}</td>
-    </tr>
+    <ng-container *ngIf="detailedData != null">
+      <tr *ngIf="detailedData.productionCountries.length>0">
+        <td class="category">Countries:</td>
+        <td class="result-text">{{detailedData.productionCountries.join(', ')}}</td>
+      </tr>
 
-    <tr *ngIf="detailedData != null && detailedData.originalLanguage!=null">
-      <td class="category">Language:</td>
-      <td class="result-text">{{detailedData.originalLanguage}}</td>
-    </tr>
+      <tr *ngIf="detailedData.originalLanguage!=null">
+        <td class="category">Language:</td>
+        <td class="result-text">{{detailedData.originalLanguage}}</td>
+      </tr>
 
-     <tr *ngIf="detailedData != null && detailedData.releaseDate!='Invalid Date'">
-      <td class="category">Released:</td>
-      <td class="result-text">{{detailedData.releaseDate}}</td>
-    </tr>
-     <tr *ngIf="detailedData != null && detailedData.budget!=0">
-      <td class="category">Budget:</td>
-      <td class="result-text">{{detailedData.budget.toLocaleString()}}</td>
-    </tr>
+      <tr *ngIf="detailedData.releaseDate!='Invalid Date'">
+        <td class="category">Released:</td>
+        <td class="result-text">{{detailedData.releaseDate}}</td>
+      </tr>
+      <tr *ngIf="detailedData.budget!=0">
+        <td class="category">Budget:</td>
+        <td class="result-text">{{detailedData.budget.toLocaleString()}}</td>
+      </tr>
+
+    </ng-container>
 
     </tbody>
   </table>
