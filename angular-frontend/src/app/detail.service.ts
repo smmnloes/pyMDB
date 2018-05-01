@@ -45,11 +45,10 @@ export class DetailService {
   private processDetailedData(details) {
 
     return new DetailedDataModel(this.processCredits(details['credits']), details['budget'],
-      Iso639.getCountry(details['original_language']),
+      Iso639.iso639ToName[details['original_language']],
       details['production_countries'].map(element => element['name']),
       new Date(details['release_date']).toLocaleDateString(), details['poster_path']);
   }
-
 
   private processCredits(credits) {
     let creditsProcessed: string[][] = [];
