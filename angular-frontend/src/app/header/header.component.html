@@ -3,14 +3,13 @@
     <h1>pyMDB</h1>
   </div>
   <nav>
-    <a (click)="setCurrentPage('search')">|Search |</a>
-    <a (click)="setCurrentPage('details')">Details |</a>
-    <a (click)="setCurrentPage('admin')">Admin|</a>
+    <a routerLink="/search">|Search |</a>
+    <a routerLink="/details">Details |</a>
+    <a href="">Admin|</a>
   </nav>
 </div>
 
 <div class="content">
-  <app-search-page [hidden]="!(currentPage == 'search')"></app-search-page>
-  <app-details-page [hidden]="!(currentPage == 'details')"></app-details-page>
+  <router-outlet></router-outlet>
 </div>
 

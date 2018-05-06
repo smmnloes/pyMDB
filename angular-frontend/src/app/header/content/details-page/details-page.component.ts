@@ -3,6 +3,7 @@ import {DetailService} from "../../../detail.service";
 import {HttpClient} from "@angular/common/http";
 import {CombinedDataModel} from "../search-page/search-results/result/combined-data-model";
 import {Subject} from "rxjs/Subject";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-details-page',
@@ -10,12 +11,16 @@ import {Subject} from "rxjs/Subject";
   styleUrls: ['./details-page.component.css']
 })
 export class DetailsPageComponent implements OnInit {
+  private id: number;
   private combinedData: CombinedDataModel;
 
   private fullPosterPathSource = new Subject<String>();
   private fullPosterPath$ = this.fullPosterPathSource.asObservable();
 
-  constructor(private detailService: DetailService, private http: HttpClient) {
+  constructor(private detailService: DetailService, private http: HttpClient, private activatedRoute: ActivatedRoute) {
+    this.activatedRoute.params.subscribe(params => {
+      this.id = params.id;
+    });
   }
 
   ngOnInit() {
@@ -25,7 +30,13 @@ export class DetailsPageComponent implements OnInit {
       if (this.hasPosterPath()) {
         this.getFullPosterPath();
       }
-    })
+    });
+
+    if (this.id != null) {
+      this.detailService.getDetails(this.id);
+    }
+
+
   }
 
   private hasDetailData() {
