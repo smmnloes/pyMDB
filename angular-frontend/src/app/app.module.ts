@@ -16,6 +16,8 @@ import {PaginationComponent} from './header/content/search-page/search-results/p
 import {DetailService} from "./detail.service";
 import {DetailsPageComponent} from './header/content/details-page/details-page.component';
 import {CreditsComponent} from './header/content/details-page/credits/credits.component';
+import {RouterModule} from "@angular/router";
+import {appRoutes} from "./app-routes"
 
 @NgModule({
   declarations: [
@@ -34,9 +36,11 @@ import {CreditsComponent} from './header/content/details-page/credits/credits.co
     BrowserModule,
     AngularMultiSelectModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    RouterModule.forRoot(appRoutes)
   ],
   providers: [QueryService, DetailService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
