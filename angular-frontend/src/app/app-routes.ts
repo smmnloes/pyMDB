@@ -6,5 +6,5 @@ export const appRoutes: Routes = [
   {path: '', redirectTo: "/search", pathMatch: 'full'},
   {path: 'search', component:SearchPageComponent},
   {path: 'details', component: DetailsPageComponent},
-  {path: 'details/:id', component: DetailsPageComponent},
+  {path: 'details/:movieId', component: DetailsPageComponent},
 ];

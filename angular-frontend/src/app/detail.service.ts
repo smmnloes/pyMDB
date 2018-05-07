@@ -16,10 +16,10 @@ export class DetailService {
   detailedDataCache: DetailedDataModel;
 
   detailedDataSource: Subject<DetailedDataModel> = new Subject<DetailedDataModel>();
-  detailedData$: Observable<DetailedDataModel>;
+  detailedData$: Observable<DetailedDataModel> = this.detailedDataSource.asObservable();
+
 
   constructor(private http: HttpClient) {
-    this.detailedData$ = this.detailedDataSource.asObservable();
   }
 
   getDetails(tid: number) {
