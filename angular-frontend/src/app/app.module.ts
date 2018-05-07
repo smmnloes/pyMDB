@@ -18,6 +18,7 @@ import {DetailsPageComponent} from './header/content/details-page/details-page.c
 import {CreditsComponent} from './header/content/details-page/credits/credits.component';
 import {RouterModule} from "@angular/router";
 import {appRoutes} from "./app-routes"
+import {TMDB_API_KEY} from "./tmdb-api-key";
 
 @NgModule({
   declarations: [
@@ -43,4 +44,9 @@ import {appRoutes} from "./app-routes"
   bootstrap: [AppComponent]
 })
 export class AppModule {
+  constructor () {
+     if (TMDB_API_KEY == null) {
+      throw Error('No TMDB Api Key defined. Please enter API Key in tmdb-api-key.ts!');
+    }
+  }
 }

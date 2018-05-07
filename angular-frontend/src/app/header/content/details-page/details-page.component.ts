@@ -4,6 +4,7 @@ import {HttpClient} from "@angular/common/http";
 import {Subject} from "rxjs/Subject";
 import {ActivatedRoute} from "@angular/router";
 import {DetailedDataModel} from "../search-page/search-results/result/detailed-data-model";
+import {TMDB_API_KEY} from "../../../tmdb-api-key";
 
 @Component({
   selector: 'app-details-page',
@@ -59,7 +60,7 @@ export class DetailsPageComponent implements OnInit {
    */
 
   private getFullPosterPath() {
-    return this.http.get(this.detailService.TMDB_ROOT + 'configuration?api_key=' + this.detailService.TMDB_API_KEY)
+    this.http.get(this.detailService.TMDB_ROOT + 'configuration?api_key=' + TMDB_API_KEY)
       .subscribe(configData => {
           let baseUrl = configData['images']['base_url'];
           this.fullPosterPathSource.next(baseUrl + 'w185' + this.detailedData.posterPath);
