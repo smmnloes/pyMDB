@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {DetailService} from "../../../detail.service";
 import {HttpClient} from "@angular/common/http";
-import {CombinedDataModel} from "../search-page/search-results/result/combined-data-model";
 import {Subject} from "rxjs/Subject";
 import {ActivatedRoute} from "@angular/router";
+import {DetailedDataModel} from "../search-page/search-results/result/detailed-data-model";
 
 @Component({
   selector: 'app-details-page',
@@ -12,7 +12,7 @@ import {ActivatedRoute} from "@angular/router";
 })
 export class DetailsPageComponent implements OnInit {
   private id: number;
-  private combinedData: CombinedDataModel;
+  private detailedData: DetailedDataModel;
 
   private fullPosterPathSource = new Subject<String>();
   private fullPosterPath$ = this.fullPosterPathSource.asObservable();
@@ -24,9 +24,10 @@ export class DetailsPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.detailService.combinedData$.subscribe(combinedData => {
-      this.combinedData = combinedData;
-      console.log(combinedData);
+    this.detailService.detailedData$.subscribe(detailedData => {
+      this.detailedData = detailedData;
+
+      console.log(detailedData);
       if (this.hasPosterPath()) {
         this.getFullPosterPath();
       }
@@ -34,17 +35,16 @@ export class DetailsPageComponent implements OnInit {
 
     if (this.id != null) {
       this.detailService.getDetails(this.id);
+    } else {
+      this.detailService.getLastDetails();
     }
 
 
   }
 
-  private hasDetailData() {
-    return this.combinedData.detailedData != null;
-  }
 
   private hasPosterPath() {
-    return this.hasDetailData() && this.combinedData.detailedData.posterPath != null;
+    return this.detailedData != null && this.detailedData.posterPath != null;
   }
 
 
@@ -62,7 +62,7 @@ export class DetailsPageComponent implements OnInit {
   private getFullPosterPath() {
     return this.http.get(this.detailService.TMDB_ROOT + 'configuration?api_key=' + this.detailService.TMDB_API_KEY).subscribe(configData => {
         let baseUrl = configData['images']['base_url'];
-        this.fullPosterPathSource.next(baseUrl + 'w185' + this.combinedData.detailedData.posterPath);
+        this.fullPosterPathSource.next(baseUrl + 'w185' + this.detailedData.posterPath);
       }
     );
 

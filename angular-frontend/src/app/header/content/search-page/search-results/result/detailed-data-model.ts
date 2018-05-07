@@ -4,7 +4,8 @@ export class DetailedDataModel {
               public budget:number,
               public originalLanguage:string,
               public productionCountries:string[],
-              public releaseDate:string,
-              public posterPath:string) {
+              public releaseDate:Date,
+              public posterPath:string,
+              public original_title:string) {
   }
 }
