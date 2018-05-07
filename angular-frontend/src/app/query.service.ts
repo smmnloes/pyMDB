@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Subject} from "rxjs/Subject";
 import {BasicDataModel} from "./header/content/search-page/search-results/result/basic-data-model";
-import {SearchModel} from "./header/content/search-page/search-form/search-model";
+import {QueryModel} from "./header/content/search-page/search-form/query-model";
 
 
 const httpOptions = {
@@ -18,7 +18,7 @@ export class QueryService {
   resultCountSource = new Subject<number>();
   resultCount$ = this.resultCountSource.asObservable();
 
-  lastQuery: SearchModel = null;
+  lastQuery: QueryModel = null;
 
   PAGE_SIZE = 15;
 
@@ -28,7 +28,7 @@ export class QueryService {
   }
 
 
-  makeQuery(queryData: SearchModel, isNewQuery: boolean) {
+  makeQuery(queryData: QueryModel, isNewQuery: boolean) {
 
     // Clear page cache if query is new,
     // else return cached page if available
@@ -63,7 +63,7 @@ export class QueryService {
 
   }
 
-  private getResultCount(queryData: SearchModel) {
+  private getResultCount(queryData: QueryModel) {
     this.http.post('api/result_count', queryData, httpOptions).subscribe(resultCount => {
       this.resultCountSource.next(<number>resultCount);
     })
@@ -96,6 +96,10 @@ export class QueryService {
     this.lastQuery.sort_by = criteria;
     this.lastQuery.current_page = 1;
     this.makeQuery(this.lastQuery, true);
+  }
+
+  getLastQuery() {
+    return this.lastQuery;
   }
 
 

@@ -102,7 +102,7 @@ export class DetailService {
       + "&append_to_response=credits")
   }
 
-  getLastDetails() {
+  getCachedDetails() {
     this.detailedDataSource.next(this.detailedDataCache);
   }
 }

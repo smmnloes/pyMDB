@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {SearchModel} from "./search-model";
+import {QueryModel} from "./query-model";
 import {QueryService} from "../../../../query.service";
 
 
@@ -9,7 +9,7 @@ import {QueryService} from "../../../../query.service";
   styleUrls: ['./search-form.component.css']
 })
 export class SearchFormComponent implements OnInit {
-  searchModel: SearchModel;
+  queryModel: QueryModel;
 
   private sortCriteria: string[];
 
@@ -25,18 +25,25 @@ export class SearchFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.searchModel = new SearchModel("", "", [], null,
-      null, null, ["", "", ""], "", null, 1, this.sortCriteria[0]);
+
+    let lastQuery = this.queryService.getLastQuery();
+    if (lastQuery != null) {
+      this.queryModel = lastQuery;
+      this.queryService.makeQuery(lastQuery, true);
+    } else {
+      this.queryModel = new QueryModel("", "", [], null,
+        null, null, ["", "", ""], "", null, 1, this.sortCriteria[0]);
+    }
   }
 
   onSubmit() {
-    this.queryService.makeQuery(this.searchModel, true);
+    this.queryService.makeQuery(this.queryModel, true);
   }
 
 
   onClickSortBy() {
     if (this.queryService.lastQuery != null) {
-      this.queryService.changeSortBy(this.searchModel.sort_by);
+      this.queryService.changeSortBy(this.queryModel.sort_by);
     }
   }
 
