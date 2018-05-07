@@ -8,12 +8,12 @@
             <div class="cell small-12">
               <label for="title">Title</label>
               <input id="title" type="text" name="title" placeholder="Schindler's List"
-                     [(ngModel)]="searchModel.title">
+                     [(ngModel)]="queryModel.title">
             </div>
 
             <div class="cell small-12 large-6">
               <label for="genres">Genres</label>
-              <app-multiselect id="genres" name="genres" [(ngModel)]="searchModel.genres"
+              <app-multiselect id="genres" name="genres" [(ngModel)]="queryModel.genres"
               ></app-multiselect>
             </div>
 
@@ -21,7 +21,7 @@
               <label for="rating">min. Rating</label>
               <input id="rating" type="number" step="0.1" min="0" max="10" name="rating"
                      placeholder="5.5"
-                     [(ngModel)]="searchModel.min_rating_imdb">
+                     [(ngModel)]="queryModel.min_rating_imdb">
             </div>
             <div class="cell small-8 medium-8 large-4">
               <div class="grid-x">
@@ -29,13 +29,13 @@
                   <label for="year_from">min. year</label>
                   <input id="year_from" type="number" min="1800" max="2020" name="year_from"
                          placeholder="1965"
-                         [(ngModel)]="searchModel.year_from">
+                         [(ngModel)]="queryModel.year_from">
                 </div>
                 <div class="cell small-6">
                   <label for="year_to">max. year</label>
                   <input id="year_to" type="number" min="1800" max="2020" name="year_to"
                          placeholder="2010"
-                         [(ngModel)]="searchModel.year_to">
+                         [(ngModel)]="queryModel.year_to">
                 </div>
               </div>
             </div>
@@ -43,13 +43,13 @@
             <div class="cell small-12 medium-6">
               <label for="director">Director</label>
               <input id="director" type="text" name="director" placeholder="Steven Spielberg"
-                     [(ngModel)]="searchModel.director">
+                     [(ngModel)]="queryModel.director">
             </div>
 
             <div class="cell small-12 medium-6">
               <label for="writer">Writer</label>
               <input id="writer" type="text" name="writer" placeholder="Thomas Keneally"
-                     [(ngModel)]="searchModel.writer">
+                     [(ngModel)]="queryModel.writer">
             </div>
           </div>
         </div>
@@ -58,11 +58,11 @@
           <div class="grid-x" id="principals">
             <input type="text" class="cell large-4" id="p1" name="p1"
                    placeholder="Liam Neeson"
-                   [(ngModel)]="searchModel.principals[0]">
+                   [(ngModel)]="queryModel.principals[0]">
             <input type="text" class="cell large-4" id="p2" name="p2"
-                   [(ngModel)]="searchModel.principals[1]">
+                   [(ngModel)]="queryModel.principals[1]">
             <input type="text" class="cell large-4" id="p3" name="p3"
-                   [(ngModel)]="searchModel.principals[2]">
+                   [(ngModel)]="queryModel.principals[2]">
           </div>
         </div>
         <div class="cell">
@@ -73,7 +73,7 @@
             </div>
             <div class="cell small-3 small-offset-6">
               <label for="sort-by">Sort by:</label>
-              <select id="sort-by" name="sort-by" [(ngModel)]="searchModel.sort_by" (change)="onClickSortBy()">
+              <select id="sort-by" name="sort-by" [(ngModel)]="queryModel.sort_by" (change)="onClickSortBy()">
                 <option *ngFor="let criteria of sortCriteria">{{criteria}}</option>
               </select>
             </div>
