@@ -37,6 +37,7 @@ export class SearchFormComponent implements OnInit {
   }
 
   onSubmit() {
+    this.queryModel.current_page = 1;
     this.queryService.makeQuery(this.queryModel, true);
   }
 
