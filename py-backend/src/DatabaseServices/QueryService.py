@@ -97,9 +97,9 @@ def get_movies_by_criteria(request, get_count=False):
     elif sort_by == 'Rating':
         query = query.order_by(desc(Ratings.averageRating))
 
-    page_size = request['page_size']
+    results_per_page = request['results_per_page']
     current_page = request['current_page']
-    query = query.limit(page_size).offset((current_page - 1) * page_size)
+    query = query.limit(results_per_page).offset((current_page - 1) * results_per_page)
 
     # print(query)
 

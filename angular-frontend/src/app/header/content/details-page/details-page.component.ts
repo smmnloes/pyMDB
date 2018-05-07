@@ -11,7 +11,7 @@ import {DetailedDataModel} from "../search-page/search-results/result/detailed-d
   styleUrls: ['./details-page.component.css']
 })
 export class DetailsPageComponent implements OnInit {
-  private id: number;
+  private movieId: number;
   private detailedData: DetailedDataModel;
 
   private fullPosterPathSource = new Subject<String>();
@@ -19,7 +19,7 @@ export class DetailsPageComponent implements OnInit {
 
   constructor(private detailService: DetailService, private http: HttpClient, private activatedRoute: ActivatedRoute) {
     this.activatedRoute.params.subscribe(params => {
-      this.id = params.id;
+      this.movieId = params.movieId;
     });
   }
 
@@ -27,14 +27,13 @@ export class DetailsPageComponent implements OnInit {
     this.detailService.detailedData$.subscribe(detailedData => {
       this.detailedData = detailedData;
 
-      console.log(detailedData);
       if (this.hasPosterPath()) {
         this.getFullPosterPath();
       }
     });
 
-    if (this.id != null) {
-      this.detailService.getDetails(this.id);
+    if (this.movieId != null) {
+      this.detailService.getDetails(this.movieId);
     } else {
       this.detailService.getCachedDetails();
     }
@@ -60,11 +59,12 @@ export class DetailsPageComponent implements OnInit {
    */
 
   private getFullPosterPath() {
-    return this.http.get(this.detailService.TMDB_ROOT + 'configuration?api_key=' + this.detailService.TMDB_API_KEY).subscribe(configData => {
-        let baseUrl = configData['images']['base_url'];
-        this.fullPosterPathSource.next(baseUrl + 'w185' + this.detailedData.posterPath);
-      }
-    );
+    return this.http.get(this.detailService.TMDB_ROOT + 'configuration?api_key=' + this.detailService.TMDB_API_KEY)
+      .subscribe(configData => {
+          let baseUrl = configData['images']['base_url'];
+          this.fullPosterPathSource.next(baseUrl + 'w185' + this.detailedData.posterPath);
+        }
+      );
 
   }
 

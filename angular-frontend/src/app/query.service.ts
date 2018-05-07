@@ -20,7 +20,7 @@ export class QueryService {
 
   lastQuery: QueryModel = null;
 
-  PAGE_SIZE = 15;
+  RESULTS_PER_PAGE = 15;
 
   cachedPages: BasicDataModel[][] = [];
 
@@ -35,14 +35,14 @@ export class QueryService {
     if (isNewQuery) {
       this.cachedPages = [];
     } else {
-      let cachedResult = this.cachedPages[queryData.current_page];
-      if (cachedResult != null) {
-        this.basicDataSource.next(cachedResult);
+      let cachedPage = this.cachedPages[queryData.current_page];
+      if (cachedPage != null) {
+        this.basicDataSource.next(cachedPage);
         return;
       }
     }
 
-    queryData.page_size = this.PAGE_SIZE;
+    queryData.results_per_page = this.RESULTS_PER_PAGE;
     this.lastQuery = queryData.clone();
 
     this.http.post('api/query', queryData, httpOptions).subscribe(
@@ -69,9 +69,9 @@ export class QueryService {
     })
   }
 
-  static processBasicData(data): BasicDataModel[] {
+  static processBasicData(basicData): BasicDataModel[] {
     let results: BasicDataModel[] = [];
-    for (let result of data) {
+    for (let result of basicData) {
       results.push(new BasicDataModel(
         result.average_rating,
         result.directors,
@@ -87,7 +87,7 @@ export class QueryService {
     return results;
   }
 
-  loadPage(page: number) {
+  changeCurrentPage(page: number) {
     this.lastQuery.current_page = page;
     this.makeQuery(this.lastQuery, false);
   }

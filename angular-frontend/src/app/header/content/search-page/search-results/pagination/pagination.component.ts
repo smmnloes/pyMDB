@@ -21,16 +21,9 @@ export class PaginationComponent implements OnInit {
 
     this.queryService.resultCount$.subscribe(resultCount => {
       this.resultCount = resultCount;
-      this.maxPageCount = Math.ceil(<number>resultCount / this.queryService.PAGE_SIZE);
-      let lastQuery = this.queryService.getLastQuery();
+      this.maxPageCount = Math.ceil(<number>resultCount / this.queryService.RESULTS_PER_PAGE);
 
-
-      if (lastQuery == null) {
-        this.currentPage = 1;
-      } else {
-        this.currentPage = lastQuery.current_page;
-      }
-
+      this.currentPage = this.queryService.lastQuery.current_page;
     })
   }
 
@@ -56,7 +49,7 @@ export class PaginationComponent implements OnInit {
   }
 
   loadNewPage() {
-    this.queryService.loadPage(this.currentPage);
+    this.queryService.changeCurrentPage(this.currentPage);
   }
 
   resultsAvailable() {
