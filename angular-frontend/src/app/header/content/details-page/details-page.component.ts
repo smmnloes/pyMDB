@@ -36,7 +36,7 @@ export class DetailsPageComponent implements OnInit {
     if (this.id != null) {
       this.detailService.getDetails(this.id);
     } else {
-      this.detailService.getLastDetails();
+      this.detailService.getCachedDetails();
     }
 
 

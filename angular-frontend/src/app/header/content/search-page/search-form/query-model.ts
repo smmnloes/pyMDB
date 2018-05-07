@@ -1,4 +1,4 @@
-export class SearchModel {
+export class QueryModel {
   constructor(public director: string,
               public writer: string,
               public genres: string[],
@@ -13,8 +13,8 @@ export class SearchModel {
   ) {
   }
 
-  public clone(): SearchModel {
-    return new SearchModel(this.director, this.writer, Object.assign([], this.genres),
+  public clone(): QueryModel {
+    return new QueryModel(this.director, this.writer, Object.assign([], this.genres),
       this.min_rating_imdb, this.year_from, this.year_to, Object.assign([], this.principals),
       this.title, this.page_size, this.current_page, this.sort_by)
   }

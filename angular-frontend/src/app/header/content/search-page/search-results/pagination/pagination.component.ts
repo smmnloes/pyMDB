@@ -22,7 +22,15 @@ export class PaginationComponent implements OnInit {
     this.queryService.resultCount$.subscribe(resultCount => {
       this.resultCount = resultCount;
       this.maxPageCount = Math.ceil(<number>resultCount / this.queryService.PAGE_SIZE);
-      this.currentPage = 1;
+      let lastQuery = this.queryService.getLastQuery();
+
+
+      if (lastQuery == null) {
+        this.currentPage = 1;
+      } else {
+        this.currentPage = lastQuery.current_page;
+      }
+
     })
   }
 
