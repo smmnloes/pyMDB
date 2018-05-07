@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Subject} from "rxjs/Subject";
 import {Observable} from "rxjs/Observable";
@@ -6,10 +6,11 @@ import "rxjs/add/operator/map";
 import {DetailedDataModel} from "./header/content/search-page/search-results/result/detailed-data-model";
 
 import {Iso639} from "./iso639";
+import {TMDB_API_KEY} from "./tmdb-api-key";
 
 @Injectable()
 export class DetailService {
-  TMDB_API_KEY = "6d23876cfa1749f6f3ea88a46a1f50df";
+
 
   TMDB_ROOT = "https://api.themoviedb.org/3/";
 
@@ -80,7 +81,7 @@ export class DetailService {
       + 'find/'
       + tid
       + '?api_key='
-      + this.TMDB_API_KEY
+      + TMDB_API_KEY
       + "&external_source=imdb_id")
       .map(data => {
         if (data['movie_results'].length > 0) {
@@ -98,7 +99,7 @@ export class DetailService {
       + 'movie/'
       + tmdbID
       + "?api_key="
-      + this.TMDB_API_KEY
+      + TMDB_API_KEY
       + "&append_to_response=credits")
   }
 
