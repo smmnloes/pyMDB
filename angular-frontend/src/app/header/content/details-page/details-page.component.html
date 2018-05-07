@@ -1,5 +1,5 @@
 <div class="details-container">
-  <div *ngIf="combinedData!=null; else no_data_available">
+  <div *ngIf="detailedData!=null; else no_data_available">
     <div class="grid-container">
       <div class="grid-x">
         <div class="cell poster small-12 medium-3">
@@ -9,19 +9,42 @@
           </ng-template>
         </div>
         <div class="cell small-12 medium-9">
-          <app-result [basicData]="combinedData.basicData" [detailedData]="combinedData.detailedData"
-                      [usedOnDetailsPage]="true"></app-result>
+          <table>
+            <th colspan="2" class="result-title">{{detailedData.original_title}}
+              <span *ngIf="detailedData.releaseDate!=null">({{detailedData.releaseDate.getFullYear()}})</span>
+            </th>
+            <tr *ngIf="detailedData.productionCountries.length>0">
+              <td class="category">Countries:</td>
+              <td class="result-text">{{detailedData.productionCountries.join(', ')}}</td>
+            </tr>
+
+            <tr *ngIf="detailedData.originalLanguage!=null">
+              <td class="category">Language:</td>
+              <td class="result-text">{{detailedData.originalLanguage}}</td>
+            </tr>
+
+            <tr *ngIf="detailedData.releaseDate!=null">
+              <td class="category">Released:</td>
+              <td class="result-text">{{detailedData.releaseDate.toLocaleDateString()}}</td>
+            </tr>
+            <tr *ngIf="detailedData.budget!=0">
+              <td class="category">Budget:</td>
+              <td class="result-text">{{detailedData.budget.toLocaleString()}}</td>
+            </tr>
+          </table>
+
         </div>
       </div>
 
     </div>
-    <div class="credits" *ngIf="hasDetailData()">
-      <app-credits [credits]="combinedData.detailedData.credits"></app-credits>
-  </div>
+    <div class="credits">
+      <app-credits [credits]="detailedData.credits"></app-credits>
+    </div>
 
 
   </div>
+
   <ng-template #no_data_available>
-    <p class="error-message">No Data to display. Please select a movie first!</p>
+    <p class="error-message">No detailed data available!</p>
   </ng-template>
 </div>
