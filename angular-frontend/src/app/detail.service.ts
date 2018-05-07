@@ -3,9 +3,8 @@ import {HttpClient} from "@angular/common/http";
 import {Subject} from "rxjs/Subject";
 import {Observable} from "rxjs/Observable";
 import "rxjs/add/operator/map";
-import {BasicDataModel} from "./header/content/search-page/search-results/result/basic-data-model";
 import {DetailedDataModel} from "./header/content/search-page/search-results/result/detailed-data-model";
-import {CombinedDataModel} from "./header/content/search-page/search-results/result/combined-data-model";
+
 import {Iso639} from "./iso639";
 
 @Injectable()
@@ -14,28 +13,31 @@ export class DetailService {
 
   TMDB_ROOT = "https://api.themoviedb.org/3/";
 
-  combinedDataSource: Subject<CombinedDataModel> = new Subject<CombinedDataModel>();
-  combinedData$: Observable<CombinedDataModel>;
+  detailedDataCache: DetailedDataModel;
+
+  detailedDataSource: Subject<DetailedDataModel> = new Subject<DetailedDataModel>();
+  detailedData$: Observable<DetailedDataModel>;
 
   constructor(private http: HttpClient) {
-    this.combinedData$ = this.combinedDataSource.asObservable();
+    this.detailedData$ = this.detailedDataSource.asObservable();
   }
 
-  getDetails(movieData: BasicDataModel) {
+  getDetails(tid: number) {
 
-    let imdbIdFormatted = DetailService.getTidFormatted(movieData.tid);
+    let imdbIdFormatted = DetailService.getTidFormatted(tid);
 
     this.getTmdbID(imdbIdFormatted).subscribe(tmdbID => {
-      let dataCombined = new CombinedDataModel(movieData, null);
 
       if (tmdbID != -1) {
         this.getDetailsAndCastByTmdbId(tmdbID).subscribe(details => {
           console.log(details);
-          dataCombined.detailedData = this.processDetailedData(details);
-          this.combinedDataSource.next(dataCombined);
+          let detailedData = this.processDetailedData(details);
+          this.detailedDataCache = detailedData;
+          this.detailedDataSource.next(detailedData);
         });
       } else {
-        this.combinedDataSource.next(dataCombined);
+        this.detailedDataCache = null;
+        this.detailedDataSource.next(null);
       }
 
     });
@@ -47,7 +49,8 @@ export class DetailService {
     return new DetailedDataModel(this.processCredits(details['credits']), details['budget'],
       Iso639.iso639ToName[details['original_language']],
       details['production_countries'].map(element => element['name']),
-      new Date(details['release_date']).toLocaleDateString(), details['poster_path']);
+      new Date(details['release_date']), details['poster_path'],
+      details['original_title']);
   }
 
   private processCredits(credits) {
@@ -97,5 +100,9 @@ export class DetailService {
       + "?api_key="
       + this.TMDB_API_KEY
       + "&append_to_response=credits")
+  }
+
+  getLastDetails() {
+    this.detailedDataSource.next(this.detailedDataCache);
   }
 }
