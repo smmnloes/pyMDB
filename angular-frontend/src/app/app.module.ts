@@ -46,7 +46,8 @@ import {TMDB_API_KEY} from "./tmdb-api-key";
 export class AppModule {
   constructor () {
      if (TMDB_API_KEY == null) {
-      throw Error('No TMDB Api Key defined. Please enter API Key in tmdb-api-key.ts!');
+      console.error('No TMDB Api Key defined. Please enter API Key in tmdb-api-key.ts!\n' +
+        'No movie detail funcionality available.');
     }
   }
 }
