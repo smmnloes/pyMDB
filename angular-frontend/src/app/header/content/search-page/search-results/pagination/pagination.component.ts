@@ -58,7 +58,6 @@ export class PaginationComponent implements OnInit {
 
   loadNewPage() {
     let params = Object.assign({}, this.activatedRoute.snapshot.queryParams);
-    console.log(params);
     params['current_page'] = this.currentPage;
     this.router.navigate(['/search'], {queryParams: params});
   }

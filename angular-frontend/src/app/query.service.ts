@@ -3,6 +3,8 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Subject} from "rxjs/Subject";
 import {BasicDataModel} from "./header/content/search-page/search-results/result/basic-data-model";
 import {QueryModel} from "./header/content/search-page/search-form/query-model";
+import {Util} from "./util";
+import {ActivatedRoute} from "@angular/router";
 
 
 const httpOptions = {
@@ -20,9 +22,14 @@ export class QueryService {
 
   RESULTS_PER_PAGE = 15;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private activatedRoute: ActivatedRoute) {
+    this.activatedRoute.queryParams.subscribe(queryParams => {
+      if (!Util.isEmpty(queryParams)) {
+        console.log("making query");
+        this.makeQuery(QueryModel.fromQueryParams(queryParams));
+      }
+    })
   }
-
 
   makeQuery(queryData: QueryModel) {
     queryData.results_per_page = this.RESULTS_PER_PAGE;
@@ -34,7 +41,7 @@ export class QueryService {
       }
     );
 
-     this.getResultCount(queryData);
+    this.getResultCount(queryData);
 
   }
 
