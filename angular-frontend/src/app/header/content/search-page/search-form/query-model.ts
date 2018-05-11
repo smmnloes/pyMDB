@@ -32,6 +32,6 @@ export class QueryModel {
       queryParams.results_per_page,
       queryParams.current_page == null ? 1 : queryParams.current_page,
       queryParams.sort_by == null ? 'Title' : queryParams.sort_by
-    )
+    );
   }
 }
