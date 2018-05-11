@@ -2,6 +2,6 @@
 
 # proper logging
 # admin stuff
-# load api key from external resource
-# check for missing TMDB Key
 # pagination mobile
+# bug with principals
+# make query-service listen to url changes
