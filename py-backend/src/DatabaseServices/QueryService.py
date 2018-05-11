@@ -99,7 +99,7 @@ def get_movies_by_criteria(request, get_count=False):
 
     results_per_page = request['results_per_page']
     current_page = request['current_page']
-    query = query.limit(results_per_page).offset((current_page - 1) * results_per_page)
+    query = query.limit(results_per_page).offset((int(current_page) - 1) * results_per_page)
 
     # print(query)
 
