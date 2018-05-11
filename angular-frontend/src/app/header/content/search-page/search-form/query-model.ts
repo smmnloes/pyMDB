@@ -34,4 +34,11 @@ export class QueryModel {
       queryParams.sort_by == null ? 'Title' : queryParams.sort_by
     );
   }
+
+
+  public normalize() {
+    let clonedModel = this.clone();
+    clonedModel.current_page = -1;
+    return JSON.stringify(clonedModel);
+  }
 }

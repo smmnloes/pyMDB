@@ -1,4 +1,4 @@
 <div class="search-results-container">
   <app-pagination></app-pagination>
-  <app-result *ngFor="let result of results | async" [basicData]="result"></app-result>
+  <app-result *ngFor="let result of page" [basicData]="result"></app-result>
 </div>
