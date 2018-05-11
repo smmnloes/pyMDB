@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {QueryService} from "../../../../../query.service";
+import {ActivatedRoute, Router} from "@angular/router";
+import {Util} from "../../../../../util";
 
 
 @Component({
@@ -8,22 +10,28 @@ import {QueryService} from "../../../../../query.service";
   styleUrls: ['./pagination.component.css']
 })
 export class PaginationComponent implements OnInit {
+  private resultsAvailable = false;
   private currentPage: number;
   private resultCount: number;
   private maxPageCount: number;
 
-  constructor(private queryService: QueryService) {
+  constructor(private queryService: QueryService, private router: Router, private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit() {
     // if a new result count is published, a new query has been made -> reset current page,
     // calculate new maxPageCount
 
+    this.activatedRoute.queryParams.subscribe(queryParams => {
+      if (!Util.isEmpty(queryParams)) {
+        this.resultsAvailable = true;
+        this.currentPage = parseInt(queryParams.current_page);
+      }
+    });
+
     this.queryService.resultCount$.subscribe(resultCount => {
       this.resultCount = resultCount;
       this.maxPageCount = Math.ceil(<number>resultCount / this.queryService.RESULTS_PER_PAGE);
-
-      this.currentPage = this.queryService.lastQuery.current_page;
     })
   }
 
@@ -49,11 +57,10 @@ export class PaginationComponent implements OnInit {
   }
 
   loadNewPage() {
-    this.queryService.changeCurrentPage(this.currentPage);
-  }
-
-  resultsAvailable() {
-    return this.queryService.lastQuery != null;
+    let params = Object.assign({}, this.activatedRoute.snapshot.queryParams);
+    console.log(params);
+    params['current_page'] = this.currentPage;
+    this.router.navigate(['/search'], {queryParams: params});
   }
 
   onClickFirst() {
@@ -74,7 +81,6 @@ export class PaginationComponent implements OnInit {
     let pages: number[] = [];
     let minPage = this.currentPage > 5 ? this.currentPage - 5 : 1;
     let maxPage = (this.currentPage > 5 ? this.currentPage + 4 : 10);
-
     maxPage = maxPage > this.maxPageCount ? this.maxPageCount : maxPage;
 
     for (let i = minPage; i <= maxPage; i++) {
