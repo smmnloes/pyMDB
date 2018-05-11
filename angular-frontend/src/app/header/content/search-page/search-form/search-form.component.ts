@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {QueryModel} from "./query-model";
 import {QueryService} from "../../../../query.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {Util} from "../../../../util";
 
 
 @Component({
@@ -22,19 +21,13 @@ export class SearchFormComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe(queryParams => {
         console.log(queryParams);
         this.queryModel = QueryModel.fromQueryParams(queryParams);
-
-        console.log(this.queryModel);
-
-        if (!Util.isEmpty(queryParams)) {
-          console.log("making query");
-          this.queryService.makeQuery(this.queryModel);
-        }
-
       }
     );
   }
 
   onSubmit() {
+    console.log("onsubmit");
+    console.log(this.queryModel);
     this.queryModel.current_page = 1;
     this.refetch();
   }
