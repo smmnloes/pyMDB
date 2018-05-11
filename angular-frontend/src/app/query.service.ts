@@ -25,8 +25,6 @@ export class QueryService {
 
 
   makeQuery(queryData: QueryModel) {
-    this.getResultCount(queryData);
-
     queryData.results_per_page = this.RESULTS_PER_PAGE;
 
     this.http.post('api/query', queryData, httpOptions).subscribe(
@@ -35,6 +33,8 @@ export class QueryService {
         this.basicDataSource.next(processedResult);
       }
     );
+
+     this.getResultCount(queryData);
 
   }
 
