@@ -1,6 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {QueryModel} from "./query-model";
 import {QueryService} from "../../../../query.service";
+import {ActivatedRoute, Router} from "@angular/router";
+import {Util} from "../../../../util";
 
 
 @Component({
@@ -9,43 +11,40 @@ import {QueryService} from "../../../../query.service";
   styleUrls: ['./search-form.component.css']
 })
 export class SearchFormComponent implements OnInit {
-  queryModel: QueryModel;
 
-  private sortCriteria: string[];
+  private sortCriteria: string[] = ['Title', 'Year', 'Rating'];
+  private queryModel: QueryModel;
 
-
-  @Input()
-  genres: string[];
-
-  constructor(private queryService: QueryService) {
-    this.sortCriteria = [
-      'Title', 'Year', 'Rating'
-    ];
-
+  constructor(private queryService: QueryService, private router: Router, private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit() {
+    this.activatedRoute.queryParams.subscribe(queryParams => {
+        console.log(queryParams);
+        this.queryModel = QueryModel.fromQueryParams(queryParams);
 
-    let lastQuery = this.queryService.getLastQuery();
-    if (lastQuery != null) {
-      this.queryModel = lastQuery;
-      this.queryService.makeQuery(lastQuery, true);
-    } else {
-      this.queryModel = new QueryModel("", "", [], null,
-        null, null, ["", "", ""], "", null, 1, this.sortCriteria[0]);
-    }
+        console.log(this.queryModel);
+
+        if (!Util.isEmpty(queryParams)) {
+          console.log("making query");
+          this.queryService.makeQuery(this.queryModel);
+        }
+
+      }
+    );
   }
 
   onSubmit() {
     this.queryModel.current_page = 1;
-    this.queryService.makeQuery(this.queryModel, true);
+    this.refetch();
   }
 
-
   onClickSortBy() {
-    if (this.queryService.lastQuery != null) {
-      this.queryService.changeSortBy(this.queryModel.sort_by);
-    }
+    this.refetch();
+  }
+
+  refetch() {
+       this.router.navigate(['/search'], {queryParams: JSON.parse(JSON.stringify(this.queryModel))});
   }
 
 }
