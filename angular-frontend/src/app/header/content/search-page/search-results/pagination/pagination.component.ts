@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {QueryService} from "../../../../../query.service";
+import {QueryService} from "../../../../../services/query.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {Util} from "../../../../../util";
+import {Util} from "../../../../../util/util";
 
 
 @Component({

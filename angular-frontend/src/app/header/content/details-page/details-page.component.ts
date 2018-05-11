@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {DetailService} from "../../../detail.service";
+import {DetailService} from "../../../services/detail.service";
 import {HttpClient} from "@angular/common/http";
 import {Subject} from "rxjs/Subject";
 import {ActivatedRoute} from "@angular/router";
 import {DetailedDataModel} from "../search-page/search-results/result/detailed-data-model";
-import {TMDB_API_KEY} from "../../../tmdb-api-key";
+import {TMDB_API_KEY} from "../../../util/tmdb-api-key";
 
 @Component({
   selector: 'app-details-page',
