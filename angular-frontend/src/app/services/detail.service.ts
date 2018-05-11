@@ -1,12 +1,12 @@
-import {Injectable, OnInit} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Subject} from "rxjs/Subject";
 import {Observable} from "rxjs/Observable";
 import "rxjs/add/operator/map";
-import {DetailedDataModel} from "./header/content/search-page/search-results/result/detailed-data-model";
+import {DetailedDataModel} from "../header/content/search-page/search-results/result/detailed-data-model";
 
-import {Iso639} from "./iso639";
-import {TMDB_API_KEY} from "./tmdb-api-key";
+import {Iso639} from "../util/iso639";
+import {TMDB_API_KEY} from "../util/tmdb-api-key";
 
 @Injectable()
 export class DetailService {
@@ -31,7 +31,6 @@ export class DetailService {
 
       if (tmdbID != -1) {
         this.getDetailsAndCastByTmdbId(tmdbID).subscribe(details => {
-          console.log(details);
           let detailedData = this.processDetailedData(details);
           this.detailedDataCache = detailedData;
           this.detailedDataSource.next(detailedData);

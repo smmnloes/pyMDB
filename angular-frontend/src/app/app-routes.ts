@@ -4,7 +4,7 @@ import {DetailsPageComponent} from "./header/content/details-page/details-page.c
 
 export const appRoutes: Routes = [
   {path: '', redirectTo: "/search", pathMatch: 'full'},
-  {path: 'search', component:SearchPageComponent},
+  {path: 'search', component: SearchPageComponent, runGuardsAndResolvers: 'paramsOrQueryParamsChange'},
   {path: 'details', component: DetailsPageComponent},
   {path: 'details/:movieId', component: DetailsPageComponent},
 ];
