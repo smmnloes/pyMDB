@@ -24,8 +24,8 @@ export class PaginationComponent implements OnInit {
 
     this.activatedRoute.queryParams.subscribe(queryParams => {
       if (!Util.isEmpty(queryParams)) {
-        this.resultsAvailable = true;
         this.currentPage = parseInt(queryParams.current_page);
+        this.resultsAvailable = true;
       }
     });
 
