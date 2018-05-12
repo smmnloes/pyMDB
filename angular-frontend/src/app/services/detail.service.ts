@@ -6,7 +6,7 @@ import "rxjs/add/operator/map";
 import {DetailedDataModel} from "../header/content/search-page/search-results/result/detailed-data-model";
 
 import {Iso639} from "../util/iso639";
-import {TMDB_API_KEY} from "../util/tmdb-api-key";
+import {TMDB_API_KEY} from "../tmdb-api-key";
 import {CacheService} from "./cache.service";
 
 @Injectable()
