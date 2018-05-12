@@ -22,19 +22,6 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
   dropdownSettings = {};
   MAX_NUMBER_SELECTION = 3;
 
-  propagateChange = (_: any) => {
-  };
-
-  registerOnChange(fn) {
-    this.propagateChange = fn;
-  }
-
-  registerOnTouched() {
-  }
-
-  writeValue() {
-  }
-
   constructor() {
   }
 
@@ -74,12 +61,35 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
   }
 
   propagate() {
-    let onlyNames: string[] = [];
-
-    for (let item of this.selectedItems) {
-      onlyNames.push(item['itemName']);
-    }
+    let onlyNames = this.selectedItems.map(item => item['itemName']);
     this.propagateChange(onlyNames);
   }
 
+  propagateChange = (_: any) => {
+  };
+
+  registerOnChange(fn) {
+    this.propagateChange = fn;
+  }
+
+  registerOnTouched() {
+  }
+
+  writeValue(values: any) {
+    if (typeof(values)=="string") {
+      values = [values];
+    }
+
+    let selectedItemsNew = [];
+    if (values != null) {
+      for (let value of values) {
+        for (let option of this.dropdownList) {
+          if (option.itemName == value) {
+            selectedItemsNew.push(option);
+          }
+        }
+      }
+    }
+    this.selectedItems = selectedItemsNew;
+  }
 }
