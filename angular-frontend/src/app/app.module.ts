@@ -18,7 +18,7 @@ import {DetailsPageComponent} from './header/content/details-page/details-page.c
 import {CreditsComponent} from './header/content/details-page/credits/credits.component';
 import {RouterModule} from "@angular/router";
 import {appRoutes} from "./app-routes"
-import {TMDB_API_KEY} from "./util/tmdb-api-key";
+import {TMDB_API_KEY} from "./tmdb-api-key";
 import {CacheService} from "./services/cache.service";
 
 @NgModule({
