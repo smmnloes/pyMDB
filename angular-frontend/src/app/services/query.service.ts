@@ -63,6 +63,7 @@ export class QueryService {
       setTimeout(() => {
         this.resultCountSource.next(cachedResultCount);
       }, 1);
+
     } else {
       this.http.post('api/result_count', queryData, httpOptions).subscribe(newResultCount => {
         this.resultCountSource.next(<number>newResultCount);
