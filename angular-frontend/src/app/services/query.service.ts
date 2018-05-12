@@ -37,8 +37,13 @@ export class QueryService {
     let cachedPage = this.cacheService.getPage(queryData);
 
     if (cachedPage != null) {
-      console.log("CACHED PAGE");
-      this.basicDataSource.next(cachedPage);
+
+      //Timeout necessary, otherwise cached results won't be rendered if the user returns
+      //to search page via the browser's back button
+      setTimeout(() => {
+        this.basicDataSource.next(cachedPage);
+      }, 1);
+
     } else {
       this.http.post('api/query', queryData, httpOptions).subscribe(
         newPage => {
@@ -53,9 +58,11 @@ export class QueryService {
     let cachedResultCount = this.cacheService.getResultCount(queryData);
 
     if (cachedResultCount != null) {
-      console.log("CACHED RESULT COUNT");
-      this.resultCountSource.next(cachedResultCount);
 
+      //See explanation above
+      setTimeout(() => {
+        this.resultCountSource.next(cachedResultCount);
+      }, 1);
     } else {
       this.http.post('api/result_count', queryData, httpOptions).subscribe(newResultCount => {
         this.resultCountSource.next(<number>newResultCount);

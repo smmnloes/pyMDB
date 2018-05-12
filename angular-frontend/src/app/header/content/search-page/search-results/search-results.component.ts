@@ -16,7 +16,7 @@ export class SearchResultsComponent implements OnInit {
 
   ngOnInit() {
     this.queryService.basicData$.subscribe(page => {
-      this.page = page
+      this.page = page;
     });
   }
 
