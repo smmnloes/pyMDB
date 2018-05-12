@@ -28,7 +28,7 @@ def update_db():
     try:
         for dataset in DATASETS:
             print('\nProcessing {} data.'.format(dataset))
-            # download_new_data(dataset)
+            download_and_unzip_new_data(dataset)
             print('Reading {} to database.'.format(dataset))
             DATASETS_TO_READ_FUNCTIONS.get(dataset)()
             # delete_downloaded_remote_data(dataset)
@@ -72,7 +72,7 @@ def restore_db_last_version():
         print("No previous version found! Cannot restore last version!")
 
 
-def download_new_data(dataset):
+def download_and_unzip_new_data(dataset):
     unzipped_path = definitions.DB_DATA_REMOTE + dataset
     zipped_path = unzipped_path + '_zipped'
     print('Downloading {} data.'.format(dataset))

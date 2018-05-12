@@ -20,7 +20,7 @@ def main():
             UpdateService.update_db()
         elif user_input == 'download':
             next_input = input('Download which dataset? ')
-            UpdateService.download_new_data(next_input)
+            UpdateService.download_and_unzip_new_data(next_input)
         elif user_input == 'backup':
             UpdateService.backup_local_db()
         elif user_input == 'restore':
