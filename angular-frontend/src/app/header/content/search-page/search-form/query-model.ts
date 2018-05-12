@@ -21,18 +21,26 @@ export class QueryModel {
 
   public static fromQueryParams(queryParams: any) {
     return new QueryModel(
-      queryParams.director == null ? "" : queryParams.director,
-      queryParams.writer == null ? "" : queryParams.writer,
-      queryParams.genres == null ? [] : queryParams.genres,
-      queryParams.min_rating_imdb == null ? null : queryParams.min_rating_imdb,
-      queryParams.year_from == null ? null : queryParams.year_from,
-      queryParams.year_to == null ? null : queryParams.year_to,
-      queryParams.principals == null ? ["", "", ""] : queryParams.principals,
-      queryParams.title == null ? "" : queryParams.title,
-      queryParams.results_per_page,
-      queryParams.current_page == null ? 1 : queryParams.current_page,
-      queryParams.sort_by == null ? 'Title' : queryParams.sort_by
+      queryParams['director'] == null ? "" : queryParams.director,
+      queryParams['writer'] == null ? "" : queryParams.writer,
+      this.getGenres(queryParams),
+      queryParams['min_rating_imdb'] == null ? null : queryParams.min_rating_imdb,
+      queryParams['year_from'] == null ? null : queryParams.year_from,
+      queryParams['year_to'] == null ? null : queryParams.year_to,
+      queryParams['principals'] == null ? ["", "", ""] : queryParams.principals,
+      queryParams['title'] == null ? "" : queryParams.title,
+      null,
+      queryParams['current_page'] == null ? 1 : queryParams.current_page,
+      queryParams['sort_by'] == null ? 'Title' : queryParams.sort_by
     );
+  }
+
+  private static getGenres(queryParams: any) {
+    if (typeof(queryParams['genres']) == "string") {
+      return [queryParams['genres']];
+    }
+
+    return queryParams['genres'] == null ? null : queryParams['genres'];
   }
 
 

@@ -76,10 +76,6 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
   }
 
   writeValue(values: any) {
-    if (typeof(values)=="string") {
-      values = [values];
-    }
-
     let selectedItemsNew = [];
     if (values != null) {
       for (let value of values) {
