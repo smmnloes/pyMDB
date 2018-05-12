@@ -33,11 +33,7 @@ export class DetailsPageComponent implements OnInit {
       }
     });
 
-    if (this.movieId != null) {
-      this.detailService.getDetails(this.movieId);
-    } else {
-      this.detailService.getCachedDetails();
-    }
+    this.detailService.getDetails(this.movieId);
 
 
   }
