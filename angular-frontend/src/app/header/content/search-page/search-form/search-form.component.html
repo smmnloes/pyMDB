@@ -71,7 +71,13 @@
               <button class="button button-custom" name="submitbutton" type="submit">Search!
               </button>
             </div>
-            <div class="cell small-3 small-offset-6">
+            <div class="cell small-2 small-offset-3">
+              <label for="results_per_page">Results</label>
+              <select id="results_per_page" name="results_per_page" [(ngModel)]="queryModel.results_per_page" (change)="onClickResultsPerPage()">
+                <option *ngFor="let option of resultsPerPageOptions">{{option}}</option>
+              </select>
+            </div>
+            <div class="cell small-3 small-offset-1">
               <label for="sort-by">Sort by:</label>
               <select id="sort-by" name="sort-by" [(ngModel)]="queryModel.sort_by" (change)="onClickSortBy()">
                 <option *ngFor="let criteria of sortCriteria">{{criteria}}</option>

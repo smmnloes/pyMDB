@@ -14,6 +14,7 @@ export class PaginationComponent implements OnInit {
   private currentPage: number;
   private resultCount: number;
   private maxPageCount: number;
+  private results_per_page: number;
 
   constructor(private queryService: QueryService, private router: Router, private activatedRoute: ActivatedRoute) {
   }
@@ -24,14 +25,15 @@ export class PaginationComponent implements OnInit {
 
     this.activatedRoute.queryParams.subscribe(queryParams => {
       if (!Util.isEmpty(queryParams)) {
-        this.currentPage = parseInt(queryParams.current_page);
+        this.currentPage = parseInt(queryParams['current_page']);
+        this.results_per_page = parseInt(queryParams['results_per_page']);
         this.resultsAvailable = true;
       }
     });
 
     this.queryService.resultCount$.subscribe(resultCount => {
       this.resultCount = resultCount;
-      this.maxPageCount = Math.ceil(<number>resultCount / this.queryService.RESULTS_PER_PAGE);
+      this.maxPageCount = Math.ceil(<number>resultCount / this.results_per_page);
     })
   }
 

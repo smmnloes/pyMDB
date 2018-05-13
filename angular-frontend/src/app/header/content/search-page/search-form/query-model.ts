@@ -29,7 +29,7 @@ export class QueryModel {
       queryParams['year_to'] == null ? null : queryParams.year_to,
       queryParams['principals'] == null ? ["", "", ""] : queryParams.principals,
       queryParams['title'] == null ? "" : queryParams.title,
-      null,
+      queryParams['results_per_page'] == null ? 15 : queryParams['results_per_page'],
       queryParams['current_page'] == null ? 1 : queryParams.current_page,
       queryParams['sort_by'] == null ? 'Title' : queryParams.sort_by
     );
