@@ -2,13 +2,13 @@
   <div *ngIf="detailedData!=null; else no_data_available">
     <div class="grid-container">
       <div class="grid-x grid-margin-x">
-        <div class="cell poster small-12 medium-3">
+        <div class="cell poster medium-12 large-3">
           <img *ngIf="hasPosterPath();else image_not_found" src="{{fullPosterPath$ | async}}">
           <ng-template #image_not_found>
             <img src="../../../../assets/noImg_w185.png">
           </ng-template>
         </div>
-        <div class="cell small-12 medium-9">
+        <div class="cell medium-12 large-9 additional-data">
           <table>
             <th colspan="2" class="result-title">{{detailedData.original_title}}
               <span *ngIf="detailedData.releaseDate!=null">({{detailedData.releaseDate.getFullYear()}})</span>
@@ -35,10 +35,9 @@
 
         </div>
       </div>
-
-    </div>
-    <div *ngIf="detailedData.credits.length > 0" class="credits">
-      <app-credits [credits]="detailedData.credits"></app-credits>
+      <div class="credits cell small-12" *ngIf="detailedData.credits.length > 0">
+        <app-credits [credits]="detailedData.credits"></app-credits>
+      </div>
     </div>
 
 
