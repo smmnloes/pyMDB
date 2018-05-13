@@ -1,6 +1,7 @@
 .credits-container {
   border-radius:10px;
   background-color: slategrey;
+  box-shadow: 5px 5px 10px dimgrey;
 }
 
 .credits-title{

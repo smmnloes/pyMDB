@@ -11,7 +11,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 export class SearchFormComponent implements OnInit {
 
   private sortCriteria: string[] = ['Title', 'Year', 'Rating'];
-  private resultsPerPageOptions: number[] = [5, 10, 15, 20, 30, 50, 100];
+  private resultsPerPageOptions: number[] = [5, 10, 15, 20, 30, 50];
   private queryModel: QueryModel;
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute) {
@@ -35,6 +35,7 @@ export class SearchFormComponent implements OnInit {
   }
 
   onClickResultsPerPage() {
+    this.queryModel.current_page = 1;
     this.refetch();
   }
 
