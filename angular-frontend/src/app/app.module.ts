@@ -16,9 +16,7 @@ import {PaginationComponent} from './header/content/search-page/search-results/p
 import {DetailService} from "./services/detail.service";
 import {DetailsPageComponent} from './header/content/details-page/details-page.component';
 import {CreditsComponent} from './header/content/details-page/credits/credits.component';
-import {RouterModule} from "@angular/router";
-import {appRoutes} from "./app-routes"
-import {TMDB_API_KEY} from "./tmdb-api-key";
+import {AppRoutingModule} from "./app-routing-module"
 import {CacheService} from "./services/cache.service";
 
 @NgModule({
@@ -39,16 +37,10 @@ import {CacheService} from "./services/cache.service";
     AngularMultiSelectModule,
     FormsModule,
     HttpClientModule,
-    RouterModule.forRoot(appRoutes, {onSameUrlNavigation: 'reload'})
+    AppRoutingModule
   ],
   providers: [QueryService, DetailService, CacheService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  constructor() {
-    if (TMDB_API_KEY == null) {
-      console.error('No TMDB Api Key defined. Please enter API Key in tmdb-api-key.ts!\n' +
-        'No movie detail funcionality available.');
-    }
-  }
 }
