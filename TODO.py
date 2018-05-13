@@ -5,3 +5,4 @@
 # pagination mobile
 # routing module
 # detail page styling
+# optimize principal search

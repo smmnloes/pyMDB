@@ -20,7 +20,6 @@ export class QueryService {
   resultCountSource = new Subject<number>();
   resultCount$ = this.resultCountSource.asObservable();
 
-  RESULTS_PER_PAGE = 15;
 
   constructor(private http: HttpClient, private activatedRoute: ActivatedRoute, private cacheService: CacheService) {
     this.activatedRoute.queryParams.subscribe(queryParams => {
@@ -32,8 +31,6 @@ export class QueryService {
 
 
   makeQuery(queryData: QueryModel) {
-    queryData.results_per_page = this.RESULTS_PER_PAGE;
-
     let cachedPage = this.cacheService.getPage(queryData);
 
     if (cachedPage != null) {
