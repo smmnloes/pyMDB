@@ -119,3 +119,13 @@ def get_movies_by_criteria(request, get_count=False):
 
 def get_number_results(request):
     return get_movies_by_criteria(request, get_count=True)
+
+
+def get_movie_by_tid(request):
+    print('Request: \n' + str(request) + '\n')
+
+    query = db.session.query(Basics).outerjoin(Ratings)
+    query = query.add_columns(Ratings.averageRating)
+    query = query.filter(Basics.tid == request['tid'])
+
+    return results_to_dict_list(query.all())

@@ -12,3 +12,8 @@ class MovieQuery(Resource):
 class ResultCount(Resource):
     def post(self):
         return QueryService.get_number_results(request.json)
+
+
+class MovieByTid(Resource):
+    def post(self):
+        return QueryService.get_movie_by_tid(request.json)
