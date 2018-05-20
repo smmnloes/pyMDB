@@ -20,7 +20,6 @@ export class SearchFormComponent implements OnInit {
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe(queryParams => {
         this.queryModel = QueryModel.fromQueryParams(queryParams);
-      console.log(this.queryModel);
       }
     );
   }
