@@ -31,7 +31,7 @@ export class DetailService {
 
     this.getTMDB_Id(IMDB_Id_Formatted).subscribe(tmdbID => {
       if (tmdbID == -1) {
-        this.detailedDataSource.next(null);
+        this.detailedDataSource.next(DetailedDataModel.createEmptyDetails());
       } else {
         this.getDetailsForTMDB_Id(tmdbID).subscribe(detailedData => {
           let detailedDataProcessed = this.processDetailedData(detailedData);
@@ -50,7 +50,7 @@ export class DetailService {
       Iso639.iso639ToName[details['original_language']],
       details['production_countries'].map(element => element['name']),
       new Date(details['release_date']), details['poster_path'],
-      details['original_title']);
+      details['original_title'], true);
   }
 
   private processCredits(credits) {
