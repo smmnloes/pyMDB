@@ -15,14 +15,16 @@
 .poster img {
   border: 2px solid black;
   margin: auto auto 30px auto;
-}
-
-.additional-data table {
   box-shadow: 5px 5px 10px dimgrey;
-  border-radius: 10px;
-}
 
+}
 
 .additional-data th {
-  font-size:2em;
+  font-size: 2em;
+  margin-top: 0;
+}
+
+.category {
+  width: 50px;
+  font-weight: bold;
 }

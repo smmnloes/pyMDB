@@ -15,8 +15,12 @@ const httpOptions = {
 @Injectable()
 export class QueryService {
 
-  private basicDataSource = new Subject<BasicDataModel[]>();
-  basicData$ = this.basicDataSource.asObservable();
+  basicDataPageSource = new Subject<BasicDataModel[]>();
+  basicDataPage$ = this.basicDataPageSource.asObservable();
+
+  basicDataSingleSource = new Subject<BasicDataModel>();
+  basicDataSingle$ = this.basicDataSingleSource.asObservable();
+
   resultCountSource = new Subject<number>();
   resultCount$ = this.resultCountSource.asObservable();
 
@@ -38,14 +42,14 @@ export class QueryService {
       //Timeout necessary, otherwise cached results won't be rendered if the user returns
       //to search page via the browser's back button
       setTimeout(() => {
-        this.basicDataSource.next(cachedPage);
+        this.basicDataPageSource.next(cachedPage);
       }, 1);
 
     } else {
       this.http.post('api/query', queryData, httpOptions).subscribe(
         newPage => {
           let processedNewPage: BasicDataModel[] = QueryService.processPage(newPage);
-          this.basicDataSource.next(processedNewPage);
+          this.basicDataPageSource.next(processedNewPage);
 
           this.cacheService.setPage(queryData, processedNewPage);
         }
@@ -67,6 +71,15 @@ export class QueryService {
         this.cacheService.setResultCount(queryData, <number>newResultCount);
       })
     }
+  }
+
+  getMovieById(tid: number) {
+    this.http.post('api/movie_by_tid', {tid: tid}, httpOptions).subscribe(
+      result => {
+        let processedResult: BasicDataModel = QueryService.processPage(result)[0];
+        this.basicDataSingleSource.next(processedResult);
+      }
+    );
   }
 
 

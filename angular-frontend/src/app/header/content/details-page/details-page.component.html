@@ -9,10 +9,8 @@
           </ng-template>
         </div>
         <div class="cell medium-12 large-9 additional-data">
+          <app-result *ngIf="basicData" [basicData]="basicData" class="basic-data"></app-result>
           <table>
-            <th colspan="2" class="result-title">{{detailedData.original_title}}
-              <span *ngIf="detailedData.releaseDate!=null">({{detailedData.releaseDate.getFullYear()}})</span>
-            </th>
             <tr *ngIf="detailedData.productionCountries.length>0">
               <td class="category">Countries:</td>
               <td class="result-text">{{detailedData.productionCountries.join(', ')}}</td>
