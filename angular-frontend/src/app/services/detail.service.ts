@@ -101,4 +101,22 @@ export class DetailService {
       + TMDB_API_KEY
       + "&append_to_response=credits")
   }
+
+  /*
+Poster sizes:
+ "w92",
+ "w154",
+ "w185",
+ "w342",
+ "w500",
+ "w780",
+ "original"
+ */
+
+  public getFullPosterPath(detailedData: DetailedDataModel) {
+    return this.http.get(this.TMDB_ROOT + 'configuration?api_key=' + TMDB_API_KEY).map(configData => {
+      let baseUrl = configData['images']['base_url'];
+      return baseUrl + 'w185' + detailedData.posterPath
+    })
+  }
 }
