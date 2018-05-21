@@ -9,6 +9,7 @@ const appRoutes: Routes = [
   {path: 'search', component: SearchPageComponent, runGuardsAndResolvers: 'paramsOrQueryParamsChange'},
   {path: 'details', component: DetailsPageComponent},
   {path: 'details/:movieId', component: DetailsPageComponent},
+  {path: '**', redirectTo:"/search"}
 ];
 
 
