@@ -16,10 +16,10 @@ export class DetailsPageComponent implements OnInit {
   private detailedData: DetailedDataModel;
   private basicData: BasicDataModel;
 
-  private fullPosterPath$;
+  private fullPosterPath: string;
 
   constructor(private detailService: DetailService, private http: HttpClient, private activatedRoute: ActivatedRoute,
-              private queryService:QueryService) {
+              private queryService: QueryService) {
     this.activatedRoute.params.subscribe(params => {
       this.movieId = params.movieId;
     });
@@ -30,13 +30,13 @@ export class DetailsPageComponent implements OnInit {
       this.detailedData = detailedData;
 
       if (this.hasPosterPath()) {
-        this.fullPosterPath$ = this.detailService.getFullPosterPath(detailedData);
+        this.detailService.getFullPosterPath(detailedData).subscribe(path => this.fullPosterPath = path);
       }
     });
 
     this.detailService.getDetails(this.movieId);
 
-    this.queryService.basicDataSingle$.subscribe(basicData=>{
+    this.queryService.basicDataSingle$.subscribe(basicData => {
       this.basicData = basicData;
     });
 

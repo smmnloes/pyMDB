@@ -3,7 +3,9 @@
     <div class="grid-container" *ngIf="detailedData.hasDetails;else no_data_available">
       <div class="grid-x grid-margin-x">
         <div class="cell poster medium-12 large-3">
-          <img *ngIf="hasPosterPath();else image_not_found" src="{{fullPosterPath$ | async}}">
+          <ng-container *ngIf="hasPosterPath(); else image_not_found">
+            <img *ngIf="fullPosterPath!=null" src="{{fullPosterPath}}">
+          </ng-container>
           <ng-template #image_not_found>
             <img src="../../../../assets/noImg_w185.png">
           </ng-template>
