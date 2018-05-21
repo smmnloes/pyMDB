@@ -3,3 +3,4 @@
 # proper logging
 # admin stuff
 # pagination mobile
+# logos
