@@ -4446,12 +4446,10 @@ select {
     margin-right: 0.0625rem;
     border-radius: 0;
     font-size: 0.875rem;
-    display: none; }
+    display: inline-block; }
     .pagination li:last-child, .pagination li:first-child {
       display: inline-block; }
-    @media print, screen and (min-width: 40em) {
-      .pagination li {
-        display: inline-block; } }
+
   .pagination a,
   .pagination button {
     display: block;
