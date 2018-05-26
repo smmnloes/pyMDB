@@ -4,7 +4,10 @@ from sqlalchemy import asc, desc
 from sqlalchemy.orm import aliased
 from unidecode import unidecode
 
+from App.AppMain import create_app
 from DatabaseServices.DatabaseModel import *
+
+app = create_app()
 
 MIN_NUM_VOTES = 1000
 
@@ -41,7 +44,7 @@ def normalize(to_normalize):
 
 
 def get_movies_by_criteria(request, get_count=False):
-    print('Request: \n' + str(request) + '\n')
+    app.logger.debug('Request for movie by criteria: \n' + str(request) + '\n')
 
     query = db.session.query(Basics).outerjoin(Ratings)
     query = query.add_columns(Ratings.averageRating)
@@ -101,19 +104,17 @@ def get_movies_by_criteria(request, get_count=False):
     current_page = int(request['current_page'])
     query = query.limit(results_per_page).offset((current_page - 1) * results_per_page)
 
-    # print(query)
-
     time_before = time()
     results = query.all()
-    print("\nQuery time: " + str((time() - time_before) * 1000) + "ms")
+    app.logger.debug("\nQuery time: " + str((time() - time_before) * 1000) + "ms")
 
     time_before = time()
     results_dict_list = results_to_dict_list(results)
-    print("Result processing time: " + str((time() - time_before) * 1000) + "ms")
+    app.logger.debug("Result processing time: " + str((time() - time_before) * 1000) + "ms")
 
-    print("\nResults: {}".format(len(results)))
-    print(results_dict_list)
-    print('\n')
+    app.logger.debug("\nResults: {}".format(len(results)))
+    app.logger.debug(results_dict_list)
+    app.logger.debug('\n')
     return results_dict_list
 
 
@@ -122,7 +123,7 @@ def get_number_results(request):
 
 
 def get_movie_by_tid(request):
-    print('Request: \n' + str(request) + '\n')
+    app.logger.debug('Request for movie by tid: \n' + str(request) + '\n')
 
     query = db.session.query(Basics).outerjoin(Ratings)
     query = query.add_columns(Ratings.averageRating)

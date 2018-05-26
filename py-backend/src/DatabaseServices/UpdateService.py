@@ -8,7 +8,6 @@ import definitions
 from App.AppMain import db, create_app
 from DatabaseServices.QueryService import normalize
 
-# DATASETS = ['basics', 'names']
 DATASETS = ['basics', 'principals', 'names', 'crew', 'ratings']
 DATASETS_TO_FILENAMES = {'basics': 'title.basics.tsv.gz', 'names': 'name.basics.tsv.gz',
                          'crew': 'title.crew.tsv.gz', 'principals': 'title.principals.tsv.gz',
@@ -27,21 +26,21 @@ def update_db():
 
     try:
         for dataset in DATASETS:
-            print('\nProcessing {} data.'.format(dataset))
+            app.logger.info('\nProcessing {} data.'.format(dataset))
             download_and_unzip_new_data(dataset)
-            print('Reading {} to database.'.format(dataset))
+            app.logger.info('Reading {} to database.'.format(dataset))
             DATASETS_TO_READ_FUNCTIONS.get(dataset)()
-            # delete_downloaded_remote_data(dataset)
-            print('Finished processing {} data.\n'.format(dataset))
+            delete_downloaded_remote_data(dataset)
+            app.logger.info('Finished processing {} data.\n'.format(dataset))
+
+            app.logger.info("Analyzing.")
+            analyze()
+            app.logger.info("Update complete!")
 
     except (Exception, BaseException) as e:
-        print("Error while updating: {}".format(e))
+        app.logger.error("Error while updating: {}".format(e))
         restore_db_last_version()
-        return
-
-    print("Analyzing.")
-    analyze()
-    print("Update complete!")
+        raise e
 
 
 def get_db_connect():
@@ -52,34 +51,35 @@ def get_db_connect():
 
 
 def backup_local_db():
-    print('Backing up last version.')
+    app.logger.info('Backing up last version.')
     if os.path.isfile(definitions.LOCAL_DB):
         os.rename(definitions.LOCAL_DB, definitions.DB_LAST_VERSION)
     else:
-        print('No database found, nothing to back up.')
+        app.logger.warn('No database found, nothing to back up.')
 
 
 def delete_downloaded_remote_data(dataset):
-    print('Deleting local {} file'.format(dataset))
+    app.logger.info('Deleting local {} file'.format(dataset))
     os.remove(definitions.DB_DATA_REMOTE + dataset)
 
 
 def restore_db_last_version():
-    print('Restoring last version.')
+    app.logger.info('Restoring last version.')
     if os.path.isfile(definitions.DB_LAST_VERSION):
         os.rename(definitions.DB_LAST_VERSION, definitions.LOCAL_DB)
+        app.logger.info('Last version restored!')
     else:
-        print("No previous version found! Cannot restore last version!")
+        app.logger.warn("No previous version found! Cannot restore last version!")
 
 
 def download_and_unzip_new_data(dataset):
     unzipped_path = definitions.DB_DATA_REMOTE + dataset
     zipped_path = unzipped_path + '_zipped'
-    print('Downloading {} data.'.format(dataset))
+    app.logger.info('Downloading {} data.'.format(dataset))
     urllib.request.urlretrieve(definitions.URL_IMDB_DATA + DATASETS_TO_FILENAMES.get(dataset),
                                zipped_path)
 
-    print('Unzipping {} data'.format(dataset))
+    app.logger.info('Unzipping {} data'.format(dataset))
     with gzip.open(zipped_path) as zipped_file:
         with open(unzipped_path, 'wb') as unzipped_file:
             unzipped_file.write(zipped_file.read())
