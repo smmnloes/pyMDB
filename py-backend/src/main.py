@@ -1,4 +1,4 @@
-from threading import Thread
+from multiprocessing import Process
 
 from App import AppMain
 from DatabaseServices import QueryService
@@ -9,15 +9,19 @@ from test.Testqueries import testquery_data
 def main():
     print("Welcome to pyMDB!")
     print("Starting App...")
-    thread = Thread(target=AppMain.start_app)
-    thread.start()
+    app_process = Process(target=AppMain.start_app)
+    app_process.start()
 
     user_input = ''
     while user_input != 'exit':
-        user_input = input('Please enter Command! ')
+        user_input = input('Please enter Command! (\'exit\' to quit)')
 
         if user_input == 'update':
-            UpdateService.update_db()
+            try:
+                UpdateService.update_db()
+            except (Exception, BaseException):
+                break
+
         elif user_input == 'download':
             next_input = input('Download which dataset? ')
             UpdateService.download_and_unzip_new_data(next_input)
@@ -28,11 +32,20 @@ def main():
         elif user_input == 'read':
             next_input = input('Read which dataset? ')
             UpdateService.DATASETS_TO_READ_FUNCTIONS.get(next_input)()
-        elif user_input == 'queryall':
+        elif user_input == 'testqueries':
             i = 1
             for query in testquery_data:
                 print('#{}'.format(i))
                 QueryService.get_movies_by_criteria(query)
                 i += 1
 
-main()
+    shutdown(app_process)
+
+
+def shutdown(process):
+    process.terminate()
+    process.join()
+
+
+if __name__ == '__main__':
+    main()
