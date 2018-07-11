@@ -18,6 +18,7 @@ import {DetailsPageComponent} from './header/content/details-page/details-page.c
 import {CreditsComponent} from './header/content/details-page/credits/credits.component';
 import {AppRoutingModule} from "./app-routing-module"
 import {CacheService} from "./services/cache.service";
+import {FooterComponent} from './header/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import {CacheService} from "./services/cache.service";
     ResultComponent,
     PaginationComponent,
     DetailsPageComponent,
-    CreditsComponent
+    CreditsComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,

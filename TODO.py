@@ -1,4 +1,0 @@
-# TODO:
-
-# admin stuff
-# logos
