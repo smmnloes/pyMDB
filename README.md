@@ -45,9 +45,9 @@ By clicking on the title of a search result, you will get to the Detailed View. 
 
 #### Command line options
 The command line interface of the backend application supports the following commands:
-* __update__: Loads the new datasets from imdb and reads them into the sqlite-Database. This can take some time, depending on your download speed and CPU power. Requires ~3GB of free disk space, as the uncompressed datasets can be quite big. The resulting database will be <500mb in size. If the update process is interrupted, it will roll back to the database version before updating.
-* __download__: asks for which dataset to download and downloads it (e.g. "principals", "basics", etc.)
-* __read__: asks for which dataset to read into the database, names similar to download
+* __update__: Loads the new datasets from imdb and reads them into the sqlite-Database. This happens one dataset at a time.  It can take some time, depending on your download speed and CPU power. Requires ~1.5GB of free disk space, as the uncompressed datasets can be quite big. The resulting database will be <500mb in size. If the update process is interrupted, it will roll back to the database version before updating.
+* __download__: asks for which dataset to download and downloads and unpacks it to the folder `DB_Data_Remote`. Allowed  dataset names: "basics", "names", "crew", "principals" or "ratings"
+* __read__: allows to specify a specific dataset which is read into the existing database, names similar to download
 * __backup__: copies the current database to the `last_version`-folder
 * __restore__: restores database from `last_version`-folder
 * __exit__: exit application
