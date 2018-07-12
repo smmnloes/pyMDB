@@ -17,7 +17,7 @@ You can also set `TMDB_API_KEY` to null or any other value, if you don't want to
 ### Starting the application
 You will have to start the python backend as well as the angular frontend.
 #### Frontend
-Go to `/angular-frontend/` and execute `ng serve --proxy-config proxy.conf.json`. This will start the Development server at localhost:4200 and set up the proxy configuration.
+Go to `/angular-frontend/` and execute `npm start`. This will start the Development server at `localhost:4200`.
 
 #### Backend
 In `/py-backend/src/` execute `pipenv shell`, in the resulting shell execute `python3 main.py`. This will start the backend as well as the command line interface.
