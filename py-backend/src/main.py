@@ -1,9 +1,7 @@
 from multiprocessing import Process
 
 from App import AppMain
-from DatabaseServices import QueryService
 from DatabaseServices import UpdateService
-from test.Testqueries import testquery_data
 
 
 def main():
@@ -32,12 +30,6 @@ def main():
         elif user_input == 'read':
             next_input = input('Read which dataset? ')
             UpdateService.DATASETS_TO_READ_FUNCTIONS.get(next_input)()
-        elif user_input == 'testqueries':
-            i = 1
-            for query in testquery_data:
-                print('#{}'.format(i))
-                QueryService.get_movies_by_criteria(query)
-                i += 1
 
     shutdown(app_process)
 

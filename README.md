@@ -50,7 +50,6 @@ The command line interface of the backend application supports the following com
 * __read__: asks for which dataset to read into the database, names similar to download
 * __backup__: copies the current database to the `last_version`-folder
 * __restore__: restores database from `last_version`-folder
-* __testqueries__: executes some queries on the backend for testing purposes
 * __exit__: exit application
 
 
