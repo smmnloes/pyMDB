@@ -2,6 +2,6 @@
 src/__pycache__/
 *.pyc
 npm-debug.log
-/.idea
+.idea/
 workspace.xml
 performance_logs/

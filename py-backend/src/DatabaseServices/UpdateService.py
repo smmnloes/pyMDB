@@ -34,8 +34,9 @@ def update_db():
             app.logger.info('Finished processing {} data.\n'.format(dataset))
 
             app.logger.info("Analyzing.")
-            analyze()
-            app.logger.info("Update complete!")
+
+        analyze()
+        app.logger.info("Update complete!")
 
     except (Exception, BaseException) as e:
         app.logger.error("Error while updating: {}".format(e))
