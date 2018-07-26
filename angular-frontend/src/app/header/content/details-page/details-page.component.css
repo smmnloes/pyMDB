@@ -27,4 +27,5 @@
 .category {
   width: 50px;
   font-weight: bold;
+  vertical-align: top;
 }

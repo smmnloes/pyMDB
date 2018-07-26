@@ -45,12 +45,11 @@ export class DetailService {
   }
 
   private processDetailedData(details) {
-
     return new DetailedDataModel(this.processCredits(details['credits']), details['budget'],
       Iso639.iso639ToName[details['original_language']],
       details['production_countries'].map(element => element['name']),
       new Date(details['release_date']), details['poster_path'],
-      details['original_title'], true);
+      details['original_title'], details['overview'], true);
   }
 
   private processCredits(credits) {

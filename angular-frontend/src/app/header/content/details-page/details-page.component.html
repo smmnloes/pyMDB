@@ -13,6 +13,10 @@
         <div class="cell medium-12 large-9 additional-data">
           <app-result *ngIf="basicData" [basicData]="basicData" class="basic-data"></app-result>
           <table>
+            <tr *ngIf="detailedData.overview!=null">
+              <td class="category">Plot:</td>
+              <td class="result-text">{{detailedData.overview}}</td>
+            </tr>
             <tr *ngIf="detailedData.productionCountries.length>0">
               <td class="category">Countries:</td>
               <td class="result-text">{{detailedData.productionCountries.join(', ')}}</td>
