@@ -22,6 +22,8 @@ Go to `/angular-frontend/` and execute `npm start`. This will start the Developm
 #### Backend
 In `/py-backend/src/` execute `pipenv shell`, in the resulting shell execute `python3 main.py`. This will start the backend as well as the command line interface.
 
+You can also use the `start.sh` script in the root directory which combines the two commands above
+
 ### Using the app
 #### First run
 On the first run, you have to download the Imdb data and create your database. In the backend-CLI, enter `update`. This will download the files from __https://datasets.imdbws.com__ one by one and read them into a SQLite database at `/DB_Data_Local/`.
