@@ -2,7 +2,7 @@ Welcome to pyMDB, an app that downloads IMDB datasets, extracts the most essenti
 
 ### Prerequisites
 * NPM -> `sudo apt-get install npm`
-* Python 3.5
+* Python version 3.5 or above 
 * Pipenv -> `sudo apt-get install python-pip && pip install pipenv`
 
 ### Installation
