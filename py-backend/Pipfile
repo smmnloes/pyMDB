@@ -13,6 +13,3 @@ flask-restful = "*"
 requests = "*"
 flask-cors = "*"
 unidecode = "*"
-
-[requires]
-python_version = "3.5"
