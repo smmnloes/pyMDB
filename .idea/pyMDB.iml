@@ -5,7 +5,7 @@
       <sourceFolder url="file://$MODULE_DIR$/py-backend/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/angular-frontend/src" isTestSource="false" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.5 (pyMDB-TdsJ5795)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.7 (py-backend-QBl-1EY7)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>

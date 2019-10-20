@@ -1,11 +1,15 @@
+import sys
 from multiprocessing import Process
 
 from App import AppMain
 from DatabaseServices import UpdateService
+import getopt
 
 
-def main():
+def main(argv):
     print("Welcome to pyMDB!")
+    print("Parsing command line arguments...")
+    parse_arguments(argv)
     print("Starting App...")
     app_process = Process(target=AppMain.start_app)
     app_process.start()
@@ -34,10 +38,26 @@ def main():
     shutdown(app_process)
 
 
+def parse_arguments(argv):
+    try:
+        opts, args = getopt.getopt(argv, "update", [])
+    except getopt.GetoptError:
+        return
+
+    for arg in args:
+        if arg == "update":
+            try:
+                UpdateService.update_db()
+            except (Exception, BaseException):
+                print("Error updating!")
+                sys.exit(1)
+            sys.exit(0)
+
+
 def shutdown(process):
     process.terminate()
     process.join()
 
 
 if __name__ == '__main__':
-    main()
+    main(sys.argv[1:])

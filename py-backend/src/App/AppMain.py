@@ -23,8 +23,6 @@ def create_app():
     db.init_app(app)
     api = Api(app)
     app.logger.setLevel(logging.DEBUG)
-    ch = logging.StreamHandler()
-    app.logger.addHandler(ch)
 
     from App.RESTControllers import MovieQuery, ResultCount, MovieByTid
     api.add_resource(MovieQuery, '/api/query')
