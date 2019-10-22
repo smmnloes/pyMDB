@@ -15,18 +15,23 @@ Before you can use the application, you have to register on __themoviedb.org__ t
 You can also set `TMDB_API_KEY` to null or any other value, if you don't want to use this functionality. You need to create the file however, or else the project will not compile.
 
 ### Starting the application
+#### Manually
 You will have to start the python backend as well as the angular frontend.
-#### Frontend
+
 Go to `/angular-frontend/` and execute `npm start`. This will start the Development server at `localhost:4200`.
 
-#### Backend
 In `/py-backend/src/` execute `pipenv shell`, in the resulting shell execute `python3 main.py`. This will start the backend as well as the command line interface.
 
-You can also use the `start.sh` script in the root directory which combines the two commands above
-
+#### Via Docker
+To use the dockerized variant, you need to have the docker engine installed. There are two images defined, one for the backend, and one for the frontend. You can build and start those yourself individually (make sure to set network to "host"), or you can use 'docker-compose' in the root directory of the project:   
+`$ docker-compose up`  
+This will start the two containers and make them available in the host network, reachable under `http://localhost:4200`.  
+On the first execution, this will take a while, as the IMDB data will be downloaded and read into the database when the backend image is built.  
+**Note**: You still need to add the TMDB API Key to the application as described above!
 ### Using the app
 #### First run
-On the first run, you have to download the Imdb data and create your database. In the backend-CLI, enter `update`. This will download the files from __https://datasets.imdbws.com__ one by one and read them into a SQLite database at `/DB_Data_Local/`.
+On the first run, you have to download the Imdb data and create your database, unless you use the dockerized version, which already does this automatically.  
+In the backend-CLI, enter `update`. This will download the files from __https://datasets.imdbws.com__ one by one and read them into a SQLite database at `/DB_Data_Local/`.
 For info on the tables in this database, please refer to `py-backend/src/DatabaseServices/DatabaseModel.py`.
 The resulting database contains only information about movies, excluding adult films. Also not every value which is available from the datasets is read into the database.
 
