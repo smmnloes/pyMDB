@@ -14,13 +14,15 @@ export class CacheService {
 
 
   public getResultCount(queryModel: QueryModel): number {
-    return this.cache_BasicData[queryModel.normalize()] == null ?
-      null : this.cache_BasicData[queryModel.normalize()].resultCount;
+    let normalized = queryModel.normalize();
+    return this.cache_BasicData[normalized] == null ?
+      null : this.cache_BasicData[normalized].resultCount;
   }
 
   public getPage(queryModel: QueryModel): BasicDataModel[] {
-    return this.cache_BasicData[queryModel.normalize()] == null ?
-      null : this.cache_BasicData[queryModel.normalize()].pages[queryModel.current_page];
+    let normalized = queryModel.normalize();
+    return this.cache_BasicData[normalized] == null ?
+      null : this.cache_BasicData[normalized].pages[queryModel.current_page];
   }
 
   public setResultCount(queryModel: QueryModel, resultCount: number) {
