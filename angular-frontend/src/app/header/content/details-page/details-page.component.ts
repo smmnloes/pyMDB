@@ -5,6 +5,7 @@ import {ActivatedRoute} from "@angular/router";
 import {DetailedDataModel} from "../search-page/search-results/result/detailed-data-model";
 import {BasicDataModel} from "../search-page/search-results/result/basic-data-model";
 import {QueryService} from "../../../services/query.service";
+import {first} from "rxjs/operators";
 
 @Component({
   selector: 'app-details-page',
@@ -26,17 +27,17 @@ export class DetailsPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.detailService.detailedData$.subscribe(detailedData => {
+    this.detailService.detailedData$.pipe(first()).subscribe(detailedData => {
       this.detailedData = detailedData;
 
       if (this.hasPosterPath()) {
-        this.detailService.getFullPosterPath(detailedData).subscribe(path => this.fullPosterPath = path);
+        this.detailService.getFullPosterPath(detailedData).pipe(first()).subscribe(path => this.fullPosterPath = path);
       }
     });
 
     this.detailService.getDetails(this.movieId);
 
-    this.queryService.basicDataSingle$.subscribe(basicData => {
+    this.queryService.basicDataSingle$.pipe(first()).subscribe(basicData => {
       this.basicData = basicData;
     });
 

@@ -8,6 +8,7 @@ import {DetailedDataModel} from "../header/content/search-page/search-results/re
 import {Iso639} from "../util/iso639";
 import {TMDB_API_KEY} from "../tmdb-api-key";
 import {CacheService} from "./cache.service";
+import {first} from "rxjs/operators";
 
 @Injectable()
 export class DetailService {
@@ -29,11 +30,13 @@ export class DetailService {
 
     let IMDB_Id_Formatted = DetailService.formatIMDB_Id(IMDB_Id);
 
-    this.getTMDB_Id(IMDB_Id_Formatted).subscribe(tmdbID => {
+    this.getTMDB_Id(IMDB_Id_Formatted).pipe(first()).subscribe(tmdbID => {
       if (tmdbID == -1) {
-        this.detailedDataSource.next(DetailedDataModel.createEmptyDetails());
+        let emptyDetails = DetailedDataModel.createEmptyDetails();
+        this.detailedDataSource.next(emptyDetails);
+        this.cacheService.setDetails(IMDB_Id, emptyDetails)
       } else {
-        this.getDetailsForTMDB_Id(tmdbID).subscribe(detailedData => {
+        this.getDetailsForTMDB_Id(tmdbID).pipe(first()).subscribe(detailedData => {
           let detailedDataProcessed = this.processDetailedData(detailedData);
           this.detailedDataSource.next(detailedDataProcessed);
           this.cacheService.setDetails(IMDB_Id, detailedDataProcessed);
@@ -113,6 +116,7 @@ Poster sizes:
  */
 
   public getFullPosterPath(detailedData: DetailedDataModel) {
+    console.log("Calling get full poster path");
     return this.http.get(this.TMDB_ROOT + 'configuration?api_key=' + TMDB_API_KEY).map(configData => {
       let baseUrl = configData['images']['base_url'];
       return baseUrl + 'w342' + detailedData.posterPath

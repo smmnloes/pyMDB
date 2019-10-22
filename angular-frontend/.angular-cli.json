@@ -20,7 +20,8 @@
       "prefix": "app",
       "styles": [
         "styles.css",
-        "../foundation/css/foundation.css"
+        "../foundation/css/foundation.css",
+        "../node_modules/ngx-toastr/toastr.css"
       ],
       "scripts": [
         "../foundation/js/vendor/jquery.js",

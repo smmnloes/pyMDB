@@ -19,6 +19,8 @@ import {CreditsComponent} from './header/content/details-page/credits/credits.co
 import {AppRoutingModule} from "./app-routing-module"
 import {CacheService} from "./services/cache.service";
 import {FooterComponent} from './header/footer/footer.component';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {ToastrModule} from "ngx-toastr";
 
 @NgModule({
   declarations: [
@@ -39,7 +41,9 @@ import {FooterComponent} from './header/footer/footer.component';
     AngularMultiSelectModule,
     FormsModule,
     HttpClientModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot({positionClass: 'toast-top-center', timeOut: 3000})
   ],
   providers: [QueryService, DetailService, CacheService],
   bootstrap: [AppComponent]
