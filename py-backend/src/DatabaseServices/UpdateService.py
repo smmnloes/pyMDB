@@ -26,14 +26,14 @@ def update_db():
 
     try:
         for dataset in DATASETS:
-            app.logger.info('\nProcessing {} data.'.format(dataset))
+            app.logger.info('Processing {} data.'.format(dataset))
             download_and_unzip_new_data(dataset)
             app.logger.info('Reading {} to database.'.format(dataset))
             DATASETS_TO_READ_FUNCTIONS.get(dataset)()
             delete_downloaded_remote_data(dataset)
             app.logger.info('Finished processing {} data.\n'.format(dataset))
 
-            app.logger.info("Analyzing.")
+            app.logger.info("Analyzing.\n")
 
         analyze()
         app.logger.info("Update complete!")
@@ -214,8 +214,19 @@ def read_names():
         line = file.readline()
         line = file.readline().strip()
 
+        # This fixes a problem with imdb datasets containing duplicates (bug)
+        # TODO: remove once datasets are fixed by IMDB
+        last_nid = None
+
         while line:
             entries = line.split('\t')
+
+            # TODO: remove once datasets fixed
+            # Skip line if we already processed it
+            if entries[0] == last_nid:
+                line = file.readline().strip()
+                continue
+            last_nid = entries[0]
 
             if entries[5] != '\\N':
                 known_for = entries[5].split(',')
