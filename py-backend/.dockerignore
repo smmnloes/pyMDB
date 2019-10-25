@@ -1,2 +1,3 @@
-*.db
+DB_Data_Local/local.db
+DB_Data_Local/last_version/local.db
 .idea

@@ -6,5 +6,4 @@ RUN pipenv lock --requirements > requirements.txt
 RUN pip install -r requirements.txt
 RUN python3 ./src/main.py update
 
-EXPOSE 5002
 CMD python3 ./src/main.py
