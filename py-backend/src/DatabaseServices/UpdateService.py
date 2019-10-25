@@ -39,7 +39,7 @@ def update_db():
         app.logger.info("Update complete!")
 
     except (Exception, BaseException) as e:
-        app.logger.error("Error while updating: {}".format(e))
+        app.logger.error("Error while updating: {}".format(str(e)))
         restore_db_last_version()
         raise e
 
@@ -214,19 +214,8 @@ def read_names():
         line = file.readline()
         line = file.readline().strip()
 
-        # This fixes a problem with imdb datasets containing duplicates (bug)
-        # TODO: remove once datasets are fixed by IMDB
-        last_nid = None
-
         while line:
             entries = line.split('\t')
-
-            # TODO: remove once datasets fixed
-            # Skip line if we already processed it
-            if entries[0] == last_nid:
-                line = file.readline().strip()
-                continue
-            last_nid = entries[0]
 
             if entries[5] != '\\N':
                 known_for = entries[5].split(',')
