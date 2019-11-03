@@ -14,7 +14,7 @@ import {first} from "rxjs/operators";
 })
 export class DetailsPageComponent implements OnInit {
   private movieId: number;
-  private detailedData: DetailedDataModel;
+  detailedData: DetailedDataModel;
   private basicData: BasicDataModel;
 
   private fullPosterPath: string;

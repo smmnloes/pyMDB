@@ -10,9 +10,9 @@ import {ActivatedRoute, Router} from "@angular/router";
 })
 export class SearchFormComponent implements OnInit {
 
-  private sortCriteria: string[] = ['Title', 'Year', 'Rating'];
-  private resultsPerPageOptions: number[] = [5, 10, 15, 20, 30, 50];
-  private queryModel: QueryModel;
+  sortCriteria: string[] = ['Title', 'Year', 'Rating'];
+  resultsPerPageOptions: number[] = [5, 10, 15, 20, 30, 50];
+  queryModel: QueryModel;
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute) {
   }

@@ -7,7 +7,7 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class CreditsComponent implements OnInit {
   @Input()
-  private credits:string[][];
+  credits:string[][];
 
   constructor() { }
 

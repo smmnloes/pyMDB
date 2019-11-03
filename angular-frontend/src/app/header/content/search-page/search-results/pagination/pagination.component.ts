@@ -10,7 +10,7 @@ import {Util} from "../../../../../util/util";
   styleUrls: ['./pagination.component.css']
 })
 export class PaginationComponent implements OnInit {
-  private resultsAvailable = false;
+  resultsAvailable = false;
   private currentPage: number;
   private resultCount: number;
   private maxPageCount: number;
