@@ -8,8 +8,6 @@ import {HeaderComponent} from './header/header.component';
 import {SearchPageComponent} from './header/content/search-page/search-page.component';
 import {SearchFormComponent} from './header/content/search-page/search-form/search-form.component';
 import {SearchResultsComponent} from './header/content/search-page/search-results/search-results.component';
-import {AngularMultiSelectModule} from "angular2-multiselect-dropdown/angular2-multiselect-dropdown";
-import {MultiselectComponent} from './header/content/search-page/search-form/multiselect/multiselect.component';
 import {QueryService} from "./services/query.service";
 import {ResultComponent} from './header/content/search-page/search-results/result/result.component';
 import {PaginationComponent} from './header/content/search-page/search-results/pagination/pagination.component';
@@ -21,6 +19,7 @@ import {CacheService} from "./services/cache.service";
 import {FooterComponent} from './header/footer/footer.component';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {ToastrModule} from "ngx-toastr";
+import {MultiSelectAllModule} from "@syncfusion/ej2-angular-dropdowns";
 
 @NgModule({
   declarations: [
@@ -29,7 +28,6 @@ import {ToastrModule} from "ngx-toastr";
     SearchPageComponent,
     SearchFormComponent,
     SearchResultsComponent,
-    MultiselectComponent,
     ResultComponent,
     PaginationComponent,
     DetailsPageComponent,
@@ -38,8 +36,8 @@ import {ToastrModule} from "ngx-toastr";
   ],
   imports: [
     BrowserModule,
-    AngularMultiSelectModule,
     FormsModule,
+    MultiSelectAllModule,
     HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
