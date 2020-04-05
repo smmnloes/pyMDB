@@ -1,14 +1,13 @@
+import {map, first} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {Subject} from "rxjs/Subject";
-import {Observable} from "rxjs/Observable";
+import {Subject, Observable} from "rxjs";
 import "rxjs/add/operator/map";
 import {DetailedDataModel} from "../header/content/search-page/search-results/result/detailed-data-model";
 
 import {Iso639} from "../util/iso639";
 import {TMDB_API_KEY} from "../tmdb-api-key";
 import {CacheService} from "./cache.service";
-import {first} from "rxjs/operators";
 
 @Injectable()
 export class DetailService {
@@ -83,15 +82,15 @@ export class DetailService {
       + tid
       + '?api_key='
       + TMDB_API_KEY
-      + "&external_source=imdb_id")
-      .map(data => {
+      + "&external_source=imdb_id").pipe(
+      map(data => {
         if (data['movie_results'].length > 0) {
           return data['movie_results'][0]['id'];
         } else {
           // no movie with this imdb-id found in TMDB
           return -1;
         }
-      });
+      }));
   }
 
   private getDetailsForTMDB_Id(tmdbID: number) {
@@ -117,9 +116,9 @@ Poster sizes:
 
   public getFullPosterPath(detailedData: DetailedDataModel) {
     console.log("Calling get full poster path");
-    return this.http.get(this.TMDB_ROOT + 'configuration?api_key=' + TMDB_API_KEY).map(configData => {
+    return this.http.get(this.TMDB_ROOT + 'configuration?api_key=' + TMDB_API_KEY).pipe(map(configData => {
       let baseUrl = configData['images']['base_url'];
       return baseUrl + 'w342' + detailedData.posterPath
-    })
+    }))
   }
 }

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Subject} from "rxjs/Subject";
+import {Subject} from "rxjs";
 import {BasicDataModel} from "../header/content/search-page/search-results/result/basic-data-model";
 import {QueryModel} from "../header/content/search-page/search-form/query-model";
 import {Util} from "../util/util";
