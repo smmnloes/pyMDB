@@ -4,6 +4,8 @@ services:
     build: 
       context: ./angular-frontend
     network_mode: "host"
+    volumes:
+      - ./angular-frontend/src:/app/src
   backend:
     build:
       context: ./py-backend
