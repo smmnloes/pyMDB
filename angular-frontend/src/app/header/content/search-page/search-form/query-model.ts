@@ -19,7 +19,7 @@ export class QueryModel {
       this.title, this.results_per_page, this.current_page, this.sort_by)
   }
 
-  public static fromQueryParams(queryParams: any) {
+  public static fromQueryParams(queryParams: any): QueryModel {
     return new QueryModel(
       queryParams['director'] == null ? "" : queryParams.director,
       queryParams['writer'] == null ? "" : queryParams.writer,
@@ -35,8 +35,8 @@ export class QueryModel {
     );
   }
 
-  private static getGenres(queryParams: any) {
-    if (typeof(queryParams['genres']) == "string") {
+  private static getGenres(queryParams: any): string[] {
+    if (typeof (queryParams['genres']) == "string") {
       return [queryParams['genres']];
     }
 
@@ -44,7 +44,7 @@ export class QueryModel {
   }
 
 
-  public normalize() {
+  public normalize(): string {
     let clonedModel = this.clone();
     clonedModel.current_page = -1;
     return JSON.stringify(clonedModel);

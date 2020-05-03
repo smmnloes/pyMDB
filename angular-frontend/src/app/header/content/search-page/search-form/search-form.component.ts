@@ -15,8 +15,8 @@ export class SearchFormComponent implements OnInit {
   resultsPerPageOptions: number[] = [5, 10, 15, 20, 30, 50];
   queryModel: QueryModel;
 
-  private MAX_CATEGORIES_SELECTABLE = 3;
-  public genres = [
+  private MAX_CATEGORIES_SELECTABLE: number = 3;
+  public genres: string[] = [
     'Action',
     'Adventure',
     'Comedy',
@@ -46,7 +46,6 @@ export class SearchFormComponent implements OnInit {
   public genreSelectionPlaceholder: string = 'Select up to ' + this.MAX_CATEGORIES_SELECTABLE + ' genres!';
 
 
-
   constructor(private router: Router, private activatedRoute: ActivatedRoute) {
   }
 
@@ -57,22 +56,22 @@ export class SearchFormComponent implements OnInit {
     );
   }
 
-  onSubmit() {
+  onSubmit(): void {
     this.queryModel.current_page = 1;
     this.refetch();
   }
 
-  onClickSortBy() {
+  onClickSortBy(): void {
     this.refetch();
   }
 
-  onClickResultsPerPage() {
+  onClickResultsPerPage(): void {
     this.queryModel.current_page = 1;
     this.refetch();
   }
 
-  refetch() {
-       this.router.navigate(['/search'], {queryParams: JSON.parse(JSON.stringify(this.queryModel))});
+  refetch(): void {
+    this.router.navigate(['/search'], {queryParams: JSON.parse(JSON.stringify(this.queryModel))});
   }
 
 }

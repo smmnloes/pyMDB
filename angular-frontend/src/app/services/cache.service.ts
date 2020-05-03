@@ -25,7 +25,7 @@ export class CacheService {
       null : this.cache_BasicData[normalized].pages[queryModel.current_page];
   }
 
-  public setResultCount(queryModel: QueryModel, resultCount: number) {
+  public setResultCount(queryModel: QueryModel, resultCount: number): void {
     let normalized = queryModel.normalize();
     if (this.cache_BasicData[normalized] == null) {
       this.cache_BasicData[normalized] = {resultCount: resultCount, pages: []}
@@ -36,7 +36,7 @@ export class CacheService {
     }
   }
 
-  public setPage(queryModel: QueryModel, page: BasicDataModel[]) {
+  public setPage(queryModel: QueryModel, page: BasicDataModel[]): void {
     let normalized = queryModel.normalize();
     if (this.cache_BasicData[normalized] == null) {
       this.cache_BasicData[normalized] = {resultCount: null, pages: []};
@@ -44,11 +44,11 @@ export class CacheService {
     this.cache_BasicData[normalized].pages[queryModel.current_page] = page;
   }
 
-  public setDetails(IMDB_Id: number, details: DetailedDataModel) {
+  public setDetails(IMDB_Id: number, details: DetailedDataModel): void {
     this.cache_DetailedData[IMDB_Id] = details;
   }
 
-  public getDetails(IMDB_Id: number) {
+  public getDetails(IMDB_Id: number): DetailedDataModel {
     return this.cache_DetailedData[IMDB_Id];
 
   }

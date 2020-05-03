@@ -45,7 +45,7 @@ export class DetailsPageComponent implements OnInit {
 
   }
 
-  private hasPosterPath() {
+  private hasPosterPath(): boolean {
     return this.detailedData != null && this.detailedData.posterPath != null;
   }
 

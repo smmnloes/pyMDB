@@ -34,7 +34,7 @@ export class QueryService {
   }
 
 
-  makeQuery(queryData: QueryModel) {
+  makeQuery(queryData: QueryModel): void {
     let cachedPage = this.cacheService.getPage(queryData);
 
     if (cachedPage != null) {
@@ -73,7 +73,7 @@ export class QueryService {
     }
   }
 
-  getMovieById(tid: number) {
+  getMovieById(tid: number): void {
     this.http.post('api/movie_by_tid', {tid: tid}, httpOptions).subscribe(
       result => {
         let processedResult: BasicDataModel = QueryService.processPage(result)[0];
@@ -83,19 +83,19 @@ export class QueryService {
   }
 
 
-  static processPage(basicData): BasicDataModel[] {
+  static processPage(input: any): BasicDataModel[] {
     let results: BasicDataModel[] = [];
-    for (let result of basicData) {
+    for (let result of input) {
       results.push(new BasicDataModel(
-        result.average_rating,
-        result.directors,
-        result.writers,
-        result.genres,
-        result.primary_title,
-        result.principals,
-        result.runtime_minutes,
-        result.tid,
-        result.year
+        result['average_rating'],
+        result['directors'],
+        result['writers'],
+        result['genres'],
+        result['primary_title'],
+        result['principals'],
+        result['runtime_minutes'],
+        result['tid'],
+        result['year']
       ));
 
     }

@@ -20,7 +20,7 @@ export class DetailService {
   constructor(private http: HttpClient, private cacheService: CacheService) {
   }
 
-  getDetails(IMDB_Id: number) {
+  getDetails(IMDB_Id: number): void {
     let cachedDetails = this.cacheService.getDetails(IMDB_Id);
     if (cachedDetails != null) {
       this.detailedDataSource.next(cachedDetails);
@@ -43,12 +43,12 @@ export class DetailService {
 
   }
 
-  private pushDetailsAndCache(detailedData, IMDB_Id: number) {
+  private pushDetailsAndCache(detailedData: DetailedDataModel, IMDB_Id: number): void {
     this.detailedDataSource.next(detailedData);
     this.cacheService.setDetails(IMDB_Id, detailedData)
   }
 
-  private static processDetailedData(details) {
+  private static processDetailedData(details: Object): DetailedDataModel {
     return new DetailedDataModel(DetailService.processCredits(details['credits']), details['budget'],
       Iso639.iso639ToName[details['original_language']],
       details['production_countries'].map(element => element['name']),
@@ -56,7 +56,7 @@ export class DetailService {
       details['original_title'], details['overview'], true);
   }
 
-  private static processCredits(credits) {
+  private static processCredits(credits: Object): string[][] {
     let creditsProcessed: string[][] = [];
 
     for (let cast of credits['cast']) {
@@ -66,7 +66,7 @@ export class DetailService {
     return creditsProcessed;
   }
 
-  private static formatIMDB_Id(tidAsInt: number) {
+  private static formatIMDB_Id(tidAsInt: number): string {
     let tidAsString = tidAsInt.toString();
     let numberLeadingZeroes = 7 - tidAsString.length;
     let leadingZeroes = "";
@@ -77,7 +77,7 @@ export class DetailService {
 
   }
 
-  private getTMDB_Id(tid: string) {
+  private getTMDB_Id(tid: string): Observable<number> {
     return this.http.get(
       this.TMDB_ROOT
       + 'find/'
@@ -95,7 +95,7 @@ export class DetailService {
       }));
   }
 
-  private getDetailsForTMDB_Id(tmdbID: number) {
+  private getDetailsForTMDB_Id(tmdbID: number): Observable<Object> {
     return this.http.get(
       this.TMDB_ROOT
       + 'movie/'
@@ -116,7 +116,7 @@ Poster sizes:
  "original"
  */
 
-  public getFullPosterPath(detailedData: DetailedDataModel) {
+  public getFullPosterPath(detailedData: DetailedDataModel): Observable<string> {
     return this.http.get(this.TMDB_ROOT + 'configuration?api_key=' + TMDB_API_KEY).pipe(map(configData => {
       let baseUrl = configData['images']['secure_base_url'];
       return baseUrl + 'w342' + detailedData.posterPath

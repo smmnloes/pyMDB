@@ -10,7 +10,7 @@ import {Util} from "../../../../../util/util";
   styleUrls: ['./pagination.component.css']
 })
 export class PaginationComponent implements OnInit {
-  resultsAvailable = false;
+  resultsAvailable: boolean = false;
   private currentPage: number;
   private resultCount: number;
   private maxPageCount: number;
@@ -37,48 +37,48 @@ export class PaginationComponent implements OnInit {
     })
   }
 
-  onClickPageNr(newPage: number) {
+  onClickPageNr(newPage: number): void {
     if (this.currentPage != newPage) {
       this.currentPage = newPage;
       this.loadNewPage();
     }
   }
 
-  onClickNext() {
+  onClickNext(): void {
     if (this.currentPage < this.maxPageCount) {
       this.currentPage++;
       this.loadNewPage();
     }
   }
 
-  onClickPrev() {
+  onClickPrev(): void {
     if (this.currentPage > 1) {
       this.currentPage--;
       this.loadNewPage();
     }
   }
 
-  loadNewPage() {
+  loadNewPage(): void {
     let params = Object.assign({}, this.activatedRoute.snapshot.queryParams);
     params['current_page'] = this.currentPage;
     this.router.navigate(['/search'], {queryParams: params});
   }
 
-  onClickFirst() {
+  onClickFirst(): void {
     if (this.currentPage != 1) {
       this.currentPage = 1;
       this.loadNewPage();
     }
   }
 
-  onClickLast() {
+  onClickLast(): void {
     if (this.currentPage != this.maxPageCount) {
       this.currentPage = this.maxPageCount;
       this.loadNewPage();
     }
   }
 
-  getPages() {
+  getPages(): number[] {
     let pages: number[] = [];
     let minPage = this.currentPage > 5 ? this.currentPage - 5 : 1;
     let maxPage = (this.currentPage > 5 ? this.currentPage + 4 : 10);
