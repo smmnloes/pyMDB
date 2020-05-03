@@ -32,29 +32,31 @@ export class DetailService {
     this.getTMDB_Id(IMDB_Id_Formatted).pipe(first()).subscribe(tmdbID => {
       if (tmdbID == -1) {
         let emptyDetails = DetailedDataModel.createEmptyDetails();
-        this.detailedDataSource.next(emptyDetails);
-        this.cacheService.setDetails(IMDB_Id, emptyDetails)
+        this.pushDetailsAndCache(emptyDetails, IMDB_Id);
       } else {
         this.getDetailsForTMDB_Id(tmdbID).pipe(first()).subscribe(detailedData => {
-          let detailedDataProcessed = this.processDetailedData(detailedData);
-          this.detailedDataSource.next(detailedDataProcessed);
-          this.cacheService.setDetails(IMDB_Id, detailedDataProcessed);
+          let detailedDataProcessed = DetailService.processDetailedData(detailedData);
+          this.pushDetailsAndCache(detailedDataProcessed, IMDB_Id)
         });
       }
-
     });
 
   }
 
-  private processDetailedData(details) {
-    return new DetailedDataModel(this.processCredits(details['credits']), details['budget'],
+  private pushDetailsAndCache(detailedData, IMDB_Id: number) {
+    this.detailedDataSource.next(detailedData);
+    this.cacheService.setDetails(IMDB_Id, detailedData)
+  }
+
+  private static processDetailedData(details) {
+    return new DetailedDataModel(DetailService.processCredits(details['credits']), details['budget'],
       Iso639.iso639ToName[details['original_language']],
       details['production_countries'].map(element => element['name']),
       new Date(details['release_date']), details['poster_path'],
       details['original_title'], details['overview'], true);
   }
 
-  private processCredits(credits) {
+  private static processCredits(credits) {
     let creditsProcessed: string[][] = [];
 
     for (let cast of credits['cast']) {
