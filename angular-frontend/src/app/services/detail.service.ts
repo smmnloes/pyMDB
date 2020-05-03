@@ -117,9 +117,8 @@ Poster sizes:
  */
 
   public getFullPosterPath(detailedData: DetailedDataModel) {
-    console.log("Calling get full poster path");
     return this.http.get(this.TMDB_ROOT + 'configuration?api_key=' + TMDB_API_KEY).pipe(map(configData => {
-      let baseUrl = configData['images']['base_url'];
+      let baseUrl = configData['images']['secure_base_url'];
       return baseUrl + 'w342' + detailedData.posterPath
     }))
   }
