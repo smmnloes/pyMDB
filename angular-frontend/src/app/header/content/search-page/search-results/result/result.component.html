@@ -1,0 +1,36 @@
+<div class="result">
+  <table>
+    <th colspan="2">
+      <div class="result-title">
+        <ng-container *ngIf="activateTitleLink; else title_no_link">
+          <a (click)="goToDetails()">{{basicData.primary_title + " " + (basicData.year ? "(" + basicData.year + ")" : "")}}</a>
+        </ng-container>
+      </div>
+      <ng-template #title_no_link>
+        <span>{{basicData.primary_title + " " + (basicData.year ? "(" + basicData.year + ")" : "")}}</span>
+      </ng-template>
+    </th>
+    <tbody>
+    <tr>
+      <td colspan="2">
+        <span class="runtime" *ngIf="basicData.runtime_minutes">{{basicData.runtime_minutes}} min</span>
+        <span class="genres" *ngIf="basicData.genres!=null"> {{basicData.genres.join(', ')}}</span>
+        <span class="rating"
+              *ngIf="basicData.average_rating != null" title="IMDB rating">
+                      &#9733; {{basicData.average_rating.toFixed(1)}}</span>
+      </td>
+    <tr *ngIf="basicData.directors.length > 0">
+      <td class="category">Director<span *ngIf="basicData.directors.length>1">s</span>:</td>
+      <td class="result-text">{{basicData.directors.join(', ')}}</td>
+    </tr>
+    <tr *ngIf="basicData.writers.length > 0">
+      <td class="category">Writer<span *ngIf="basicData.writers.length>1">s</span>:</td>
+      <td class="result-text">{{basicData.writers.join(', ')}}</td>
+    </tr>
+    <tr *ngIf="basicData.principals.length > 0">
+      <td class="category">Starring:</td>
+      <td class="result-text">{{basicData.principals.join(', ')}}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,5 @@
+<div class="search-results-container">
+  <app-pagination></app-pagination>
+  <app-result *ngFor="let result of page" [basicData]="result" [activateTitleLink]="true"></app-result>
+  <app-pagination></app-pagination>
+</div>

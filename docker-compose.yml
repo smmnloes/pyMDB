@@ -1,0 +1,14 @@
+version: "3.7"
+services:
+  frontend:
+    build: 
+      context: ./angular-frontend
+    network_mode: "host"
+    volumes:
+      - ./angular-frontend/src:/app/src
+  backend:
+    build:
+      context: ./py-backend
+    network_mode: "host"
+    volumes:
+      - ./py-backend/DB_Data_Local:/app/DB_Data_Local

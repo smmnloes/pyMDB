@@ -1,0 +1,49 @@
+.result {
+  background-color: slategrey;
+  margin-bottom: 30px;
+  border-radius: 5px;
+}
+
+
+.result-text {
+  text-align: left;
+}
+
+.genres {
+  font-style: italic;
+  float: left;
+}
+
+.runtime {
+  float: left;
+  margin-right: 15px;
+}
+
+.rating {
+  float: right;
+}
+
+td {
+  vertical-align: top;
+}
+
+.category {
+  width: 50px;
+  font-weight: bold;
+}
+
+.result-title {
+  padding: 8px;
+  text-align: left;
+  font-size: 1.4em;
+  color: white;
+}
+
+.result-title a {
+  color:white;
+}
+
+
+.result-title a:hover {
+  color: #dbdbdb;
+}

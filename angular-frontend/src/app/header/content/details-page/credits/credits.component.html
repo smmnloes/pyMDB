@@ -1,0 +1,16 @@
+<div class="credits-container" *ngIf="credits != []">
+  <table>
+
+    <th class="credits-title" colspan="2">Credits</th>
+    <tbody>
+    <tr>
+
+    <tr *ngFor="let credit of credits">
+      <td class="credits-actor">{{credit[0]}}</td>
+      <td class="credits-character">{{credit[1]}}</td>
+    </tr>
+
+
+    </tbody>
+  </table>
+</div>

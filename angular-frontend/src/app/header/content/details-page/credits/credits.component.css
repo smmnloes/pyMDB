@@ -1,0 +1,20 @@
+.credits-container {
+  border-radius:10px;
+  background-color: slategrey;
+  box-shadow: 5px 5px 10px dimgrey;
+}
+
+.credits-title{
+  text-align: left;
+  padding: 10px;
+  color: white;
+  font-size:1.2em;
+}
+
+td {
+  vertical-align: top;
+}
+
+.credits-actor {
+  font-weight: bold;
+}

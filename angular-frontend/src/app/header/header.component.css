@@ -1,0 +1,38 @@
+.header {
+  background: #708090;
+  color: white;
+  width: 100%;
+  padding:20px;
+  text-align: center;
+  box-shadow: 0 5px 10px dimgray;
+}
+
+nav a {
+  font-size:1.2em;
+  color: white;
+
+}
+
+.header h1 a{
+  font-size:2em;
+  color:white;
+  font-weight:bold;
+}
+
+.content {
+  margin: 35px auto auto auto;
+}
+
+/* Small only */
+@media screen and (max-width: 39.9375em) {
+  .content {
+    width: 100%
+  }
+}
+
+/* Medium and up */
+@media screen and (min-width: 40em) {
+  .content {
+    width: 75%
+  }
+}
