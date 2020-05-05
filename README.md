@@ -6,6 +6,9 @@ Welcome to pyMDB, a movie search engine based on IMDB datasets combined with det
 * NodeJS & NPM -> https://nodejs.org/en/download/
 * Python version 3.5 or above 
 * Pipenv -> `sudo apt-get install python3-pip && sudp pip install pipenv`
+* **Optional:** 
+  * Docker -> https://docs.docker.com/engine/install
+  * Docker-compose -> `sudo apt-get install docker-compose`
 
 ### Installation
 1. Clone the repository
