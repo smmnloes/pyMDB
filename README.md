@@ -5,7 +5,7 @@ Welcome to pyMDB, a movie search engine based on IMDB datasets combined with det
 ### Prerequisites
 * NPM -> `sudo apt-get install npm`
 * Python version 3.5 or above 
-* Pipenv -> `sudo apt-get install python-pip && sudp pip install pipenv`
+* Pipenv -> `sudo apt-get install python3-pip && sudp pip install pipenv`
 
 ### Installation
 1. Clone the repository
