@@ -1,4 +1,4 @@
-FROM node:10.16.3-jessie
+FROM node:14.1.0-stretch-slim
 
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH	
