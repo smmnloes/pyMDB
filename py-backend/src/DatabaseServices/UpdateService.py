@@ -5,8 +5,8 @@ import shutil
 import sqlite3
 import urllib.request
 
-import definitions
 from App.AppMain import db, create_app
+from Config import ConfigService
 from DatabaseServices.QueryService import normalize
 
 DATASETS = ['basics', 'principals', 'names', 'crew', 'ratings']
@@ -44,7 +44,7 @@ def update_db():
 
 
 def get_db_connect():
-    db_connect = sqlite3.connect(definitions.LOCAL_DB)
+    db_connect = sqlite3.connect(ConfigService.get_movie_db_path())
     db_connect.execute("PRAGMA synchronous = 0")
     db_connect.execute("PRAGMA default_cache_size = 40000")
     return db_connect
@@ -52,31 +52,34 @@ def get_db_connect():
 
 def backup_local_db():
     app.logger.info('Backing up last version.')
-    if os.path.isfile(definitions.LOCAL_DB):
-        os.rename(definitions.LOCAL_DB, definitions.DB_LAST_VERSION)
+    current_db_path = ConfigService.get_movie_db_path()
+    last_version_path = ConfigService.get_last_version_path()
+
+    if os.path.isfile(current_db_path):
+        os.rename(current_db_path, last_version_path)
     else:
         app.logger.warn('No database found, nothing to back up.')
 
 
-def delete_downloaded_remote_data(dataset):
-    app.logger.info('Deleting local {} file'.format(dataset))
-    os.remove(definitions.DB_DATA_REMOTE + dataset)
-
-
 def restore_db_last_version():
     app.logger.info('Restoring last version.')
-    if os.path.isfile(definitions.DB_LAST_VERSION):
-        os.rename(definitions.DB_LAST_VERSION, definitions.LOCAL_DB)
+    current_db_path = ConfigService.get_movie_db_path()
+    last_version_path = ConfigService.get_last_version_path()
+
+    if os.path.isfile(last_version_path):
+        os.rename(last_version_path, current_db_path)
         app.logger.info('Last version restored!')
     else:
         app.logger.warn("No previous version found! Cannot restore last version!")
 
 
 def download_and_unzip_new_data(dataset):
-    unzipped_path = definitions.DB_DATA_REMOTE + dataset
+    temp_path = ConfigService.get_temp_path()
+
+    unzipped_path = os.path.join(temp_path, dataset)
     zipped_path = unzipped_path + '_zipped'
     app.logger.info('Downloading {} data.'.format(dataset))
-    urllib.request.urlretrieve(definitions.URL_IMDB_DATA + DATASETS_TO_FILENAMES.get(dataset),
+    urllib.request.urlretrieve(ConfigService.get_imdb_url() + DATASETS_TO_FILENAMES.get(dataset),
                                zipped_path)
 
     app.logger.info('Unzipping {} data'.format(dataset))
@@ -85,6 +88,11 @@ def download_and_unzip_new_data(dataset):
             shutil.copyfileobj(zipped_file, unzipped_file)
 
     os.remove(zipped_path)
+
+
+def delete_downloaded_remote_data(dataset):
+    app.logger.info('Deleting local {} file'.format(dataset))
+    os.remove(os.path.join(ConfigService.get_temp_path(), dataset))
 
 
 def is_valid_tid(to_check):
@@ -108,15 +116,15 @@ def tid_nid_to_int(tid_nid):
 
 def analyze():
     app.logger.info("Analyzing.\n")
-    db_connect = sqlite3.connect(definitions.LOCAL_DB)
+    db_connect = sqlite3.connect(ConfigService.get_movie_db_path())
     db_connect.execute('ANALYZE')
 
 
 def read_basics():
     db_connect = get_db_connect()
 
-    with open(definitions.DB_DATA_REMOTE + 'basics', 'r') as file:
-        line = file.readline()
+    with open(os.path.join(ConfigService.get_temp_path(),'basics'), 'r') as file:
+        file.readline()
         line = file.readline().strip()
 
         while line:
@@ -140,8 +148,8 @@ def read_basics():
 def read_ratings():
     db_connect = get_db_connect()
 
-    with open(definitions.DB_DATA_REMOTE + 'ratings', 'r') as file:
-        line = file.readline()
+    with open(os.path.join(ConfigService.get_temp_path(), 'ratings'), 'r') as file:
+        file.readline()
         line = file.readline().strip()
 
         while line:
@@ -159,8 +167,8 @@ def read_ratings():
 def read_principals():
     db_connect = get_db_connect()
 
-    with open(definitions.DB_DATA_REMOTE + 'principals', 'r') as file:
-        line = file.readline()
+    with open(os.path.join(ConfigService.get_temp_path(), 'principals'), 'r') as file:
+        file.readline()
         line = file.readline().strip()
 
         last_valid_id = -1
@@ -183,8 +191,8 @@ def read_principals():
 def read_crew():
     db_connect = get_db_connect()
 
-    with open(definitions.DB_DATA_REMOTE + 'crew', 'r') as file:
-        line = file.readline()
+    with open(os.path.join(ConfigService.get_temp_path(), 'crew'), 'r') as file:
+        file.readline()
         line = file.readline().strip()
 
         while line:
@@ -210,8 +218,8 @@ def read_crew():
 def read_names():
     db_connect = get_db_connect()
 
-    with open(definitions.DB_DATA_REMOTE + 'names', 'r') as file:
-        line = file.readline()
+    with open(os.path.join(ConfigService.get_temp_path(), 'names'), 'r') as file:
+        file.readline()
         line = file.readline().strip()
 
         while line:

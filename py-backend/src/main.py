@@ -1,4 +1,5 @@
 import sys
+import traceback
 from multiprocessing import Process
 
 from App import AppMain
@@ -46,12 +47,7 @@ def parse_arguments(argv):
 
     for arg in args:
         if arg == "update":
-            try:
-                UpdateService.update_db()
-            except (Exception, BaseException):
-                print("Error updating!")
-                sys.exit(1)
-            sys.exit(0)
+            UpdateService.update_db()
 
 
 def shutdown(process):

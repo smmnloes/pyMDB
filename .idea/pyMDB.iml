@@ -7,7 +7,7 @@
       <excludeFolder url="file://$MODULE_DIR$/angular-frontend/dist" />
       <excludeFolder url="file://$MODULE_DIR$/angular-frontend/tmp" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.8 (py-backend-QBl-1EY7)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.8 (pyMDB)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>

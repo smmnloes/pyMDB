@@ -5,7 +5,7 @@ from flask_cors import CORS
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 
-from definitions import *
+from Config import ConfigService
 
 db = SQLAlchemy()
 
@@ -18,7 +18,7 @@ def start_app():
 def create_app():
     app = Flask(__name__)
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + LOCAL_DB
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + ConfigService.get_movie_db_path()
     CORS(app, resources={"/query": {'methods': ['POST']}})
     db.init_app(app)
     api = Api(app)
