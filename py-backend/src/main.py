@@ -48,6 +48,7 @@ def parse_arguments(argv):
     for arg in args:
         if arg == "update":
             UpdateService.update_db()
+            exit(0)
 
 
 def shutdown(process):
