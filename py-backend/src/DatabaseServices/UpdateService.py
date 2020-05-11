@@ -123,7 +123,7 @@ def analyze():
 def read_basics():
     db_connect = get_db_connect()
 
-    with open(os.path.join(ConfigService.get_temp_path(),'basics'), 'r') as file:
+    with open(os.path.join(ConfigService.get_temp_path(), 'basics'), 'r') as file:
         file.readline()
         line = file.readline().strip()
 
@@ -137,7 +137,7 @@ def read_basics():
                 title_normalized = normalize(entries_basics[1])
                 db_connect.execute("INSERT INTO basics VALUES (?,?,?,?,?,?)",
                                    entries_basics + [title_normalized])
-                VALID_IDS.append(entries_basics[0])
+                bisect.insort(VALID_IDS, entries_basics[0])
 
             line = file.readline().strip()
 
