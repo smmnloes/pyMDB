@@ -137,10 +137,11 @@ def read_basics():
                 title_normalized = normalize(entries_basics[1])
                 db_connect.execute("INSERT INTO basics VALUES (?,?,?,?,?,?)",
                                    entries_basics + [title_normalized])
-                bisect.insort(VALID_IDS, entries_basics[0])
+                VALID_IDS.append(entries_basics[0])
 
             line = file.readline().strip()
 
+        VALID_IDS.sort()
         db_connect.commit()
         db_connect.close()
 
