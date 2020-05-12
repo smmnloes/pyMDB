@@ -11,4 +11,4 @@ services:
       context: ./py-backend
     network_mode: "host"
     volumes:
-      - ./py-backend/DB_Data_Local:/app/DB_Data_Local
+      - /var/lib/pymdb:/var/lib/pymdb
