@@ -36,15 +36,17 @@ In `/py-backend/src/` execute `pipenv shell`, in the resulting shell execute `py
 To use the dockerized variant, you need to have the docker engine installed. There are two images defined, one for the backend, and one for the frontend. You can build and start those yourself individually (make sure to set network to "host"), or you can use 'docker-compose' in the root directory of the project:   
 `$ docker-compose up`  
 This will start the two containers and make them available in the host network, reachable under `http://localhost:4200`.  
-In this setup, the two directories
-- `py-backend/DB_Data_Local`
-- `angular-frontend/src`
-will be mounted into the images, so that you can use a database created via the backend-CLI (s. below) and Angular runs with hot reload.
+In this setup, the following directories will be mounted into the container:
+- `/var/lib/pymdb` (containing the database files, you need to create the database first by following the steps described in __First run__.
+- `angular-frontend/src` (enables hot reloading for Angular development)  
+
 **Note**: You still need to add the TMDB API Key to the application as described above!
+
 ### Using the app
 #### First run
-On the first run, you have to download the Imdb data and create your database, unless you use the dockerized version, which already does this automatically.  
-In the backend-CLI, enter `update`. This will download the files from __https://datasets.imdbws.com__ one by one and read them into a SQLite database at `/DB_Data_Local/`.
+On the first run, you have to download the Imdb data and create your database.
+In the backend-CLI, enter `update`. This will download the files from __https://datasets.imdbws.com__ one by one and read them into a SQLite database at the location defined in the config.ini file (`/var/lib/pymdb` by default). 
+You can also run the backend with the command line argument `update` to trigger this process and exit afterwards.
 For info on the tables in this database, please refer to `py-backend/src/DatabaseServices/DatabaseModel.py`.
 The resulting database contains only information about movies, excluding adult films. Also not every value which is available from the datasets is read into the database.
 
