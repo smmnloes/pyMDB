@@ -24,8 +24,9 @@ def create_app():
     api = Api(app)
     app.logger.setLevel(logging.INFO)
 
-    from App.RESTControllers import MovieQuery, ResultCount, MovieByTid
+    from App.RESTControllers import MovieQuery, ResultCount, MovieByTid, TmdbDetailedData
     api.add_resource(MovieQuery, '/api/query')
     api.add_resource(ResultCount, '/api/result_count')
     api.add_resource(MovieByTid, '/api/movie_by_tid')
+    api.add_resource(TmdbDetailedData, '/api/details')
     return app

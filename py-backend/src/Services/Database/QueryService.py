@@ -5,7 +5,7 @@ from sqlalchemy.orm import aliased
 from unidecode import unidecode
 
 from App.AppMain import create_app
-from DatabaseServices.DatabaseModel import *
+from Model.DatabaseModel import *
 
 app = create_app()
 

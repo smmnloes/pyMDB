@@ -47,14 +47,14 @@ In this setup, the following directories will be mounted into the container:
 On the first run, you have to download the Imdb data and create your database.
 In the backend-CLI, enter `update`. This will download the files from __https://datasets.imdbws.com__ one by one and read them into a SQLite database at the location defined in the config.ini file (`/var/lib/pymdb` by default). 
 You can also run the backend with the command line argument `update` to trigger this process and exit afterwards.
-For info on the tables in this database, please refer to `py-backend/src/DatabaseServices/DatabaseModel.py`.
+For info on the tables in this database, please refer to `py-backend/src/Services/DatabaseModel.py`.
 The resulting database contains only information about movies, excluding adult films. Also not every value which is available from the datasets is read into the database.
 
 #### Search filters
 On `localhost:4200` you will find the search interface. Some quick notes on the search filters:
 * __Title__: Search by movie title. This also matches partial names, e.g. "Star Wa" matches "Star Wars".
 * __Genres__: Select up to 3 Genres
-* __Min. Rating__: Only show results with rating higher than this value. This also implies that a certain threshold for number of votes will be applied. This value can be changed in `py-backend/src/DatabaseServices/QueryServies` under __MIN_NUM_VOTES__.
+* __Min. Rating__: Only show results with rating higher than this value. This also implies that a certain threshold for number of votes will be applied. This value can be changed in `py-backend/src/Services/QueryServies` under __MIN_NUM_VOTES__.
 * __Min. Year/Max. Year__: Get only results from certain time period
 * __Director__: Get only results with this director. *Important*: Only full matches will be accepted (vs. Title search)
 * __Writer__: Get only results with this writer. *Important*: Only full matches will be accepted (vs. Title search)

@@ -3,7 +3,7 @@ import sys
 from multiprocessing import Process
 
 from App import AppMain
-from DatabaseServices import UpdateService
+from Services.Database import UpdateService
 
 
 def main(argv):

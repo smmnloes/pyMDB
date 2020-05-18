@@ -1,7 +1,8 @@
 from flask import request
 from flask_restful import Resource
 
-from DatabaseServices import QueryService
+from Services.API import TMDBDetailService
+from Services.Database import QueryService
 
 
 class MovieQuery(Resource):
@@ -17,3 +18,8 @@ class ResultCount(Resource):
 class MovieByTid(Resource):
     def post(self):
         return QueryService.get_movie_by_tid(request.json)
+
+
+class TmdbDetailedData(Resource):
+    def get(self):
+        return TMDBDetailService.get_detailed_data_by_imdb_id(request.json)

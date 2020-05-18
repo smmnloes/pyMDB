@@ -7,7 +7,7 @@ import urllib.request
 
 from App.AppMain import db, create_app
 from Config import ConfigService
-from DatabaseServices.QueryService import normalize
+from Services.Database.QueryService import normalize
 
 DATASETS = ['basics', 'principals', 'names', 'crew', 'ratings']
 DATASETS_TO_FILENAMES = {'basics': 'title.basics.tsv.gz', 'names': 'name.basics.tsv.gz',
