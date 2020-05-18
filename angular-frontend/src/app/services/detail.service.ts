@@ -49,11 +49,15 @@ export class DetailService {
   }
 
   private static processDetailedData(details: Object): DetailedDataModel {
-    return new DetailedDataModel(DetailService.processCredits(details['credits']), details['budget'],
+    return new DetailedDataModel(
+      DetailService.processCredits(details['credits']),
+      details['budget'],
       Iso639.iso639ToName[details['original_language']],
       details['production_countries'].map(element => element['name']),
-      new Date(details['release_date']), details['poster_path'],
-      details['original_title'], details['overview'], true);
+      new Date(details['release_date']),
+      details['poster_path'],
+      details['overview'],
+      true);
   }
 
   private static processCredits(credits: Object): string[][] {
