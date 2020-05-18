@@ -4,6 +4,7 @@ import {DetailService} from "../../../../../services/detail.service";
 import {Router} from "@angular/router";
 import {ToastrService} from "ngx-toastr";
 import {first} from "rxjs/operators";
+import {DetailedDataModel} from "./detailed-data-model";
 
 
 @Component({
@@ -26,9 +27,10 @@ export class ResultComponent implements OnInit {
   }
 
   goToDetails() {
-    this.detailService.detailedData$.pipe(first()).subscribe(data =>
-      data.hasDetails ?
-        this.router.navigate(["/details", this.basicData.tid])
+    this.detailService.detailedData$.pipe(first()).subscribe((detailedData: DetailedDataModel) =>
+      detailedData.hasDetails ?
+        this.router.navigate(["/details", this.basicData.tid], {state: {basicData: this.basicData,
+            detailedData: detailedData}})
         :
         this.toastrService.warning("No detailed data available"));
     this.detailService.getDetails(this.basicData.tid);

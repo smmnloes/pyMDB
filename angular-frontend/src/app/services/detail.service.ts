@@ -1,7 +1,7 @@
-import {map, first} from 'rxjs/operators';
+import {first, map, take} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {Subject, Observable} from "rxjs";
+import {Observable, Subject} from "rxjs";
 import "rxjs/add/operator/map";
 import {DetailedDataModel} from "../header/content/search-page/search-results/result/detailed-data-model";
 
@@ -16,9 +16,14 @@ export class DetailService {
   detailedDataSource: Subject<DetailedDataModel> = new Subject<DetailedDataModel>();
   detailedData$: Observable<DetailedDataModel> = this.detailedDataSource.asObservable();
 
+  configData;
 
   constructor(private http: HttpClient, private cacheService: CacheService) {
+    http.get(this.TMDB_ROOT + 'configuration?api_key=' + TMDB_API_KEY).pipe(take(1)).subscribe(configData => {
+      this.configData = configData;
+    });
   }
+
 
   getDetails(IMDB_Id: number): void {
     let cachedDetails = this.cacheService.getDetails(IMDB_Id);
@@ -35,7 +40,7 @@ export class DetailService {
         this.pushDetailsAndCache(emptyDetails, IMDB_Id);
       } else {
         this.getDetailsForTMDB_Id(tmdbID).pipe(first()).subscribe(detailedData => {
-          let detailedDataProcessed = DetailService.processDetailedData(detailedData);
+          let detailedDataProcessed = this.processDetailedData(detailedData);
           this.pushDetailsAndCache(detailedDataProcessed, IMDB_Id)
         });
       }
@@ -48,14 +53,14 @@ export class DetailService {
     this.cacheService.setDetails(IMDB_Id, detailedData)
   }
 
-  private static processDetailedData(details: Object): DetailedDataModel {
+  private processDetailedData(details: Object): DetailedDataModel {
     return new DetailedDataModel(
       DetailService.processCredits(details['credits']),
       details['budget'],
       Iso639.iso639ToName[details['original_language']],
       details['production_countries'].map(element => element['name']),
       new Date(details['release_date']),
-      details['poster_path'],
+      this.getFullPosterPath(details['poster_path']),
       details['overview'],
       true);
   }
@@ -120,10 +125,12 @@ Poster sizes:
  "original"
  */
 
-  public getFullPosterPath(detailedData: DetailedDataModel): Observable<string> {
-    return this.http.get(this.TMDB_ROOT + 'configuration?api_key=' + TMDB_API_KEY).pipe(map(configData => {
-      let baseUrl = configData['images']['secure_base_url'];
-      return baseUrl + 'w342' + detailedData.posterPath
-    }))
+  private getFullPosterPath(partialPosterPath: string): string {
+    if (partialPosterPath == null) {
+      return null
+    }
+
+    let baseUrl = this.configData['images']['secure_base_url'];
+    return baseUrl + 'w342' + partialPosterPath
   }
 }

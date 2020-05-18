@@ -10,6 +10,10 @@ export class DetailedDataModel {
               public hasDetails: boolean) {
   }
 
+  public hasPosterPath(): boolean{
+    return this.posterPath != null;
+  }
+
   public static createEmptyDetails(): DetailedDataModel {
     return new DetailedDataModel(null, null, null, null, null,
       null, null, false)
