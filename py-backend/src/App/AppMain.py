@@ -5,6 +5,7 @@ from flask_cors import CORS
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 
+from App.ApiErrors import rest_api_errors
 from Config import ConfigService
 
 db = SQLAlchemy()
@@ -21,7 +22,7 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + ConfigService.get_movie_db_path()
     CORS(app, resources={"/query": {'methods': ['POST']}})
     db.init_app(app)
-    api = Api(app)
+    api = Api(app, errors=rest_api_errors)
     app.logger.setLevel(logging.INFO)
 
     from App.RESTControllers import MovieQuery, ResultCount, MovieByTid, TmdbDetailedData
@@ -29,4 +30,5 @@ def create_app():
     api.add_resource(ResultCount, '/api/result_count')
     api.add_resource(MovieByTid, '/api/movie_by_tid')
     api.add_resource(TmdbDetailedData, '/api/details')
+
     return app

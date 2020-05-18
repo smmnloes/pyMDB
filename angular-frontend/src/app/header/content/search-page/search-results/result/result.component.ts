@@ -27,13 +27,25 @@ export class ResultComponent implements OnInit {
   }
 
   goToDetails() {
-    this.detailService.detailedData$.pipe(first()).subscribe((detailedData: DetailedDataModel) =>
-      detailedData.hasDetails ?
-        this.router.navigate(["/details", this.basicData.tid], {state: {basicData: this.basicData,
-            detailedData: detailedData}})
-        :
-        this.toastrService.warning("No detailed data available"));
-    this.detailService.getDetails(this.basicData.tid);
+    this.detailService.getDetails(this.basicData.tid).pipe(first()).subscribe(
+      (detailedData: DetailedDataModel) =>
+        this.router.navigate(["/details", this.basicData.tid], {
+          state: {
+            basicData: this.basicData,
+            detailedData: detailedData
+          }
+        }),
+      error => {
+        switch (error.status) {
+          case 404:
+            this.toastrService.warning("No detailed data available");
+            break;
+          case 500:
+            this.toastrService.error("Internal Error, try again later")
+            break;
+        }
+      }
+    );
   }
 
 }

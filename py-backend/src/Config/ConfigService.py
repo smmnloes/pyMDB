@@ -23,12 +23,12 @@ def init_config_decorator(func):
 
 @init_config_decorator
 def get_temp_path():
-    return config_parser['PATHS']['temp']
+    return config_parser['PATHS']['TEMP']
 
 
 @init_config_decorator
 def get_movie_db_path():
-    return os.path.join(config_parser['PATHS']['db_data'], config_parser['FILE_NAMES']['movie_db'])
+    return os.path.join(config_parser['PATHS']['DB_DATA'], config_parser['FILE_NAMES']['MOVIE_DB'])
 
 
 @init_config_decorator
@@ -39,3 +39,7 @@ def get_last_version_path():
 @init_config_decorator
 def get_imdb_url():
     return config_parser['URLS']['IMDB_DATA']
+
+@init_config_decorator
+def get_tmdb_api_key():
+    return config_parser['SECRETS']['TMDB_API_KEY']

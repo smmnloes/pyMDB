@@ -17,8 +17,9 @@ Welcome to pyMDB, a movie search engine based on IMDB datasets combined with det
 
 ### Before the first start
 #### TMDB Api Key
-Before you can use the application, you have to register on __themoviedb.org__ to get your own API-Key. Create a new file named `tmdb-api-key.ts` in `/angular-frontend/src/app/` with the content `export const TMDB_API_KEY = "<your API KEY>";`
-You can also set `TMDB_API_KEY` to null or any other value, if you don't want to use this functionality. You need to create the file however, or else the project will not compile.
+Before you can use the application, you have to register on __themoviedb.org__ to get your own API-Key. 
+Add this key under the config parameter TMDB_API_KEY in the `config.ini` configuration file.
+If you do not do this, you can still use the application, however the detailed information will not be available.
 
 #### Paths
 In the file `py-backend/src/Config/config.ini` two paths are defined, one for storing temporary data ("tmp") and one where the database files for movies and users will be stored ("db_data").  
