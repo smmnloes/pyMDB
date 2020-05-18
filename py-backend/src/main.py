@@ -1,10 +1,9 @@
+import getopt
 import sys
-import traceback
 from multiprocessing import Process
 
 from App import AppMain
 from DatabaseServices import UpdateService
-import getopt
 
 
 def main(argv):
