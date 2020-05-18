@@ -15,9 +15,9 @@ import {first} from "rxjs/operators";
 export class DetailsPageComponent implements OnInit {
   private movieId: number;
   detailedData: DetailedDataModel;
-  private basicData: BasicDataModel;
+  basicData: BasicDataModel;
 
-  private fullPosterPath: string;
+  fullPosterPath: string;
 
   constructor(private detailService: DetailService, private http: HttpClient, private activatedRoute: ActivatedRoute,
               private queryService: QueryService) {
@@ -45,7 +45,7 @@ export class DetailsPageComponent implements OnInit {
 
   }
 
-  private hasPosterPath(): boolean {
+  hasPosterPath(): boolean {
     return this.detailedData != null && this.detailedData.posterPath != null;
   }
 
