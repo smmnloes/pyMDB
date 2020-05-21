@@ -20,6 +20,12 @@ def get_image_base_path():
     return IMAGE_BASE_PATH
 
 
+def has_details(imdb_id):
+    imdb_id_formatted = format_imdb_id(imdb_id)
+    tmdb_id = get_tmdb_id(imdb_id_formatted)
+    return tmdb_id is not None
+
+
 def get_detailed_data_by_imdb_id(imdb_id):
     imdb_id_formatted = format_imdb_id(imdb_id)
     tmdb_id = get_tmdb_id(imdb_id_formatted)

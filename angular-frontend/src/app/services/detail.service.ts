@@ -16,10 +16,18 @@ export class DetailService {
   }
 
 
+  hasDetails(IMDB_Id: number): Observable<boolean> {
+    return this.http.get('api/has_details', {params: new HttpParams().set("imdbid", IMDB_Id.toString())}).map(result => <boolean>result);
+  }
+
+
   getDetails(IMDB_Id: number): Observable<DetailedDataModel> {
     let cachedDetails = this.cacheService.getDetails(IMDB_Id);
     if (cachedDetails != null) {
-      return cachedDetails.hasDetails ? of(cachedDetails) : throwError({status: 404, message: "No detailed data available"});
+      return cachedDetails.hasDetails ? of(cachedDetails) : throwError({
+        status: 404,
+        message: "No detailed data available"
+      });
     }
 
     let options = {

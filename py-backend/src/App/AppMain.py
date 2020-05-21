@@ -1,4 +1,5 @@
 import logging
+from urllib.parse import urljoin
 
 from flask import Flask
 from flask_cors import CORS
@@ -9,6 +10,7 @@ from App.ApiErrors import rest_api_errors
 from Config import ConfigService
 
 db = SQLAlchemy()
+API_ROOT = '/api/'
 
 
 def start_app():
@@ -25,10 +27,11 @@ def create_app():
     api = Api(app, errors=rest_api_errors)
     app.logger.setLevel(logging.INFO)
 
-    from App.RESTControllers import MovieQuery, ResultCount, MovieByTid, TmdbDetailedData
-    api.add_resource(MovieQuery, '/api/query')
-    api.add_resource(ResultCount, '/api/result_count')
-    api.add_resource(MovieByTid, '/api/movie_by_tid')
-    api.add_resource(TmdbDetailedData, '/api/details')
+    from App.RESTControllers import MovieQuery, ResultCount, MovieByTid, TmdbDetailedData, HasDetails
+    api.add_resource(MovieQuery, urljoin(API_ROOT, 'query'))
+    api.add_resource(ResultCount, urljoin(API_ROOT, 'result_count'))
+    api.add_resource(MovieByTid, urljoin(API_ROOT, 'movie_by_tid'))
+    api.add_resource(TmdbDetailedData, urljoin(API_ROOT, 'details'))
+    api.add_resource(HasDetails, urljoin(API_ROOT, 'has_details'))
 
     return app

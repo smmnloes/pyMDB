@@ -22,10 +22,24 @@ class MovieByTid(Resource):
         return QueryService.get_movie_by_tid(request.json)
 
 
-class TmdbDetailedData(Resource):
-    def get(self):
+def require_tmdb_api_key(fun):
+    def wrapper(*args, **kwargs):
         if not ConfigService.get_tmdb_api_key():
             raise NoTmdbApiKeySpecified
+        return fun(*args, **kwargs)
+
+    return wrapper
+
+
+class HasDetails(Resource):
+    @require_tmdb_api_key
+    def get(self):
+        return TMDBDetailService.has_details(request.args.get('imdbid'))
+
+
+class TmdbDetailedData(Resource):
+    @require_tmdb_api_key
+    def get(self):
         detailed_data = TMDBDetailService.get_detailed_data_by_imdb_id(request.args.get('imdbid'))
         if detailed_data is None:
             raise DetailedDataNotFound

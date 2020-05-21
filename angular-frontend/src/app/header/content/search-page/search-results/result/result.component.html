@@ -3,7 +3,7 @@
     <th colspan="2">
       <div class="result-title">
         <ng-container *ngIf="activateTitleLink; else title_no_link">
-          <a (click)="goToDetails()">{{basicData.primary_title + " " + (basicData.year ? "(" + basicData.year + ")" : "")}}</a>
+          <a (click)="goToDetailsPage()">{{basicData.primary_title + " " + (basicData.year ? "(" + basicData.year + ")" : "")}}</a>
         </ng-container>
       </div>
       <ng-template #title_no_link>
