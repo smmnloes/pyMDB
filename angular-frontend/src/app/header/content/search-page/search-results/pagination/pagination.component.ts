@@ -11,9 +11,9 @@ import {Util} from "../../../../../util/util";
 })
 export class PaginationComponent implements OnInit {
   resultsAvailable: boolean = false;
-  private currentPage: number;
-  private resultCount: number;
-  private maxPageCount: number;
+  currentPage: number;
+  resultCount: number;
+  maxPageCount: number;
   private results_per_page: number;
 
   constructor(private queryService: QueryService, private router: Router, private activatedRoute: ActivatedRoute) {
