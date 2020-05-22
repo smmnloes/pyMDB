@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {QueryModel} from "./query-model";
 import {ActivatedRoute, Router} from "@angular/router";
-import {NgForm} from "@angular/forms";
+import {Util} from "../../../../util/util";
+import {QueryService} from "../../../../services/query.service";
 
 
 @Component({
@@ -46,11 +47,16 @@ export class SearchFormComponent implements OnInit {
   public genreSelectionPlaceholder: string = 'Select up to ' + this.MAX_CATEGORIES_SELECTABLE + ' genres!';
 
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute) {
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, private queryService: QueryService) {
   }
 
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe(queryParams => {
+
+        if (!Util.isEmpty(queryParams)) {
+          this.queryService.makeQuery(QueryModel.fromQueryParams(queryParams));
+        }
+
         this.queryModel = QueryModel.fromQueryParams(queryParams);
       }
     );
@@ -71,7 +77,9 @@ export class SearchFormComponent implements OnInit {
   }
 
   refetch(): void {
-    this.router.navigate(['/search'], {queryParams: JSON.parse(JSON.stringify(this.queryModel))});
+    let queryParams = JSON.parse(JSON.stringify(this.queryModel));
+    queryParams.rand = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
+    this.router.navigate(['/search'], {queryParams: queryParams});
   }
 
 }

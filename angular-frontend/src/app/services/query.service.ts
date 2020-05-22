@@ -3,7 +3,6 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable, Subject} from "rxjs";
 import {BasicDataModel} from "../header/content/search-page/search-results/result/basic-data-model";
 import {QueryModel} from "../header/content/search-page/search-form/query-model";
-import {Util} from "../util/util";
 import {ActivatedRoute} from "@angular/router";
 import {CacheService} from "./cache.service";
 import {map} from "rxjs/operators";
@@ -24,11 +23,6 @@ export class QueryService {
 
 
   constructor(private http: HttpClient, private activatedRoute: ActivatedRoute, private cacheService: CacheService) {
-    this.activatedRoute.queryParams.subscribe(queryParams => {
-      if (!Util.isEmpty(queryParams)) {
-        this.makeQuery(QueryModel.fromQueryParams(queryParams));
-      }
-    });
   }
 
 
