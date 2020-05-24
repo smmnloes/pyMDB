@@ -96,6 +96,8 @@ def get_movies_by_criteria(request, get_count=False):
                                      Basics.tid == principals.tid
                                      )
 
+    query = query.distinct(Basics.tid)
+
     if get_count:
         return query.count()
 
