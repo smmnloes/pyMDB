@@ -9,10 +9,16 @@ from App.AppMain import db, create_app
 from Config import ConfigService
 from Services.Database.QueryService import normalize
 
-DATASETS = ['basics', 'principals', 'names', 'crew', 'ratings']
-DATASETS_TO_FILENAMES = {'basics': 'title.basics.tsv.gz', 'names': 'name.basics.tsv.gz',
-                         'crew': 'title.crew.tsv.gz', 'principals': 'title.principals.tsv.gz',
-                         'ratings': 'title.ratings.tsv.gz'}
+BASICS = 'basics'
+NAMES = 'names'
+CREW = 'crew'
+PRINCIPALS = 'principals'
+RATINGS = 'ratings'
+AKAS = 'akas'
+DATASETS = [BASICS, PRINCIPALS, NAMES, CREW, RATINGS, AKAS]
+DATASETS_TO_FILENAMES = {BASICS: 'title.basics.tsv.gz', NAMES: 'name.basics.tsv.gz',
+                         CREW: 'title.crew.tsv.gz', PRINCIPALS: 'title.principals.tsv.gz',
+                         RATINGS: 'title.ratings.tsv.gz', AKAS: 'title.akas.tsv.gz'}
 
 VALID_IDS = []
 
@@ -123,7 +129,7 @@ def analyze():
 def read_basics():
     db_connect = get_db_connect()
 
-    with open(os.path.join(ConfigService.get_temp_path(), 'basics'), 'r') as file:
+    with open(os.path.join(ConfigService.get_temp_path(), BASICS), 'r') as file:
         file.readline()
         line = file.readline().strip()
 
@@ -134,9 +140,8 @@ def read_basics():
             if (entries[1] == "movie") & (entries[4] == "0"):
                 entries_basics = clean_nulls(entries[0:1] + entries[2:3] + entries[5:6] + entries[7:])
                 entries_basics[0] = tid_nid_to_int(entries_basics[0])
-                title_normalized = normalize(entries_basics[1])
-                db_connect.execute("INSERT INTO basics VALUES (?,?,?,?,?,?)",
-                                   entries_basics + [title_normalized])
+                db_connect.execute("INSERT INTO basics VALUES (?,?,?,?,?)",
+                                   entries_basics)
                 VALID_IDS.append(entries_basics[0])
 
             line = file.readline().strip()
@@ -149,7 +154,7 @@ def read_basics():
 def read_ratings():
     db_connect = get_db_connect()
 
-    with open(os.path.join(ConfigService.get_temp_path(), 'ratings'), 'r') as file:
+    with open(os.path.join(ConfigService.get_temp_path(), RATINGS), 'r') as file:
         file.readline()
         line = file.readline().strip()
 
@@ -168,7 +173,7 @@ def read_ratings():
 def read_principals():
     db_connect = get_db_connect()
 
-    with open(os.path.join(ConfigService.get_temp_path(), 'principals'), 'r') as file:
+    with open(os.path.join(ConfigService.get_temp_path(), PRINCIPALS), 'r') as file:
         file.readline()
         line = file.readline().strip()
 
@@ -192,7 +197,7 @@ def read_principals():
 def read_crew():
     db_connect = get_db_connect()
 
-    with open(os.path.join(ConfigService.get_temp_path(), 'crew'), 'r') as file:
+    with open(os.path.join(ConfigService.get_temp_path(), CREW), 'r') as file:
         file.readline()
         line = file.readline().strip()
 
@@ -219,7 +224,7 @@ def read_crew():
 def read_names():
     db_connect = get_db_connect()
 
-    with open(os.path.join(ConfigService.get_temp_path(), 'names'), 'r') as file:
+    with open(os.path.join(ConfigService.get_temp_path(), NAMES), 'r') as file:
         file.readline()
         line = file.readline().strip()
 
@@ -241,10 +246,30 @@ def read_names():
     db_connect.close()
 
 
+def read_akas():
+    db_connect = get_db_connect()
+
+    with open(os.path.join(ConfigService.get_temp_path(), AKAS), 'r') as file:
+        file.readline()
+        line = file.readline().strip()
+
+        while line:
+            entries = line.split('\t')
+            entries[0] = tid_nid_to_int(entries[0])
+            if is_valid_tid(entries[0]):
+                entries[2] = normalize(entries[2])
+                db_connect.execute("INSERT INTO akas VALUES (?,?,?)", entries[0:3])
+
+            line = file.readline().strip()
+
+    db_connect.commit()
+    db_connect.close()
+
+
 def clean_nulls(entries):
     return [None if entry == '\\N' else entry for entry in entries]
 
 
-DATASETS_TO_READ_FUNCTIONS = {'basics': read_basics, 'names': read_names,
-                              'crew': read_crew, 'principals': read_principals,
-                              'ratings': read_ratings}
+DATASETS_TO_READ_FUNCTIONS = {BASICS: read_basics, NAMES: read_names,
+                              CREW: read_crew, PRINCIPALS: read_principals,
+                              RATINGS: read_ratings, AKAS: read_akas}
