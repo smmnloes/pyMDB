@@ -7,7 +7,7 @@ import urllib.request
 
 from App.AppMain import db, create_app
 from Config import ConfigService
-from Services.Database.QueryService import normalize
+from Services.Database.QueryService import normalize, TABLE_FTS
 
 BASICS = 'basics'
 NAMES = 'names'
@@ -15,7 +15,7 @@ CREW = 'crew'
 PRINCIPALS = 'principals'
 RATINGS = 'ratings'
 AKAS = 'akas'
-DATASETS = [BASICS, PRINCIPALS, NAMES, CREW, RATINGS, AKAS]
+DATASETS = [BASICS, AKAS, PRINCIPALS, NAMES, CREW, RATINGS]
 DATASETS_TO_FILENAMES = {BASICS: 'title.basics.tsv.gz', NAMES: 'name.basics.tsv.gz',
                          CREW: 'title.crew.tsv.gz', PRINCIPALS: 'title.principals.tsv.gz',
                          RATINGS: 'title.ratings.tsv.gz', AKAS: 'title.akas.tsv.gz'}
@@ -34,10 +34,10 @@ def update_db():
     try:
         for dataset in DATASETS:
             app.logger.info('Processing {} data.'.format(dataset))
-            download_and_unzip_new_data(dataset)
+            #download_and_unzip_new_data(dataset)
             app.logger.info('Reading {} to database.'.format(dataset))
             DATASETS_TO_READ_FUNCTIONS.get(dataset)()
-            delete_downloaded_remote_data(dataset)
+            #delete_downloaded_remote_data(dataset)
             app.logger.info('Finished processing {} data.\n'.format(dataset))
 
         analyze()
@@ -249,6 +249,8 @@ def read_names():
 def read_akas():
     db_connect = get_db_connect()
 
+    db_connect.execute("CREATE VIRTUAL TABLE {} USING fts5(tid, title)".format(TABLE_FTS))
+
     with open(os.path.join(ConfigService.get_temp_path(), AKAS), 'r') as file:
         file.readline()
         line = file.readline().strip()
@@ -258,7 +260,7 @@ def read_akas():
             entries[0] = tid_nid_to_int(entries[0])
             if is_valid_tid(entries[0]):
                 entries[2] = normalize(entries[2])
-                db_connect.execute("INSERT INTO akas VALUES (?,?,?)", entries[0:3])
+                db_connect.execute("INSERT INTO {} VALUES (?,?)".format(TABLE_FTS), (entries[0], entries[2]))
 
             line = file.readline().strip()
 

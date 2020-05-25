@@ -10,6 +10,7 @@ TABLE_WRITERS = 'writers'
 TABLE_DIRECTORS = 'directors'
 TABLE_NAMES = 'names'
 TABLE_AKAS = 'akas'
+TABLE_FTS = 'fts_table'
 
 
 class Basics(db.Model):
@@ -63,12 +64,3 @@ class Names(db.Model):
 
 
 Index(INDEX_PREFIX + TABLE_NAMES, Names.name_normalized, Names.name)
-
-
-class Akas(db.Model):
-    __tablename__ = TABLE_AKAS
-    tid = db.Column(db.Integer, db.ForeignKey('basics.tid'), primary_key=True)
-    ordering = db.Column(db.Integer, primary_key=True)
-    title_normalized = db.Column(db.Text(collation='NOCASE'))
-
-Index(INDEX_PREFIX + TABLE_AKAS, Akas.title_normalized)
