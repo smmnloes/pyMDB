@@ -53,7 +53,7 @@ def normalize(to_normalize):
 def get_movies_by_criteria(request, get_count=False):
     app.logger.debug('Request for movie by criteria: \n' + str(request) + '\n')
 
-    query = db.session.query(Basics).outerjoin(Ratings).outerjoin(Akas)
+    query = db.session.query(Basics).join(Akas).join(Ratings)
     query = query.add_columns(Ratings.averageRating)
 
     if request['title']:
