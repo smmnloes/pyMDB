@@ -58,7 +58,8 @@ def get_movies_by_criteria(request, get_count=False):
 
     if request['title']:
         title_normalized = normalize(request['title'])
-        query = query.filter(Akas.title_normalized.like(title_normalized + '%'), Akas.tid == Basics.tid)
+        sub_query = db.session.query(Akas.tid).filter(Akas.title_normalized.like(title_normalized + '%')).distinct(Akas.tid)
+        query = query.filter(Basics.tid.in_(sub_query))
 
     if request['director']:
         director_normalized = normalize(request['director'])
@@ -95,8 +96,6 @@ def get_movies_by_criteria(request, get_count=False):
                 query = query.filter(names.name_normalized == principal_normalized, principals.nid == names.nid,
                                      Basics.tid == principals.tid
                                      )
-
-    query = query.distinct(Basics.tid)
 
     if get_count:
         return query.count()

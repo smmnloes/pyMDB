@@ -2,7 +2,7 @@ from sqlalchemy import Index
 
 from App.AppMain import db
 
-INDEX_PREFIX = '_idx'
+INDEX_PREFIX = '_idx_'
 TABLE_BASICS = 'basics'
 TABLE_RATINGS = 'ratings'
 TABLE_PRINCIPALS = 'principals'
