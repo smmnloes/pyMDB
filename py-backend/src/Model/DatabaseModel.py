@@ -21,9 +21,6 @@ class Basics(db.Model):
     genres = db.Column(db.Text)
 
 
-Index(INDEX_PREFIX + TABLE_BASICS, Basics.tid)
-
-
 class Ratings(db.Model):
     __tablename__ = TABLE_RATINGS
     tid = db.Column(db.Integer, db.ForeignKey('basics.tid'), primary_key=True)
