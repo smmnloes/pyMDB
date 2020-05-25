@@ -53,7 +53,7 @@ The resulting database contains only information about movies, excluding adult f
 
 #### Search filters
 On `localhost:4200` you will find the search interface. Some quick notes on the search filters:
-* __Title__: Search by movie title. This also matches partial names, e.g. "Star Wa" matches "Star Wars".
+* __Title__: Search by movie title. This also matches partial names, e.g. "Star Wa" matches "Star Wars" and is case insensitive. Supports titles in any language.
 * __Genres__: Select up to 3 Genres
 * __Min. Rating__: Only show results with rating higher than this value. This also implies that a certain threshold for number of votes will be applied. This value can be changed in `py-backend/src/Services/QueryServies` under __MIN_NUM_VOTES__.
 * __Min. Year/Max. Year__: Get only results from certain time period
