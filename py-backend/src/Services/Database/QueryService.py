@@ -58,7 +58,9 @@ def get_movies_by_criteria(request, get_count=False):
 
     if request['title']:
         title_normalized = normalize(request['title'])
-        result = db.session.execute('SELECT DISTINCT tid FROM {} where title match "{}"'.format(TABLE_FTS, title_normalized)).fetchall()
+        select_query = 'SELECT DISTINCT tid FROM {} where title match "{}" order by rank'.format(TABLE_FTS,
+                                                                                                 title_normalized)
+        result = db.session.execute(select_query).fetchall()
         tid_list = [row['tid'] for row in result]
         query = query.filter(Basics.tid.in_(tid_list))
 
@@ -108,6 +110,9 @@ def get_movies_by_criteria(request, get_count=False):
         query = query.order_by(desc(Basics.year))
     elif sort_by == 'Rating':
         query = query.order_by(desc(Ratings.averageRating))
+    elif sort_by == 'Relevance':
+        # do nothing here as the results are already sorted by fts5-rank (see above)
+        pass
 
     results_per_page = int(request['results_per_page'])
     current_page = int(request['current_page'])

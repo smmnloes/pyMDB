@@ -31,7 +31,7 @@ export class QueryModel {
       queryParams['title'] == null ? "" : queryParams.title,
       queryParams['results_per_page'] == null ? 15 : queryParams['results_per_page'],
       queryParams['current_page'] == null ? 1 : queryParams.current_page,
-      queryParams['sort_by'] == null ? 'Title' : queryParams.sort_by
+      queryParams['sort_by'] == null ? 'Relevance' : queryParams.sort_by
     );
   }
 

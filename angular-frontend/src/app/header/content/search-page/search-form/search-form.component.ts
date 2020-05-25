@@ -12,7 +12,7 @@ import {QueryService} from "../../../../services/query.service";
 })
 export class SearchFormComponent implements OnInit {
 
-  sortCriteria: string[] = ['Title', 'Year', 'Rating'];
+  sortCriteria: string[] = ['Relevance', 'Title', 'Year', 'Rating'];
   resultsPerPageOptions: number[] = [5, 10, 15, 20, 30, 50];
   queryModel: QueryModel;
 
