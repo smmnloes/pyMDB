@@ -34,10 +34,10 @@ def update_db():
     try:
         for dataset in DATASETS:
             app.logger.info('Processing {} data.'.format(dataset))
-            #download_and_unzip_new_data(dataset)
+            download_and_unzip_new_data(dataset)
             app.logger.info('Reading {} to database.'.format(dataset))
             DATASETS_TO_READ_FUNCTIONS.get(dataset)()
-            #delete_downloaded_remote_data(dataset)
+            delete_downloaded_remote_data(dataset)
             app.logger.info('Finished processing {} data.\n'.format(dataset))
 
         analyze()
