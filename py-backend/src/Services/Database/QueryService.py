@@ -10,6 +10,7 @@ from Model.DatabaseModel import *
 app = create_app()
 
 MIN_NUM_VOTES = 1000
+LIMIT_TITLE_SEARCH_RESULTS = 5000
 
 
 def results_to_dict_list(results):
@@ -58,9 +59,10 @@ def get_movies_by_criteria(request, get_count=False):
 
     if request['title']:
         title_normalized = normalize(request['title'])
-        select_query = 'SELECT DISTINCT tid FROM {} where title match "{}" order by rank'.format(TABLE_FTS,
-                                                                                                 title_normalized)
-        result = db.session.execute(select_query).fetchall()
+        fts_query = 'SELECT DISTINCT tid FROM {} where title match "{}" order by rank LIMIT {}'.format(TABLE_FTS,
+                                                                                                          title_normalized,
+                                                                                                          LIMIT_TITLE_SEARCH_RESULTS)
+        result = db.session.execute(fts_query).fetchall()
         tid_list = [row['tid'] for row in result]
         query = query.filter(Basics.tid.in_(tid_list))
 
