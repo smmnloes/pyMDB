@@ -53,12 +53,12 @@ def normalize(to_normalize):
 def get_movies_by_criteria(request, get_count=False):
     app.logger.debug('Request for movie by criteria: \n' + str(request) + '\n')
 
-    query = db.session.query(Basics).join(Akas).join(Ratings)
+    query = db.session.query(Basics).join(Ratings)
     query = query.add_columns(Ratings.averageRating)
 
     if request['title']:
         title_normalized = normalize(request['title'])
-        query = query.filter(Akas.title_normalized.like('%{}%'.format(title_normalized)))
+        query = query.filter(Akas.title_normalized.like('%{}%'.format(title_normalized)), Akas.tid == Basics.tid)
 
     if request['director']:
         director_normalized = normalize(request['director'])
@@ -79,7 +79,7 @@ def get_movies_by_criteria(request, get_count=False):
         query = query.filter(Basics.year <= request['year_to'])
 
     if request['min_rating_imdb']:
-        query = query.filter(Ratings.averageRating >= request['min_rating_imdb'], Ratings.tid == Basics.tid,
+        query = query.filter(Ratings.averageRating >= request['min_rating_imdb'],
                              Ratings.numVotes > MIN_NUM_VOTES)
 
     if request['genres']:
