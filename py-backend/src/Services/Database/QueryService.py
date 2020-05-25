@@ -58,7 +58,7 @@ def get_movies_by_criteria(request, get_count=False):
 
     if request['title']:
         title_normalized = normalize(request['title'])
-        query = query.filter(Akas.title_normalized.like('%{}%'.format(title_normalized)), Akas.tid == Basics.tid)
+        query = query.filter(Akas.title_normalized.like(title_normalized + '%'), Akas.tid == Basics.tid)
 
     if request['director']:
         director_normalized = normalize(request['director'])
