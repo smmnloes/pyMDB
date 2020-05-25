@@ -55,11 +55,11 @@ The resulting database contains only information about movies, excluding adult f
 On `localhost:4200` you will find the search interface. Some quick notes on the search filters:
 * __Title__: Search by movie title. This also matches partial names, e.g. "Star Wa" matches "Star Wars" and is case insensitive. Supports titles in any language.
 * __Genres__: Select up to 3 Genres
-* __Min. Rating__: Only show results with rating higher than this value. This also implies that a certain threshold for number of votes will be applied. This value can be changed in `py-backend/src/Services/QueryServies` under __MIN_NUM_VOTES__.
+* __Min. Rating__: Only show results with rating higher than this value. This also implies that a certain threshold for number of votes will be applied. This value can be changed in `py-backend/src/Services/QueryService` under __MIN_NUM_VOTES__.
 * __Min. Year/Max. Year__: Get only results from certain time period
-* __Director__: Get only results with this director. *Important*: Only full matches will be accepted (vs. Title search)
-* __Writer__: Get only results with this writer. *Important*: Only full matches will be accepted (vs. Title search)
-* __Top billed actors__: Include only movies which star these top-billed actors. Up to 3 can be specified. *Important*: This does not check all of the credits, only the top-billed ones. Usually this will include up to 5 actors who are the most well-known ones in a movie.
+* __Director__: Get only results with this director. *Important*: Only full matches will be accepted (vs. Title search). Case-insensitive.
+* __Writer__: Get only results with this writer. *Important*: Only full matches, case insensitive.
+* __Top billed actors__: Include only movies which star these top-billed actors. Up to 3 can be specified. *Important*: This does not check all of the credits, only the top-billed ones. Usually this will include up to 5 actors who are the most well-known ones in a movie. *Important*: Only full matches, case insensitive.
 * __Results__: Results to display per page
 * __Sort by__: Choose which category to sort by (Title, Year or Rating)
 
