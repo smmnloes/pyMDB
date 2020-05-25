@@ -34,7 +34,8 @@ def main(argv):
         elif user_input == 'read':
             next_input = input('Read which dataset? ')
             UpdateService.DATASETS_TO_READ_FUNCTIONS.get(next_input)()
-
+        else:
+            print("Unknown command '{}'".format(user_input))
     shutdown(app_process)
 
 
