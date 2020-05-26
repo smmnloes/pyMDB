@@ -59,9 +59,11 @@ def get_movies_by_criteria(request, get_count=False):
 
     if request['title']:
         title_normalized = normalize(request['title'])
-        fts_query = 'SELECT DISTINCT tid FROM {} where title match "{}" order by rank LIMIT {}'.format(TABLE_FTS,
-                                                                                                          title_normalized,
-                                                                                                          LIMIT_TITLE_SEARCH_RESULTS)
+        order_by_clause = "order by rank" if request['sort_by'] == 'Relevance' else ""
+        fts_query = 'SELECT DISTINCT tid FROM {} where title match "{}" {} LIMIT {}'.format(TABLE_FTS,
+                                                                                            title_normalized,
+                                                                                            order_by_clause,
+                                                                                            LIMIT_TITLE_SEARCH_RESULTS)
         result = db.session.execute(fts_query).fetchall()
         tid_list = [row['tid'] for row in result]
         query = query.filter(Basics.tid.in_(tid_list))
