@@ -147,10 +147,6 @@ def get_tids_fts(get_count, request, title_normalized):
     return tid_list
 
 
-def get_number_results(request):
-    return get_movies_by_criteria(request, get_count=True)
-
-
 def get_movie_by_tid(request):
     app.logger.debug('Request for movie by tid: \n' + str(request) + '\n')
 

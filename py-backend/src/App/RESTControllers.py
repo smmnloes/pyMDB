@@ -14,7 +14,7 @@ class MovieQuery(Resource):
 
 class ResultCount(Resource):
     def post(self):
-        return QueryService.get_number_results(request.json)
+        return QueryService.get_movies_by_criteria(request.json, get_count=True)
 
 
 class MovieByTid(Resource):
