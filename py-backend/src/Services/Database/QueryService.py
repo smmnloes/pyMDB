@@ -1,6 +1,6 @@
 from time import time
 
-from sqlalchemy import asc, desc
+from sqlalchemy import asc, desc, text
 from sqlalchemy.orm import aliased
 from unidecode import unidecode
 
@@ -59,12 +59,11 @@ def get_movies_by_criteria(request, get_count=False):
 
     if request['title']:
         title_normalized = normalize(request['title'])
-        order_by_clause = "order by rank" if request['sort_by'] == 'Relevance' else ""
-        fts_query = 'SELECT DISTINCT tid FROM {} where title match "{}" {} LIMIT {}'.format(TABLE_FTS,
-                                                                                            title_normalized,
-                                                                                            order_by_clause,
-                                                                                            LIMIT_TITLE_SEARCH_RESULTS)
-        result = db.session.execute(fts_query).fetchall()
+        order_by_clause = "ORDER BY RANK" if request['sort_by'] == 'Relevance' else ""
+        query_text = text(
+            "SELECT DISTINCT tid FROM {} WHERE title MATCH :keyword {} LIMIT :limit".format(TABLE_FTS, order_by_clause))
+        query_text = query_text.bindparams(keyword=title_normalized, limit=LIMIT_TITLE_SEARCH_RESULTS)
+        result = db.session.execute(query_text).fetchall()
         tid_list = [row['tid'] for row in result]
         query = query.filter(Basics.tid.in_(tid_list))
 
