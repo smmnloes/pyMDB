@@ -10,7 +10,7 @@ from Model.DatabaseModel import *
 app = create_app()
 
 MIN_NUM_VOTES = 1000
-LIMIT_TITLE_SEARCH_RESULTS = 5000
+LIMIT_FTS_SEARCH_RESULTS = 5000
 
 
 def results_to_dict_list(results):
@@ -57,44 +57,47 @@ def get_movies_by_criteria(request, get_count=False):
     query = db.session.query(Basics).outerjoin(Ratings)
     query = query.add_columns(Ratings.averageRating)
 
-    if request['title']:
-        title_normalized = normalize(request['title'])
-        order_by_clause = "ORDER BY RANK" if request['sort_by'] == 'Relevance' else ""
-        query_text = text(
-            "SELECT DISTINCT tid FROM {} WHERE title MATCH :keyword {} LIMIT :limit".format(TABLE_FTS, order_by_clause))
-        query_text = query_text.bindparams(keyword=title_normalized, limit=LIMIT_TITLE_SEARCH_RESULTS)
-        result = db.session.execute(query_text).fetchall()
-        tid_list = [row['tid'] for row in result]
-        query = query.filter(Basics.tid.in_(tid_list))
+    title_criteria = request['title']
+    if title_criteria:
+        title_normalized = normalize(title_criteria)
+        tids_fts = get_tids_fts(get_count, request, title_normalized)
+        query = query.filter(Basics.tid.in_(tids_fts))
 
-    if request['director']:
-        director_normalized = normalize(request['director'])
+    director_criteria = request['director']
+    if director_criteria:
+        director_normalized = normalize(director_criteria)
         names_alias = aliased(Names)
         query = query.filter(Basics.tid == Directors.tid, Directors.nid == names_alias.nid,
                              names_alias.name_normalized == director_normalized)
 
-    if request['writer']:
-        writer_normalized = normalize(request['writer'])
+    writer_criteria = request['writer']
+    if writer_criteria:
+        writer_normalized = normalize(writer_criteria)
         names_alias = aliased(Names)
         query = query.filter(Basics.tid == Writers.tid, Writers.nid == names_alias.nid,
                              names_alias.name_normalized == writer_normalized)
 
-    if request['year_from']:
-        query = query.filter(Basics.year >= request['year_from'])
+    year_from_criteria = request['year_from']
+    if year_from_criteria:
+        query = query.filter(Basics.year >= year_from_criteria)
 
-    if request['year_to']:
-        query = query.filter(Basics.year <= request['year_to'])
+    year_to_criteria = request['year_to']
+    if year_to_criteria:
+        query = query.filter(Basics.year <= year_to_criteria)
 
-    if request['min_rating_imdb']:
-        query = query.filter(Ratings.averageRating >= request['min_rating_imdb'],
+    min_rating_imdb_criteria = request['min_rating_imdb']
+    if min_rating_imdb_criteria:
+        query = query.filter(Ratings.averageRating >= min_rating_imdb_criteria,
                              Ratings.numVotes > MIN_NUM_VOTES)
 
-    if request['genres']:
-        for genre in request['genres']:
+    genres_criteria = request['genres']
+    if genres_criteria:
+        for genre in genres_criteria:
             query = query.filter(Basics.genres.like('%{}%'.format(genre)))
 
-    if request['principals']:
-        for principal in request['principals']:
+    principals_criteria = request['principals']
+    if principals_criteria:
+        for principal in principals_criteria:
             if principal:
                 principal_normalized = normalize(principal)
                 names = aliased(Names)
@@ -130,9 +133,18 @@ def get_movies_by_criteria(request, get_count=False):
     app.logger.debug("Result processing time: " + str((time() - time_before) * 1000) + "ms")
 
     app.logger.debug("\nResults: {}".format(len(results)))
-    app.logger.debug(results_dict_list)
-    app.logger.debug('\n')
+    app.logger.debug('\n\n\n')
     return results_dict_list
+
+
+def get_tids_fts(get_count, request, title_normalized):
+    order_by_clause = "ORDER BY RANK" if (request['sort_by'] == 'Relevance' and not get_count) else ""
+    query_text = text(
+        "SELECT DISTINCT tid FROM {} WHERE title MATCH :keyword {} LIMIT :limit".format(TABLE_FTS, order_by_clause))
+    query_text = query_text.bindparams(keyword=title_normalized, limit=LIMIT_FTS_SEARCH_RESULTS)
+    result = db.session.execute(query_text).fetchall()
+    tid_list = [row['tid'] for row in result]
+    return tid_list
 
 
 def get_number_results(request):
