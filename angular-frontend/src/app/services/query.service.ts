@@ -4,7 +4,6 @@ import {Observable, Subject} from "rxjs";
 import {BasicDataModel} from "../header/content/search-page/search-results/result/basic-data-model";
 import {QueryModel} from "../header/content/search-page/search-form/query-model";
 import {ActivatedRoute} from "@angular/router";
-import {CacheService} from "./cache.service";
 import {map} from "rxjs/operators";
 
 
@@ -22,47 +21,23 @@ export class QueryService {
   resultCount$ = this.resultCountSource.asObservable();
 
 
-  constructor(private http: HttpClient, private activatedRoute: ActivatedRoute, private cacheService: CacheService) {
+  constructor(private http: HttpClient, private activatedRoute: ActivatedRoute) {
   }
 
 
   makeQuery(queryData: QueryModel): void {
-    let cachedPage = this.cacheService.getPage(queryData);
 
-    if (cachedPage != null) {
+    this.http.post('api/query', queryData, httpOptions).subscribe(
+      newPage => {
+        let processedNewPage: BasicDataModel[] = QueryService.processPage(newPage);
+        this.basicDataPageSource.next(processedNewPage);
+      }
+    );
 
-      //Timeout necessary, otherwise cached results won't be rendered if the user returns
-      //to search page via the browser's back button
-      setTimeout(() => {
-        this.basicDataPageSource.next(cachedPage);
-      }, 1);
+    this.http.post('api/result_count', queryData, httpOptions).subscribe(newResultCount => {
+      this.resultCountSource.next(<number>newResultCount);
+    })
 
-    } else {
-      this.http.post('api/query', queryData, httpOptions).subscribe(
-        newPage => {
-          let processedNewPage: BasicDataModel[] = QueryService.processPage(newPage);
-          this.basicDataPageSource.next(processedNewPage);
-
-          this.cacheService.setPage(queryData, processedNewPage);
-        }
-      );
-    }
-
-    let cachedResultCount = this.cacheService.getResultCount(queryData);
-
-    if (cachedResultCount != null) {
-
-      //See explanation above
-      setTimeout(() => {
-        this.resultCountSource.next(cachedResultCount);
-      }, 1);
-
-    } else {
-      this.http.post('api/result_count', queryData, httpOptions).subscribe(newResultCount => {
-        this.resultCountSource.next(<number>newResultCount);
-        this.cacheService.setResultCount(queryData, <number>newResultCount);
-      })
-    }
   }
 
   getMovieById(tid: number): Observable<BasicDataModel> {

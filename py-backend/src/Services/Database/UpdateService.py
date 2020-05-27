@@ -5,7 +5,7 @@ import shutil
 import sqlite3
 import urllib.request
 
-from App.AppMain import db, create_app
+from App import AppMain
 from Config import ConfigService
 from Services.Database.QueryService import normalize, TABLE_FTS
 
@@ -22,29 +22,27 @@ DATASETS_TO_FILENAMES = {BASICS: 'title.basics.tsv.gz', NAMES: 'name.basics.tsv.
 
 VALID_IDS = []
 
-app = create_app()
-
 
 def update_db():
     backup_local_db()
 
-    with app.app_context():
-        db.create_all()
+    with AppMain.pymdb_app.app_context():
+        AppMain.db.create_all()
 
     try:
         for dataset in DATASETS:
-            app.logger.info('Processing {} data.'.format(dataset))
+            AppMain.logger.info('Processing {} data.'.format(dataset))
             download_and_unzip_new_data(dataset)
-            app.logger.info('Reading {} to database.'.format(dataset))
+            AppMain.logger.info('Reading {} to database.'.format(dataset))
             DATASETS_TO_READ_FUNCTIONS.get(dataset)()
             delete_downloaded_remote_data(dataset)
-            app.logger.info('Finished processing {} data.\n'.format(dataset))
+            AppMain.logger.info('Finished processing {} data.\n'.format(dataset))
 
         analyze()
-        app.logger.info("Update complete!")
+        AppMain.logger.info("Update complete!")
 
     except (Exception, BaseException) as e:
-        app.logger.error("Error while updating: {}".format(str(e)))
+        AppMain.logger.error("Error while updating: {}".format(str(e)))
         restore_db_last_version()
         raise e
 
@@ -57,26 +55,26 @@ def get_db_connect():
 
 
 def backup_local_db():
-    app.logger.info('Backing up last version.')
+    AppMain.logger.info('Backing up last version.')
     current_db_path = ConfigService.get_movie_db_path()
     last_version_path = ConfigService.get_last_version_path()
 
     if os.path.isfile(current_db_path):
         os.rename(current_db_path, last_version_path)
     else:
-        app.logger.warn('No database found, nothing to back up.')
+        AppMain.logger.warn('No database found, nothing to back up.')
 
 
 def restore_db_last_version():
-    app.logger.info('Restoring last version.')
+    AppMain.logger.info('Restoring last version.')
     current_db_path = ConfigService.get_movie_db_path()
     last_version_path = ConfigService.get_last_version_path()
 
     if os.path.isfile(last_version_path):
         os.rename(last_version_path, current_db_path)
-        app.logger.info('Last version restored!')
+        AppMain.logger.info('Last version restored!')
     else:
-        app.logger.warn("No previous version found! Cannot restore last version!")
+        AppMain.logger.warn("No previous version found! Cannot restore last version!")
 
 
 def download_and_unzip_new_data(dataset):
@@ -84,11 +82,11 @@ def download_and_unzip_new_data(dataset):
 
     unzipped_path = os.path.join(temp_path, dataset)
     zipped_path = unzipped_path + '_zipped'
-    app.logger.info('Downloading {} data.'.format(dataset))
+    AppMain.logger.info('Downloading {} data.'.format(dataset))
     urllib.request.urlretrieve(ConfigService.get_imdb_url() + DATASETS_TO_FILENAMES.get(dataset),
                                zipped_path)
 
-    app.logger.info('Unzipping {} data'.format(dataset))
+    AppMain.logger.info('Unzipping {} data'.format(dataset))
     with gzip.open(zipped_path) as zipped_file:
         with open(unzipped_path, 'wb') as unzipped_file:
             shutil.copyfileobj(zipped_file, unzipped_file)
@@ -97,7 +95,7 @@ def download_and_unzip_new_data(dataset):
 
 
 def delete_downloaded_remote_data(dataset):
-    app.logger.info('Deleting local {} file'.format(dataset))
+    AppMain.logger.info('Deleting local {} file'.format(dataset))
     os.remove(os.path.join(ConfigService.get_temp_path(), dataset))
 
 
@@ -121,7 +119,7 @@ def tid_nid_to_int(tid_nid):
 
 
 def analyze():
-    app.logger.info("Analyzing.\n")
+    AppMain.logger.info("Analyzing.\n")
     db_connect = sqlite3.connect(ConfigService.get_movie_db_path())
     db_connect.execute('ANALYZE')
 

@@ -47,6 +47,7 @@ def parse_arguments(argv):
 
     for arg in args:
         if arg == "update":
+            AppMain.create_app()
             UpdateService.update_db()
             exit(0)
 

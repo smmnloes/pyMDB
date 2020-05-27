@@ -15,7 +15,6 @@ import {DetailService} from "./services/detail.service";
 import {DetailsPageComponent} from './header/content/details-page/details-page.component';
 import {CreditsComponent} from './header/content/details-page/credits/credits.component';
 import {AppRoutingModule} from "./app-routing-module"
-import {CacheService} from "./services/cache.service";
 import {FooterComponent} from './header/footer/footer.component';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {ToastrModule} from "ngx-toastr";
@@ -43,7 +42,7 @@ import {MultiSelectAllModule} from "@syncfusion/ej2-angular-dropdowns";
     BrowserAnimationsModule,
     ToastrModule.forRoot({positionClass: 'toast-top-center', timeOut: 3000})
   ],
-  providers: [QueryService, DetailService, CacheService],
+  providers: [QueryService, DetailService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
