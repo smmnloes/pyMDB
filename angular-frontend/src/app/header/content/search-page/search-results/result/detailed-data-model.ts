@@ -12,7 +12,7 @@ export class DetailedDataModel {
               public hasDetails: boolean) {
   }
 
-  public hasPosterPath(): boolean{
+  public hasPosterPath(): boolean {
     return this.posterPath != null;
   }
 
@@ -45,6 +45,15 @@ export class DetailedDataModel {
 
 function formatReleaseDate(jsonElement: any): string {
   let date: Date = new Date(jsonElement);
+  if (isInvalidDate(date)) {
+    return null;
+  }
   let options = {month: '2-digit', day: '2-digit', year: 'numeric'};
   return date.toLocaleDateString('en', options)
 }
+
+
+function isInvalidDate(date: Date) {
+  return isNaN(date.getDay());
+}
+
