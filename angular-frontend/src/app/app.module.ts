@@ -19,9 +19,6 @@ import {FooterComponent} from './header/footer/footer.component';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {ToastrModule} from "ngx-toastr";
 import {MultiSelectAllModule} from "@syncfusion/ej2-angular-dropdowns";
-import {Router, Scroll} from "@angular/router";
-import {ViewportScroller} from "@angular/common";
-import {filter} from "rxjs/operators";
 
 @NgModule({
   declarations: [
@@ -49,22 +46,4 @@ import {filter} from "rxjs/operators";
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  // Taken from https://github.com/angular/angular/issues/24547, workaround
-  // broken scrollPositionRestoration feature of RouterModule
-  constructor(router: Router, viewportScroller: ViewportScroller) {
-    router.events.pipe(
-      filter((e): e is Scroll => e instanceof Scroll)
-    ).subscribe(e => {
-      if (e.position) {
-        // backward navigation
-        setTimeout(() => {viewportScroller.scrollToPosition(e.position); }, 50);
-      } else if (e.anchor) {
-        // anchor navigation
-        setTimeout(() => {viewportScroller.scrollToAnchor(e.anchor); }, 50);
-      } else {
-        // forward navigation
-        setTimeout(() => {viewportScroller.scrollToPosition([0, 0]); }, 0);
-      }
-    });
-  }
 }
