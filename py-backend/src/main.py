@@ -1,6 +1,5 @@
 import getopt
 import sys
-from multiprocessing import Process
 
 from App import AppMain
 from Services.Database import UpdateService
@@ -11,8 +10,7 @@ def main(argv):
     print("Parsing command line arguments...")
     parse_arguments(argv)
     print("Starting App...")
-    app_process = Process(target=AppMain.start_app)
-    app_process.start()
+    AppMain.start_app()
 
 
 def parse_arguments(argv):
