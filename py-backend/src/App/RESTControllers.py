@@ -35,7 +35,7 @@ class MovieQuery(Resource):
 class ResultCount(Resource):
     @AppMain.cache.cached(key_prefix=make_post_cache_key)
     def post(self):
-        return QueryService.get_movies_by_criteria(request.json, get_count=True)
+        return QueryService.get_result_count_by_criteria(request.json)
 
 
 class MovieByTid(Resource):
