@@ -8,6 +8,7 @@ from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 
 from api.api_errors import rest_api_errors
+from constants.constants import APP_PORT
 from services.config import config_service
 
 db = SQLAlchemy()
@@ -18,7 +19,7 @@ pymdb_app = None
 
 
 def start_app():
-    create_app().run(port=5002)
+    create_app().run(port=APP_PORT)
 
 
 def create_app():
@@ -34,7 +35,7 @@ def create_app():
     pymdb_app.logger.setLevel(logging.INFO)
     global cache
     cache = Cache(pymdb_app, config={'CACHE_TYPE': 'simple',
-                                     "CACHE_DEFAULT_TIMEOUT": 0})
+                                     'CACHE_DEFAULT_TIMEOUT': 0})
 
     from api.rest_controllers import MovieQuery, ResultCount, MovieByTid, TmdbDetailedData, HasDetails
     api.add_resource(MovieQuery, urljoin(API_ROOT, 'query'))

@@ -2,13 +2,11 @@ from time import time
 
 from sqlalchemy import asc, desc, text
 from sqlalchemy.orm import aliased
-from unidecode import unidecode
 
 from app import app_main
+from constants.constants import LIMIT_FTS_SEARCH_RESULTS, MIN_NUM_VOTES, TABLE_FTS
 from model.database_model import *
-
-MIN_NUM_VOTES = 1000
-LIMIT_FTS_SEARCH_RESULTS = 5000
+from util.util import normalize
 
 
 def results_to_dict_list(results):
@@ -43,10 +41,6 @@ def get_directors_for_tid(tid):
 def get_writers_for_tid(tid):
     query = db.session.query().add_columns(Names.name).filter(Writers.tid == tid, Names.nid == Writers.nid)
     return [x[0] for x in query.all()]
-
-
-def normalize(to_normalize):
-    return unidecode(to_normalize).lower()
 
 
 def get_movies_by_criteria(request):

@@ -2,7 +2,11 @@ import configparser
 import os
 import pathlib
 
-CONFIG_FILE_NAME = "config.ini"
+from constants.constants import CONFIG_FILE_NAME, CONFIG_SECTION_PATHS, CONFIG_FIELD_DB_DATA, CONFIG_FIELD_TMP_DIR, \
+    CONFIG_SECTION_FILE_NAMES, CONFIG_FIELD_MOVIE_DB, DB_LAST_VERSION_SUFFIX, CONFIG_SECTION_URLS, \
+    CONFIG_FIELD_IMDB_URL, \
+    CONFIG_SECTION_SECRETS, CONFIG_FIELD_TMDB_API_KEY
+
 config_parser = None
 
 
@@ -18,28 +22,31 @@ def init_config_decorator(func):
     def wrapper():
         init_config()
         return func()
+
     return wrapper
 
 
 @init_config_decorator
 def get_temp_path():
-    return config_parser['PATHS']['TEMP']
+    return config_parser[CONFIG_SECTION_PATHS][CONFIG_FIELD_TMP_DIR]
 
 
 @init_config_decorator
 def get_movie_db_path():
-    return os.path.join(config_parser['PATHS']['DB_DATA'], config_parser['FILE_NAMES']['MOVIE_DB'])
+    return os.path.join(config_parser[CONFIG_SECTION_PATHS][CONFIG_FIELD_DB_DATA], config_parser[CONFIG_SECTION_FILE_NAMES][
+        CONFIG_FIELD_MOVIE_DB])
 
 
 @init_config_decorator
 def get_last_version_path():
-    return get_movie_db_path() + '_last_version'
+    return get_movie_db_path() + DB_LAST_VERSION_SUFFIX
 
 
 @init_config_decorator
 def get_imdb_url():
-    return config_parser['URLS']['IMDB_DATA']
+    return config_parser[CONFIG_SECTION_URLS][CONFIG_FIELD_IMDB_URL]
+
 
 @init_config_decorator
 def get_tmdb_api_key():
-    return config_parser['SECRETS']['TMDB_API_KEY']
+    return config_parser[CONFIG_SECTION_SECRETS][CONFIG_FIELD_TMDB_API_KEY]

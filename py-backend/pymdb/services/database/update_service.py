@@ -1,30 +1,21 @@
-import bisect
-import gzip
 import os
-import shutil
 import sqlite3
-import urllib.request
 
 from app import app_main
+from constants.constants import DATASET_BASICS, DATASET_AKAS, DATASET_PRINCIPALS, DATASET_NAMES, DATASET_CREW, \
+    DATASET_RATINGS, TABLE_FTS
 from services.config import config_service
-from services.database.query_service import normalize, TABLE_FTS
+from util.util import tid_nid_to_int, ordered_list_contains_number, clean_nulls, normalize
+from . import backup_service, download_service
 
-BASICS = 'basics'
-NAMES = 'names'
-CREW = 'crew'
-PRINCIPALS = 'principals'
-RATINGS = 'ratings'
-AKAS = 'akas'
-DATASETS = [BASICS, AKAS, PRINCIPALS, NAMES, CREW, RATINGS]
-DATASETS_TO_FILENAMES = {BASICS: 'title.basics.tsv.gz', NAMES: 'name.basics.tsv.gz',
-                         CREW: 'title.crew.tsv.gz', PRINCIPALS: 'title.principals.tsv.gz',
-                         RATINGS: 'title.ratings.tsv.gz', AKAS: 'title.akas.tsv.gz'}
+DATASETS = [DATASET_BASICS, DATASET_AKAS, DATASET_PRINCIPALS, DATASET_NAMES, DATASET_CREW, DATASET_RATINGS]
 
 VALID_IDS = []
+LAST_VALID_ID = -1
 
 
 def update_db():
-    backup_local_db()
+    backup_service.backup_local_db()
 
     with app_main.pymdb_app.app_context():
         app_main.db.create_all()
@@ -32,10 +23,10 @@ def update_db():
     try:
         for dataset in DATASETS:
             app_main.logger.info('Processing {} data.'.format(dataset))
-            download_and_unzip_new_data(dataset)
+            download_service.download_and_unzip_datasets(dataset)
             app_main.logger.info('Reading {} to database.'.format(dataset))
             DATASETS_TO_READ_FUNCTIONS.get(dataset)()
-            delete_downloaded_remote_data(dataset)
+            download_service.delete_downloaded_dataset(dataset)
             app_main.logger.info('Finished processing {} data.\n'.format(dataset))
 
         analyze()
@@ -43,7 +34,7 @@ def update_db():
 
     except (Exception, BaseException) as e:
         app_main.logger.error("Error while updating: {}".format(str(e)))
-        restore_db_last_version()
+        backup_service.restore_db_last_version()
         raise e
 
 
@@ -54,57 +45,8 @@ def get_db_connect():
     return db_connect
 
 
-def backup_local_db():
-    app_main.logger.info('Backing up last version.')
-    current_db_path = config_service.get_movie_db_path()
-    last_version_path = config_service.get_last_version_path()
-
-    if os.path.isfile(current_db_path):
-        os.rename(current_db_path, last_version_path)
-    else:
-        app_main.logger.warn('No database found, nothing to back up.')
-
-
-def restore_db_last_version():
-    app_main.logger.info('Restoring last version.')
-    current_db_path = config_service.get_movie_db_path()
-    last_version_path = config_service.get_last_version_path()
-
-    if os.path.isfile(last_version_path):
-        os.rename(last_version_path, current_db_path)
-        app_main.logger.info('Last version restored!')
-    else:
-        app_main.logger.warn("No previous version found! Cannot restore last version!")
-
-
-def download_and_unzip_new_data(dataset):
-    temp_path = config_service.get_temp_path()
-
-    unzipped_path = os.path.join(temp_path, dataset)
-    zipped_path = unzipped_path + '_zipped'
-    app_main.logger.info('Downloading {} data.'.format(dataset))
-    urllib.request.urlretrieve(config_service.get_imdb_url() + DATASETS_TO_FILENAMES.get(dataset),
-                               zipped_path)
-
-    app_main.logger.info('Unzipping {} data'.format(dataset))
-    with gzip.open(zipped_path) as zipped_file:
-        with open(unzipped_path, 'wb') as unzipped_file:
-            shutil.copyfileobj(zipped_file, unzipped_file)
-
-    os.remove(zipped_path)
-
-
-def delete_downloaded_remote_data(dataset):
-    app_main.logger.info('Deleting local {} file'.format(dataset))
-    os.remove(os.path.join(config_service.get_temp_path(), dataset))
-
-
-def is_valid_tid(to_check):
-    i = bisect.bisect_left(VALID_IDS, to_check)
-    if i != len(VALID_IDS) and VALID_IDS[i] == to_check:
-        return True
-    else:
-        return False
+def is_valid_tid(tid):
+    return ordered_list_contains_number(tid, VALID_IDS)
 
 
 def one_is_valid_tid(to_check):
@@ -114,162 +56,113 @@ def one_is_valid_tid(to_check):
     return False
 
 
-def tid_nid_to_int(tid_nid):
-    return int(tid_nid[2:])
-
-
 def analyze():
     app_main.logger.info("Analyzing.\n")
-    db_connect = sqlite3.connect(config_service.get_movie_db_path())
+    db_connect = get_db_connect()
     db_connect.execute('ANALYZE')
+    db_connect.close()
+
+
+def read_to_db(dataset_name, entries_to_row_func, pre_op=None, post_op=None):
+    db_connect = get_db_connect()
+    if pre_op:
+        pre_op(db_connect=db_connect)
+
+    with open(os.path.join(config_service.get_temp_path(), dataset_name), 'r') as file:
+        file.readline()
+        line = file.readline().strip()
+
+        while line:
+            entries = line.split('\t')
+            entries = clean_nulls(entries)
+            entries_to_row_func(entries, db_connect)
+            line = file.readline().strip()
+
+    if post_op:
+        post_op()
+    db_connect.commit()
+    db_connect.close()
 
 
 def read_basics():
-    db_connect = get_db_connect()
+    def entries_to_row(entries, db_connect):
+        if (entries[1] == "movie") & (entries[4] == "0"):
+            entries_basics = entries[0:1] + entries[2:3] + entries[5:6] + entries[7:]
+            entries_basics[0] = tid_nid_to_int(entries_basics[0])
+            db_connect.execute("INSERT INTO basics VALUES (?,?,?,?,?)",
+                               entries_basics)
+            VALID_IDS.append(entries_basics[0])
 
-    with open(os.path.join(config_service.get_temp_path(), BASICS), 'r') as file:
-        file.readline()
-        line = file.readline().strip()
-
-        while line:
-            entries = line.split('\t')
-
-            # only add movies which aren't adult
-            if (entries[1] == "movie") & (entries[4] == "0"):
-                entries_basics = clean_nulls(entries[0:1] + entries[2:3] + entries[5:6] + entries[7:])
-                entries_basics[0] = tid_nid_to_int(entries_basics[0])
-                db_connect.execute("INSERT INTO basics VALUES (?,?,?,?,?)",
-                                   entries_basics)
-                VALID_IDS.append(entries_basics[0])
-
-            line = file.readline().strip()
-
-        VALID_IDS.sort()
-        db_connect.commit()
-        db_connect.close()
+    read_to_db(dataset_name=DATASET_BASICS, entries_to_row_func=entries_to_row, post_op=VALID_IDS.sort)
 
 
 def read_ratings():
-    db_connect = get_db_connect()
+    def entries_to_row(entries, db_connect):
+        entries[0] = tid_nid_to_int(entries[0])
+        if is_valid_tid(entries[0]):
+            db_connect.execute("INSERT INTO ratings VALUES (?,?,?)", entries)
 
-    with open(os.path.join(config_service.get_temp_path(), RATINGS), 'r') as file:
-        file.readline()
-        line = file.readline().strip()
-
-        while line:
-            entries = line.split('\t')
-            entries[0] = tid_nid_to_int(entries[0])
-            if is_valid_tid(entries[0]):
-                db_connect.execute("INSERT INTO ratings VALUES (?,?,?)", entries)
-
-            line = file.readline().strip()
-
-    db_connect.commit()
-    db_connect.close()
+    read_to_db(dataset_name=DATASET_RATINGS, entries_to_row_func=entries_to_row)
 
 
 def read_principals():
-    db_connect = get_db_connect()
+    def entries_to_row(entries, db_connect):
+        if entries[3] in ['actor', 'actress', 'self']:
+            entries[0] = tid_nid_to_int(entries[0])
+            current_id = entries[0]
+            global LAST_VALID_ID
+            if (current_id == LAST_VALID_ID) or is_valid_tid(current_id):
+                LAST_VALID_ID = current_id
+                entries[2] = tid_nid_to_int(entries[2])
+                db_connect.execute("INSERT OR REPLACE INTO principals VALUES (?,?)", (entries[0], entries[2]))
 
-    with open(os.path.join(config_service.get_temp_path(), PRINCIPALS), 'r') as file:
-        file.readline()
-        line = file.readline().strip()
-
-        last_valid_id = -1
-        while line:
-            entries = line.split('\t')
-            if entries[3] in ['actor', 'actress', 'self']:
-                entries[0] = tid_nid_to_int(entries[0])
-                current_id = entries[0]
-                if (current_id == last_valid_id) or is_valid_tid(current_id):
-                    last_valid_id = current_id
-                    entries[2] = tid_nid_to_int(entries[2])
-                    db_connect.execute("INSERT OR REPLACE INTO principals VALUES (?,?)", (entries[0], entries[2]))
-
-            line = file.readline().strip()
-
-    db_connect.commit()
-    db_connect.close()
+    read_to_db(dataset_name=DATASET_PRINCIPALS, entries_to_row_func=entries_to_row)
 
 
 def read_crew():
-    db_connect = get_db_connect()
+    def entries_to_row(entries, db_connect):
+        entries[0] = tid_nid_to_int(entries[0])
+        if is_valid_tid(entries[0]):
+            if entries[1]:
+                for director in entries[1].split(','):
+                    director = tid_nid_to_int(director)
+                    db_connect.execute("INSERT INTO directors VALUES (?,?)", (entries[0], director))
 
-    with open(os.path.join(config_service.get_temp_path(), CREW), 'r') as file:
-        file.readline()
-        line = file.readline().strip()
+            if entries[2]:
+                for writer in entries[2].split(','):
+                    writer = tid_nid_to_int(writer)
+                    db_connect.execute("INSERT INTO writers VALUES (?,?)", (entries[0], writer))
 
-        while line:
-            entries = line.split('\t')
-            entries[0] = tid_nid_to_int(entries[0])
-            if is_valid_tid(entries[0]):
-                if entries[1] != '\\N':
-                    for director in entries[1].split(','):
-                        director = tid_nid_to_int(director)
-                        db_connect.execute("INSERT INTO directors VALUES (?,?)", (entries[0], director))
-
-                if entries[2] != '\\N':
-                    for writer in entries[2].split(','):
-                        writer = tid_nid_to_int(writer)
-                        db_connect.execute("INSERT INTO writers VALUES (?,?)", (entries[0], writer))
-
-            line = file.readline().strip()
-
-    db_connect.commit()
-    db_connect.close()
+    read_to_db(dataset_name=DATASET_CREW, entries_to_row_func=entries_to_row)
 
 
 def read_names():
-    db_connect = get_db_connect()
+    def entries_to_row(entries, db_connect):
+        if entries[5]:
+            known_for = entries[5].split(',')
+            known_for = [tid_nid_to_int(x) for x in known_for]
 
-    with open(os.path.join(config_service.get_temp_path(), NAMES), 'r') as file:
-        file.readline()
-        line = file.readline().strip()
+            if one_is_valid_tid(known_for):
+                entries[0] = tid_nid_to_int(entries[0])
+                name_normalized = normalize(entries[1])
+                db_connect.execute("INSERT INTO names VALUES (?,?,?)", entries[0:2] + [name_normalized])
 
-        while line:
-            entries = line.split('\t')
-
-            if entries[5] != '\\N':
-                known_for = entries[5].split(',')
-                known_for = [tid_nid_to_int(x) for x in known_for]
-
-                if one_is_valid_tid(known_for):
-                    entries[0] = tid_nid_to_int(entries[0])
-                    name_normalized = normalize(entries[1])
-                    db_connect.execute("INSERT INTO names VALUES (?,?,?)", entries[0:2] + [name_normalized])
-
-            line = file.readline().strip()
-
-    db_connect.commit()
-    db_connect.close()
+    read_to_db(dataset_name=DATASET_NAMES, entries_to_row_func=entries_to_row)
 
 
 def read_akas():
-    db_connect = get_db_connect()
+    def pre(db_connect):
+        db_connect.execute("CREATE VIRTUAL TABLE {} USING fts5(tid, title)".format(TABLE_FTS))
 
-    db_connect.execute("CREATE VIRTUAL TABLE {} USING fts5(tid, title)".format(TABLE_FTS))
+    def entries_to_row(entries, db_connect):
+        entries[0] = tid_nid_to_int(entries[0])
+        if is_valid_tid(entries[0]):
+            entries[2] = normalize(entries[2])
+            db_connect.execute("INSERT INTO {} VALUES (?,?)".format(TABLE_FTS), (entries[0], entries[2]))
 
-    with open(os.path.join(config_service.get_temp_path(), AKAS), 'r') as file:
-        file.readline()
-        line = file.readline().strip()
-
-        while line:
-            entries = line.split('\t')
-            entries[0] = tid_nid_to_int(entries[0])
-            if is_valid_tid(entries[0]):
-                entries[2] = normalize(entries[2])
-                db_connect.execute("INSERT INTO {} VALUES (?,?)".format(TABLE_FTS), (entries[0], entries[2]))
-
-            line = file.readline().strip()
-
-    db_connect.commit()
-    db_connect.close()
+    read_to_db(dataset_name=DATASET_AKAS, entries_to_row_func=entries_to_row, pre_op=pre)
 
 
-def clean_nulls(entries):
-    return [None if entry == '\\N' else entry for entry in entries]
-
-
-DATASETS_TO_READ_FUNCTIONS = {BASICS: read_basics, NAMES: read_names,
-                              CREW: read_crew, PRINCIPALS: read_principals,
-                              RATINGS: read_ratings, AKAS: read_akas}
+DATASETS_TO_READ_FUNCTIONS = {DATASET_BASICS: read_basics, DATASET_NAMES: read_names,
+                              DATASET_CREW: read_crew, DATASET_PRINCIPALS: read_principals,
+                              DATASET_RATINGS: read_ratings, DATASET_AKAS: read_akas}

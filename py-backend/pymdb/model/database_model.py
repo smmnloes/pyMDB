@@ -1,16 +1,8 @@
 from sqlalchemy import Index
 
 from app.app_main import db
-
-INDEX_PREFIX = '_idx_'
-TABLE_BASICS = 'basics'
-TABLE_RATINGS = 'ratings'
-TABLE_PRINCIPALS = 'principals'
-TABLE_WRITERS = 'writers'
-TABLE_DIRECTORS = 'directors'
-TABLE_NAMES = 'names'
-TABLE_AKAS = 'akas'
-TABLE_FTS = 'fts_table'
+from constants.constants import TABLE_BASICS, TABLE_RATINGS, TABLE_PRINCIPALS, INDEX_PREFIX, TABLE_WRITERS, \
+    TABLE_DIRECTORS, TABLE_NAMES
 
 
 class Basics(db.Model):
