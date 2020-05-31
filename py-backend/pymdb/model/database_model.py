@@ -1,6 +1,6 @@
 from sqlalchemy import Index
 
-from App.AppMain import db
+from app.app_main import db
 
 INDEX_PREFIX = '_idx_'
 TABLE_BASICS = 'basics'

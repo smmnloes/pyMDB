@@ -5,9 +5,9 @@ import shutil
 import sqlite3
 import urllib.request
 
-from App import AppMain
-from Config import ConfigService
-from Services.Database.QueryService import normalize, TABLE_FTS
+from app import app_main
+from services.config import config_service
+from services.database.query_service import normalize, TABLE_FTS
 
 BASICS = 'basics'
 NAMES = 'names'
@@ -26,67 +26,67 @@ VALID_IDS = []
 def update_db():
     backup_local_db()
 
-    with AppMain.pymdb_app.app_context():
-        AppMain.db.create_all()
+    with app_main.pymdb_app.app_context():
+        app_main.db.create_all()
 
     try:
         for dataset in DATASETS:
-            AppMain.logger.info('Processing {} data.'.format(dataset))
+            app_main.logger.info('Processing {} data.'.format(dataset))
             download_and_unzip_new_data(dataset)
-            AppMain.logger.info('Reading {} to database.'.format(dataset))
+            app_main.logger.info('Reading {} to database.'.format(dataset))
             DATASETS_TO_READ_FUNCTIONS.get(dataset)()
             delete_downloaded_remote_data(dataset)
-            AppMain.logger.info('Finished processing {} data.\n'.format(dataset))
+            app_main.logger.info('Finished processing {} data.\n'.format(dataset))
 
         analyze()
-        AppMain.logger.info("Update complete!")
+        app_main.logger.info("Update complete!")
 
     except (Exception, BaseException) as e:
-        AppMain.logger.error("Error while updating: {}".format(str(e)))
+        app_main.logger.error("Error while updating: {}".format(str(e)))
         restore_db_last_version()
         raise e
 
 
 def get_db_connect():
-    db_connect = sqlite3.connect(ConfigService.get_movie_db_path())
+    db_connect = sqlite3.connect(config_service.get_movie_db_path())
     db_connect.execute("PRAGMA synchronous = 0")
     db_connect.execute("PRAGMA default_cache_size = 40000")
     return db_connect
 
 
 def backup_local_db():
-    AppMain.logger.info('Backing up last version.')
-    current_db_path = ConfigService.get_movie_db_path()
-    last_version_path = ConfigService.get_last_version_path()
+    app_main.logger.info('Backing up last version.')
+    current_db_path = config_service.get_movie_db_path()
+    last_version_path = config_service.get_last_version_path()
 
     if os.path.isfile(current_db_path):
         os.rename(current_db_path, last_version_path)
     else:
-        AppMain.logger.warn('No database found, nothing to back up.')
+        app_main.logger.warn('No database found, nothing to back up.')
 
 
 def restore_db_last_version():
-    AppMain.logger.info('Restoring last version.')
-    current_db_path = ConfigService.get_movie_db_path()
-    last_version_path = ConfigService.get_last_version_path()
+    app_main.logger.info('Restoring last version.')
+    current_db_path = config_service.get_movie_db_path()
+    last_version_path = config_service.get_last_version_path()
 
     if os.path.isfile(last_version_path):
         os.rename(last_version_path, current_db_path)
-        AppMain.logger.info('Last version restored!')
+        app_main.logger.info('Last version restored!')
     else:
-        AppMain.logger.warn("No previous version found! Cannot restore last version!")
+        app_main.logger.warn("No previous version found! Cannot restore last version!")
 
 
 def download_and_unzip_new_data(dataset):
-    temp_path = ConfigService.get_temp_path()
+    temp_path = config_service.get_temp_path()
 
     unzipped_path = os.path.join(temp_path, dataset)
     zipped_path = unzipped_path + '_zipped'
-    AppMain.logger.info('Downloading {} data.'.format(dataset))
-    urllib.request.urlretrieve(ConfigService.get_imdb_url() + DATASETS_TO_FILENAMES.get(dataset),
+    app_main.logger.info('Downloading {} data.'.format(dataset))
+    urllib.request.urlretrieve(config_service.get_imdb_url() + DATASETS_TO_FILENAMES.get(dataset),
                                zipped_path)
 
-    AppMain.logger.info('Unzipping {} data'.format(dataset))
+    app_main.logger.info('Unzipping {} data'.format(dataset))
     with gzip.open(zipped_path) as zipped_file:
         with open(unzipped_path, 'wb') as unzipped_file:
             shutil.copyfileobj(zipped_file, unzipped_file)
@@ -95,8 +95,8 @@ def download_and_unzip_new_data(dataset):
 
 
 def delete_downloaded_remote_data(dataset):
-    AppMain.logger.info('Deleting local {} file'.format(dataset))
-    os.remove(os.path.join(ConfigService.get_temp_path(), dataset))
+    app_main.logger.info('Deleting local {} file'.format(dataset))
+    os.remove(os.path.join(config_service.get_temp_path(), dataset))
 
 
 def is_valid_tid(to_check):
@@ -119,15 +119,15 @@ def tid_nid_to_int(tid_nid):
 
 
 def analyze():
-    AppMain.logger.info("Analyzing.\n")
-    db_connect = sqlite3.connect(ConfigService.get_movie_db_path())
+    app_main.logger.info("Analyzing.\n")
+    db_connect = sqlite3.connect(config_service.get_movie_db_path())
     db_connect.execute('ANALYZE')
 
 
 def read_basics():
     db_connect = get_db_connect()
 
-    with open(os.path.join(ConfigService.get_temp_path(), BASICS), 'r') as file:
+    with open(os.path.join(config_service.get_temp_path(), BASICS), 'r') as file:
         file.readline()
         line = file.readline().strip()
 
@@ -152,7 +152,7 @@ def read_basics():
 def read_ratings():
     db_connect = get_db_connect()
 
-    with open(os.path.join(ConfigService.get_temp_path(), RATINGS), 'r') as file:
+    with open(os.path.join(config_service.get_temp_path(), RATINGS), 'r') as file:
         file.readline()
         line = file.readline().strip()
 
@@ -171,7 +171,7 @@ def read_ratings():
 def read_principals():
     db_connect = get_db_connect()
 
-    with open(os.path.join(ConfigService.get_temp_path(), PRINCIPALS), 'r') as file:
+    with open(os.path.join(config_service.get_temp_path(), PRINCIPALS), 'r') as file:
         file.readline()
         line = file.readline().strip()
 
@@ -195,7 +195,7 @@ def read_principals():
 def read_crew():
     db_connect = get_db_connect()
 
-    with open(os.path.join(ConfigService.get_temp_path(), CREW), 'r') as file:
+    with open(os.path.join(config_service.get_temp_path(), CREW), 'r') as file:
         file.readline()
         line = file.readline().strip()
 
@@ -222,7 +222,7 @@ def read_crew():
 def read_names():
     db_connect = get_db_connect()
 
-    with open(os.path.join(ConfigService.get_temp_path(), NAMES), 'r') as file:
+    with open(os.path.join(config_service.get_temp_path(), NAMES), 'r') as file:
         file.readline()
         line = file.readline().strip()
 
@@ -249,7 +249,7 @@ def read_akas():
 
     db_connect.execute("CREATE VIRTUAL TABLE {} USING fts5(tid, title)".format(TABLE_FTS))
 
-    with open(os.path.join(ConfigService.get_temp_path(), AKAS), 'r') as file:
+    with open(os.path.join(config_service.get_temp_path(), AKAS), 'r') as file:
         file.readline()
         line = file.readline().strip()
 

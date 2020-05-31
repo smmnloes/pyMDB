@@ -4,8 +4,8 @@ from sqlalchemy import asc, desc, text
 from sqlalchemy.orm import aliased
 from unidecode import unidecode
 
-from App import AppMain
-from Model.DatabaseModel import *
+from app import app_main
+from model.database_model import *
 
 MIN_NUM_VOTES = 1000
 LIMIT_FTS_SEARCH_RESULTS = 5000
@@ -50,7 +50,7 @@ def normalize(to_normalize):
 
 
 def get_movies_by_criteria(request):
-    AppMain.logger.debug('Request for movie by criteria: \n' + str(request) + '\n')
+    app_main.logger.debug('Request for movie by criteria: \n' + str(request) + '\n')
 
     order_results = request['sort_by'] == 'Relevance'
     query = get_query_with_criteria_filters(request, order_results=order_results)
@@ -70,14 +70,14 @@ def get_movies_by_criteria(request):
 
     time_before = time()
     results = query.all()
-    AppMain.logger.debug("\nQuery time: " + str((time() - time_before) * 1000) + "ms")
+    app_main.logger.debug("\nQuery time: " + str((time() - time_before) * 1000) + "ms")
 
     time_before = time()
     results_dict_list = results_to_dict_list(results)
-    AppMain.logger.debug("Result processing time: " + str((time() - time_before) * 1000) + "ms")
+    app_main.logger.debug("Result processing time: " + str((time() - time_before) * 1000) + "ms")
 
-    AppMain.logger.debug("\nResults: {}".format(len(results)))
-    AppMain.logger.debug('\n\n\n')
+    app_main.logger.debug("\nResults: {}".format(len(results)))
+    app_main.logger.debug('\n\n\n')
     return results_dict_list
 
 
@@ -93,7 +93,7 @@ def get_result_count_by_criteria(request):
 
 
 def get_movie_by_tid(request):
-    AppMain.logger.debug('Request for movie by tid: \n' + str(request) + '\n')
+    app_main.logger.debug('Request for movie by tid: \n' + str(request) + '\n')
 
     query = db.session.query(Basics).outerjoin(Ratings)
     query = query.add_columns(Ratings.averageRating)

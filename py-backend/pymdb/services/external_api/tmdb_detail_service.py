@@ -2,7 +2,7 @@ from urllib.parse import urljoin
 
 import requests
 
-from Config import ConfigService
+from services.config import config_service
 
 TMDB_ROOT = "https://api.themoviedb.org/3/"
 TMDB_FIND_API = urljoin(TMDB_ROOT, 'find/')
@@ -15,7 +15,7 @@ IMAGE_BASE_PATH = None
 def get_image_base_path():
     global IMAGE_BASE_PATH
     if IMAGE_BASE_PATH is None:
-        params = {'api_key': ConfigService.get_tmdb_api_key()}
+        params = {'api_key': config_service.get_tmdb_api_key()}
         IMAGE_BASE_PATH = requests.get(TMDB_CONFIG_API, params).json()['images']['secure_base_url']
     return IMAGE_BASE_PATH
 
@@ -36,7 +36,7 @@ def get_detailed_data_by_imdb_id(imdb_id):
 
 
 def get_tmdb_id(imdb_id_formatted):
-    params = {'api_key': ConfigService.get_tmdb_api_key(), 'external_source': 'imdb_id'}
+    params = {'api_key': config_service.get_tmdb_api_key(), 'external_source': 'imdb_id'}
     url = urljoin(TMDB_FIND_API, imdb_id_formatted)
     response = requests.get(url, params)
     response_json = response.json()
@@ -55,7 +55,7 @@ def get_tmdb_id(imdb_id_formatted):
 # "original"
 
 def get_details_for_tmdb_id(tmdb_id):
-    params = {'api_key': ConfigService.get_tmdb_api_key(), 'append_to_response': 'credits'}
+    params = {'api_key': config_service.get_tmdb_api_key(), 'append_to_response': 'credits'}
     url = urljoin(TMDB_MOVIE_API, str(tmdb_id))
     response = requests.get(url, params).json()
     poster_path = response['poster_path']
@@ -64,7 +64,7 @@ def get_details_for_tmdb_id(tmdb_id):
     return response
 
 
-def format_imdb_id(id):
-    while len(id) < 7:
-        id = "0" + id
-    return "tt" + id
+def format_imdb_id(input_id):
+    while len(input_id) < 7:
+        input_id = "0" + input_id
+    return "tt" + input_id

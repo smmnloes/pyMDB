@@ -1,8 +1,8 @@
 import getopt
 import sys
 
-from App import AppMain
-from Services.Database import UpdateService
+from app import app_main
+from services.database import update_service
 
 
 def main(argv):
@@ -10,7 +10,7 @@ def main(argv):
     print("Parsing command line arguments...")
     parse_arguments(argv)
     print("Starting App...")
-    AppMain.start_app()
+    app_main.start_app()
 
 
 def parse_arguments(argv):
@@ -22,8 +22,8 @@ def parse_arguments(argv):
     for arg in args:
         if arg == "update":
             print("Updating database...")
-            AppMain.create_app()
-            UpdateService.update_db()
+            app_main.create_app()
+            update_service.update_db()
             exit(0)
 
 
