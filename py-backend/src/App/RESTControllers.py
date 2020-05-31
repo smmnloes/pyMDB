@@ -11,7 +11,7 @@ from Services.API import TMDBDetailService
 from Services.Database import QueryService
 
 
-def make_post_cache_key(*args, **kwargs):
+def make_post_cache_key():
     body_json_dump = json.dumps(request.json, sort_keys=True)
     path_and_dump = request.path + body_json_dump
     return hashlib.md5(path_and_dump.encode('utf-8')).hexdigest()
