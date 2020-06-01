@@ -63,7 +63,7 @@ def analyze():
     db_connect.close()
 
 
-def read_to_db(dataset_name, entries_to_row_func, pre_op=None, post_op=None):
+def read_to_db(dataset_name, insert_entries_func, pre_op=None, post_op=None):
     db_connect = get_db_connect()
     if pre_op:
         pre_op(db_connect=db_connect)
@@ -75,7 +75,7 @@ def read_to_db(dataset_name, entries_to_row_func, pre_op=None, post_op=None):
         while line:
             entries = line.split('\t')
             entries = clean_nulls(entries)
-            entries_to_row_func(entries, db_connect)
+            insert_entries_func(entries, db_connect)
             line = file.readline().strip()
 
     if post_op:
@@ -85,7 +85,7 @@ def read_to_db(dataset_name, entries_to_row_func, pre_op=None, post_op=None):
 
 
 def read_basics():
-    def entries_to_row(entries, db_connect):
+    def insert_entries(entries, db_connect):
         if (entries[1] == "movie") & (entries[4] == "0"):
             entries_basics = entries[0:1] + entries[2:3] + entries[5:6] + entries[7:]
             entries_basics[0] = tid_nid_to_int(entries_basics[0])
@@ -93,20 +93,20 @@ def read_basics():
                                entries_basics)
             VALID_IDS.append(entries_basics[0])
 
-    read_to_db(dataset_name=DATASET_BASICS, entries_to_row_func=entries_to_row, post_op=VALID_IDS.sort)
+    read_to_db(dataset_name=DATASET_BASICS, insert_entries_func=insert_entries, post_op=VALID_IDS.sort)
 
 
 def read_ratings():
-    def entries_to_row(entries, db_connect):
+    def insert_entries(entries, db_connect):
         entries[0] = tid_nid_to_int(entries[0])
         if is_valid_tid(entries[0]):
             db_connect.execute("INSERT INTO ratings VALUES (?,?,?)", entries)
 
-    read_to_db(dataset_name=DATASET_RATINGS, entries_to_row_func=entries_to_row)
+    read_to_db(dataset_name=DATASET_RATINGS, insert_entries_func=insert_entries)
 
 
 def read_principals():
-    def entries_to_row(entries, db_connect):
+    def insert_entries(entries, db_connect):
         if entries[3] in ['actor', 'actress', 'self']:
             entries[0] = tid_nid_to_int(entries[0])
             current_id = entries[0]
@@ -116,11 +116,11 @@ def read_principals():
                 entries[2] = tid_nid_to_int(entries[2])
                 db_connect.execute("INSERT OR REPLACE INTO principals VALUES (?,?)", (entries[0], entries[2]))
 
-    read_to_db(dataset_name=DATASET_PRINCIPALS, entries_to_row_func=entries_to_row)
+    read_to_db(dataset_name=DATASET_PRINCIPALS, insert_entries_func=insert_entries)
 
 
 def read_crew():
-    def entries_to_row(entries, db_connect):
+    def insert_entries(entries, db_connect):
         entries[0] = tid_nid_to_int(entries[0])
         if is_valid_tid(entries[0]):
             if entries[1]:
@@ -133,11 +133,11 @@ def read_crew():
                     writer = tid_nid_to_int(writer)
                     db_connect.execute("INSERT INTO writers VALUES (?,?)", (entries[0], writer))
 
-    read_to_db(dataset_name=DATASET_CREW, entries_to_row_func=entries_to_row)
+    read_to_db(dataset_name=DATASET_CREW, insert_entries_func=insert_entries)
 
 
 def read_names():
-    def entries_to_row(entries, db_connect):
+    def insert_entries(entries, db_connect):
         if entries[5]:
             known_for = entries[5].split(',')
             known_for = [tid_nid_to_int(x) for x in known_for]
@@ -147,20 +147,20 @@ def read_names():
                 name_normalized = normalize(entries[1])
                 db_connect.execute("INSERT INTO names VALUES (?,?,?)", entries[0:2] + [name_normalized])
 
-    read_to_db(dataset_name=DATASET_NAMES, entries_to_row_func=entries_to_row)
+    read_to_db(dataset_name=DATASET_NAMES, insert_entries_func=insert_entries)
 
 
 def read_akas():
     def pre(db_connect):
         db_connect.execute("CREATE VIRTUAL TABLE {} USING fts5(tid, title)".format(TABLE_FTS))
 
-    def entries_to_row(entries, db_connect):
+    def insert_entries(entries, db_connect):
         entries[0] = tid_nid_to_int(entries[0])
         if is_valid_tid(entries[0]):
             entries[2] = normalize(entries[2])
             db_connect.execute("INSERT INTO {} VALUES (?,?)".format(TABLE_FTS), (entries[0], entries[2]))
 
-    read_to_db(dataset_name=DATASET_AKAS, entries_to_row_func=entries_to_row, pre_op=pre)
+    read_to_db(dataset_name=DATASET_AKAS, insert_entries_func=insert_entries, pre_op=pre)
 
 
 DATASETS_TO_READ_FUNCTIONS = {DATASET_BASICS: read_basics, DATASET_NAMES: read_names,

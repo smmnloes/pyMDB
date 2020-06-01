@@ -47,7 +47,7 @@ def get_movies_by_criteria(request):
     app_main.logger.debug('Request for movie by criteria: \n' + str(request) + '\n')
 
     order_results = request['sort_by'] == 'Relevance'
-    query = get_query_with_criteria_filters(request, order_results=order_results)
+    query = get_query_filtered(request, order_results=order_results)
 
     sort_by = request['sort_by']
     if sort_by == 'Title':
@@ -82,7 +82,7 @@ def apply_limit_and_offset(query, request):
 
 
 def get_result_count_by_criteria(request):
-    query = get_query_with_criteria_filters(request, order_results=False)
+    query = get_query_filtered(request, order_results=False)
     return query.count()
 
 
@@ -96,7 +96,7 @@ def get_movie_by_tid(request):
     return results_to_dict_list(query.all())
 
 
-def get_query_with_criteria_filters(request, order_results):
+def get_query_filtered(request, order_results):
     query = db.session.query(Basics).outerjoin(Ratings)
     query = query.add_columns(Ratings.averageRating)
 
@@ -145,7 +145,7 @@ def filter_by_title(query, title, order_results):
 def get_tids_fts(order_results, title_normalized):
     order_by_clause = "ORDER BY RANK" if order_results else ""
     query_text = text(
-        "SELECT DISTINCT tid FROM {} WHERE title MATCH :keyword {} LIMIT :limit".format(TABLE_FTS, order_by_clause))
+        'SELECT DISTINCT tid FROM {} WHERE title MATCH :keyword {} LIMIT :limit'.format(TABLE_FTS, order_by_clause))
     query_text = query_text.bindparams(keyword=title_normalized, limit=LIMIT_FTS_SEARCH_RESULTS)
     result = db.session.execute(query_text).fetchall()
     tid_list = [row['tid'] for row in result]
