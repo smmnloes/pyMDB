@@ -5,4 +5,4 @@ npm-debug.log
 workspace.xml
 performance_logs/
 .venv/
-test.db
+temp.db
