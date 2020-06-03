@@ -70,7 +70,7 @@ By clicking on the title of a search result, you will get to the Detailed View. 
 
 
 ### Legal disclaimer
-Imdb does only allow the database information to be used for personal and non-commercial use. Therefore you are not allowed to deploy this application publicly or use it in any way not permitted by Imdb.
+Imdb does only allow the database information to be used for personal and non-commercial use. Therefore you are not allowed to use this application in any way not permitted by Imdb.
 
 
 That's it. Have fun! Contributions and feedback always welcome!
