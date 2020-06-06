@@ -2,6 +2,13 @@
 
 Welcome to pyMDB, a movie search engine based on IMDB datasets combined with detailed data from __themoviedb.org__.  
 
+## Goal of this project
+The aim of **pyMDB** is to create a web interface for searching movies based on different search criteria. The solution should be:
+- **Fast**: Quick search times and responsiveness
+- **Easy to use**: Inutitive user experience
+- **Lightweight**: Sould not require much resources (memory, CPU)
+
+## Running pyMDB
 ### Prerequisites
 * NodeJS & NPM -> https://nodejs.org/en/download/
 * Python version >= 3.8
@@ -43,7 +50,7 @@ In this setup, the following directories will be mounted into the container:
 
 **Note**: You still need to add the TMDB API Key to the application as described above!
 
-### Using the app
+## Using the app
 #### First run
 On the first run, you have to download the Imdb data and create your database.
 To do this, start the backend as described above with the command line argument `update`. This will download the files from __https://datasets.imdbws.com__ one by one and read them into a SQLite database at the location defined in the `config.ini` file (`/var/lib/pymdb` by default). The process will exit after the database has been updated.
@@ -69,7 +76,7 @@ When the development servers are running, under `localhost:4200` you will find t
 By clicking on the title of a search result, you will get to the Detailed View. This contains information like a more complete cast list or the movie budget for example. Note that the information for this is obtained from the free *themoviedb.org*-API. For some movies only limited information might be available, or none at all.
 
 
-### Legal disclaimer
+## Legal disclaimer
 Imdb does only allow the database information to be used for personal and non-commercial use. Therefore you are not allowed to use this application in any way not permitted by Imdb.
 
 
