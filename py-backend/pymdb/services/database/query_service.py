@@ -146,7 +146,7 @@ def get_tids_fts(order_results, title_normalized):
     match_phrase = "{}:{}".format(FTS_TITLE_COLUMN, title_normalized)
     order_by_clause = "ORDER BY RANK" if order_results else ""
     query_text = text(
-        'SELECT DISTINCT tid FROM {} WHERE title MATCH :match_phrase {} LIMIT :limit'.format(TABLE_FTS, order_by_clause))
+        'SELECT DISTINCT tid FROM {} WHERE {} MATCH :match_phrase {} LIMIT :limit'.format(TABLE_FTS, TABLE_FTS, order_by_clause))
     query_text = query_text.bindparams(match_phrase=match_phrase, limit=LIMIT_FTS_SEARCH_RESULTS)
     results = db.session.execute(query_text).fetchall()
     tid_list = [result['tid'] for result in results]

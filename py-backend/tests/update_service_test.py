@@ -113,7 +113,7 @@ class TestUpdateService(unittest.TestCase):
 def get_fts_results(keyword):
     match_phrase = "{}:{}".format(FTS_TITLE_COLUMN, normalize(keyword))
     query_text = text(
-        'SELECT DISTINCT tid FROM {} WHERE title MATCH :match_phrase'.format(TABLE_FTS))
+        'SELECT DISTINCT tid FROM {} WHERE {} MATCH :match_phrase'.format(TABLE_FTS, TABLE_FTS))
     query_text = query_text.bindparams(match_phrase=match_phrase)
     return db.session.execute(query_text).fetchall()
 
