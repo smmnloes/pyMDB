@@ -151,7 +151,7 @@ def read_names():
 
 
 def read_akas():
-    def pre(db_connect):
+    def pre_op(db_connect):
         db_connect.execute("CREATE VIRTUAL TABLE {} USING fts5({}, {})".format(TABLE_FTS, FTS_TID_COLUMN, FTS_TITLE_COLUMN))
 
     def insert_entries(entries, db_connect):
@@ -160,7 +160,7 @@ def read_akas():
             entries[2] = normalize(entries[2])
             db_connect.execute("INSERT INTO {} VALUES (?,?)".format(TABLE_FTS), (entries[0], entries[2]))
 
-    read_to_db(dataset_name=DATASET_AKAS, insert_entries_func=insert_entries, pre_op=pre)
+    read_to_db(dataset_name=DATASET_AKAS, insert_entries_func=insert_entries, pre_op=pre_op)
 
 
 DATASETS_TO_READ_FUNCTIONS = {DATASET_BASICS: read_basics, DATASET_NAMES: read_names,

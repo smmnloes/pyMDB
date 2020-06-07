@@ -148,8 +148,8 @@ def get_tids_fts(order_results, title_normalized):
     query_text = text(
         'SELECT DISTINCT tid FROM {} WHERE title MATCH :match_phrase {} LIMIT :limit'.format(TABLE_FTS, order_by_clause))
     query_text = query_text.bindparams(match_phrase=match_phrase, limit=LIMIT_FTS_SEARCH_RESULTS)
-    result = db.session.execute(query_text).fetchall()
-    tid_list = [row['tid'] for row in result]
+    results = db.session.execute(query_text).fetchall()
+    tid_list = [result['tid'] for result in results]
     return tid_list
 
 
