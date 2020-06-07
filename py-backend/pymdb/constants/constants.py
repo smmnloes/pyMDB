@@ -17,7 +17,6 @@ TABLE_PRINCIPALS = 'principals'
 TABLE_WRITERS = 'writers'
 TABLE_DIRECTORS = 'directors'
 TABLE_NAMES = 'names'
-TABLE_AKAS = 'akas'
 TABLE_FTS = 'fts_table'
 
 CONFIG_FILE_NAME = "config.ini"
