@@ -58,7 +58,7 @@ class TestUpdateService(unittest.TestCase):
         with self.test_app.app_context():
             self.assertEqual(db.session.query(Principals).count(), 5)
             self.assertEqual(db.session.query(Principals).filter(Principals.tid == 'tconst').count(), 0)
-            self.assertEquals(
+            self.assertEqual(
                 db.session.query(Principals).filter(Principals.tid == 2, Principals.nid == 721526).count(), 0)
 
     @patch('services.database.update_service.is_valid_tid', MagicMock(return_value=True))
