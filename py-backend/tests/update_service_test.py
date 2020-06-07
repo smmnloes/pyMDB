@@ -5,7 +5,7 @@ from unittest.mock import patch, MagicMock
 from flask import Flask
 from sqlalchemy import text
 
-from constants.constants import TABLE_FTS
+from constants.constants import TABLE_FTS, FTS_TITLE_COLUMN
 from model.database_model import *
 from resources.resources_paths import TEST_TEMP_PATH, TEST_TEMP_DB_PATH
 from services.database import update_service
@@ -111,10 +111,10 @@ class TestUpdateService(unittest.TestCase):
 
 
 def get_fts_results(keyword):
-    title_normalized = normalize(keyword)
+    match_phrase = "{}:{}".format(FTS_TITLE_COLUMN, normalize(keyword))
     query_text = text(
-        'SELECT DISTINCT tid FROM {} WHERE title MATCH :keyword'.format(TABLE_FTS))
-    query_text = query_text.bindparams(keyword=title_normalized)
+        'SELECT DISTINCT tid FROM {} WHERE title MATCH :match_phrase'.format(TABLE_FTS))
+    query_text = query_text.bindparams(match_phrase=match_phrase)
     return db.session.execute(query_text).fetchall()
 
 

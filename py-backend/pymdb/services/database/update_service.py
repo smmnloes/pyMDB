@@ -3,7 +3,7 @@ import sqlite3
 
 from app import app_main
 from constants.constants import DATASET_BASICS, DATASET_AKAS, DATASET_PRINCIPALS, DATASET_NAMES, DATASET_CREW, \
-    DATASET_RATINGS, TABLE_FTS
+    DATASET_RATINGS, TABLE_FTS, FTS_TID_COLUMN, FTS_TITLE_COLUMN
 from services.config import config_service
 from util.util import tid_nid_to_int, ordered_list_contains_number, clean_nulls, normalize
 from . import backup_service, download_service
@@ -152,7 +152,7 @@ def read_names():
 
 def read_akas():
     def pre(db_connect):
-        db_connect.execute("CREATE VIRTUAL TABLE {} USING fts5(tid, title)".format(TABLE_FTS))
+        db_connect.execute("CREATE VIRTUAL TABLE {} USING fts5({}, {})".format(TABLE_FTS, FTS_TID_COLUMN, FTS_TITLE_COLUMN))
 
     def insert_entries(entries, db_connect):
         entries[0] = tid_nid_to_int(entries[0])
