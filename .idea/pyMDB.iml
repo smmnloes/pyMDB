@@ -3,8 +3,8 @@
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/angular-frontend/src" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/py-backend/pymdb" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/py-backend/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/py-backend/main" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/py-backend/test" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/angular-frontend/dist" />
       <excludeFolder url="file://$MODULE_DIR$/angular-frontend/tmp" />
     </content>
