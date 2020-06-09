@@ -2,13 +2,13 @@ import os
 import unittest
 from unittest.mock import patch, MagicMock
 
-from flask import Flask
 from sqlalchemy import text
 
 from constants.constants import TABLE_FTS, FTS_TITLE_COLUMN
 from model.database_model import *
 from resources.resources_paths import TEST_DATASETS_PATH, TEST_TEMP_DB_PATH
 from services.database import update_service
+from test_utils import create_test_app
 from util.util import normalize
 
 
@@ -24,7 +24,7 @@ class TestUpdateService(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.test_app = create_test_app()
+        cls.test_app = create_test_app(TEST_TEMP_DB_PATH)
         db.init_app(cls.test_app)
         pass
 
@@ -117,9 +117,3 @@ def get_fts_results(keyword):
     query_text = query_text.bindparams(match_phrase=match_phrase)
     return db.session.execute(query_text).fetchall()
 
-
-def create_test_app():
-    test_app = Flask(__name__)
-    test_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    test_app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + TEST_TEMP_DB_PATH
-    return test_app
