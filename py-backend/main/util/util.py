@@ -7,7 +7,7 @@ def tid_nid_to_int(tid_nid):
     return int(tid_nid[2:])
 
 
-def ordered_list_contains_number(value, ordered_list):
+def ordered_list_contains_number(ordered_list, value):
     i = bisect.bisect_left(ordered_list, value)
     if i != len(ordered_list) and ordered_list[i] == value:
         return True

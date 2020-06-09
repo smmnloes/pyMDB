@@ -46,7 +46,7 @@ def get_db_connect():
 
 
 def is_valid_tid(tid):
-    return ordered_list_contains_number(tid, VALID_IDS)
+    return ordered_list_contains_number(VALID_IDS, tid)
 
 
 def one_is_valid_tid(to_check):
