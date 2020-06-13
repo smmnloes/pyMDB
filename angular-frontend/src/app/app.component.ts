@@ -60,7 +60,7 @@ export class AppComponent implements OnInit{
           document.documentElement.scrollTop = 0;
         }
         if (trigger === 'popstate') {
-          setTimeout(()=>document.documentElement.scrollTop = positions[idToRestore], 300);
+          setTimeout(()=>document.documentElement.scrollTop = positions[idToRestore], 100);
         }
       });
   }
