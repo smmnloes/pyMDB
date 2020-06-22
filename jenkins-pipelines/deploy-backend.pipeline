@@ -20,9 +20,10 @@ pipeline {
 
         stage('Deploy Backend'){
             steps{
-                // Inject the TMDB Api Key into config.ini
-                withCredentials([string(credentialsId: 'tmdb_api_key', variable: 'TMDB_KEY')]) {
+                // Inject the TMDB Api Key and the app key into config.ini
+                withCredentials([string(credentialsId: 'tmdb_api_key', variable: 'TMDB_KEY'), string(credentialsId: 'app_key', variable: 'APP_KEY')]) {
                     sh "sed -i 's/^TMDB_API_KEY.*/TMDB_API_KEY = $TMDB_KEY/g' ./py-backend/main/services/config/config.ini"
+                    sh "sed -i 's/^APP_KEY.*/APP_KEY = $APP_KEY/g' ./py-backend/main/services/config/config.ini"
                 }
 
                 // Stop the service
