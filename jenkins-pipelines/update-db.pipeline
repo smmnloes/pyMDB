@@ -1,0 +1,14 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Update Database'){
+            steps{
+                sh 'ssh ubuntu@3.126.86.224 sudo systemctl stop py-backend'
+                sh 'ssh ubuntu@3.126.86.224 "cd /var/lib/pymdb/py-backend && /home/ubuntu/.local/bin/pipenv run python3 ./main/main.py update"'
+                sh 'ssh ubuntu@3.126.86.224 sudo systemctl start py-backend'
+
+            }
+        }
+    }
+}

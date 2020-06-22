@@ -1,0 +1,45 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/smmnloes/pyMDB.git'
+            }
+        }
+
+        stage('Tests') {
+            steps{
+                dir('py-backend'){
+                    sh 'pipenv install --dev'
+                    sh 'pipenv run pytest'
+                }
+            }
+        }
+
+
+        stage('Deploy Backend'){
+            steps{
+                // Inject the TMDB Api Key into config.ini
+                withCredentials([string(credentialsId: 'tmdb_api_key', variable: 'TMDB_KEY')]) {
+                    sh "sed -i 's/^TMDB_API_KEY.*/TMDB_API_KEY = $TMDB_KEY/g' ./py-backend/main/services/config/config.ini"
+                }
+
+                // Stop the service
+                sh 'ssh ubuntu@3.126.86.224 sudo systemctl stop py-backend'
+
+                // Delete old folder
+                sh 'ssh ubuntu@3.126.86.224 rm -rf /var/lib/pymdb/py-backend'
+
+                // Copy new folder
+                sh 'scp -r ./py-backend ubuntu@3.126.86.224:/var/lib/pymdb'
+
+                // execute pipenv clean & install
+                sh 'ssh ubuntu@3.126.86.224 "cd /var/lib/pymdb/py-backend && /home/ubuntu/.local/bin/pipenv clean && /home/ubuntu/.local/bin/pipenv install"'
+
+                // Start the service
+                sh 'ssh ubuntu@3.126.86.224 sudo systemctl start py-backend'
+            }
+        }
+    }
+}

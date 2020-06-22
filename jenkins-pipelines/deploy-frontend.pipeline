@@ -1,0 +1,35 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/smmnloes/pyMDB.git'
+            }
+        }
+
+        stage('Build Frontend') {
+            steps {
+                dir('angular-frontend'){
+                    sh 'npm ci'
+                    sh 'ng build --source-map=false --prod'
+                }
+            }
+        }
+        stage('Deploy Frontend') {
+            steps {
+                // Copy artifacts to server
+                sh 'scp -r ./angular-frontend/dist ubuntu@3.126.86.224:~'
+
+                // Remove old directory
+                sh 'ssh ubuntu@3.126.86.224 rm -rf /var/www/pymdb-frontend'
+
+                // Move new artifacts to apache dir
+                sh 'ssh ubuntu@3.126.86.224 mv dist /var/www/pymdb-frontend'
+
+                // Copy .htaccess
+                sh 'scp apache/.htaccess ubuntu@3.126.86.224:/var/www/pymdb-frontend'
+            }
+        }
+    }
+}
