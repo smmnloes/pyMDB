@@ -1,4 +1,5 @@
 import logging
+import os
 from urllib.parse import urljoin
 
 from flask import Flask
@@ -6,6 +7,7 @@ from flask_caching import Cache
 from flask_cors import CORS
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
+from flask_user import UserManager
 
 from api.api_errors import rest_api_errors
 from constants.constants import APP_PORT, BIND_USERS, BIND_MOVIES
@@ -30,7 +32,9 @@ def create_app():
         SQLALCHEMY_BINDS={
             BIND_USERS: 'sqlite:///' + config_service.get_user_db_path(),
             BIND_MOVIES: 'sqlite:///' + config_service.get_movie_db_path()
-        }
+        },
+        USER_EMAIL_SENDER_EMAIL='max@pymdb.mloesch.it',
+        SECRET_KEY=config_service.get_app_key()
     )
     db.init_app(pymdb_app)
 
@@ -51,4 +55,14 @@ def create_app():
     api.add_resource(TmdbDetailedData, urljoin(API_ROOT, 'details'))
     api.add_resource(HasDetails, urljoin(API_ROOT, 'has_details'))
 
+    from model.user_model import User
+    UserManager(pymdb_app, db, User)
+    create_user_db()
+
     return pymdb_app
+
+
+def create_user_db():
+    if not os.path.exists(config_service.get_user_db_path()):
+        with pymdb_app.app_context():
+            db.create_all(bind=BIND_USERS)

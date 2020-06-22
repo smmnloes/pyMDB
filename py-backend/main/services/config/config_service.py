@@ -5,7 +5,7 @@ import pathlib
 from constants.constants import CONFIG_FILE_NAME, CONFIG_SECTION_PATHS, CONFIG_FIELD_DB_DATA, CONFIG_FIELD_TMP_DIR, \
     CONFIG_SECTION_FILE_NAMES, CONFIG_FIELD_MOVIE_DB, DB_LAST_VERSION_SUFFIX, CONFIG_SECTION_URLS, \
     CONFIG_FIELD_IMDB_URL, \
-    CONFIG_SECTION_SECRETS, CONFIG_FIELD_TMDB_API_KEY, CONFIG_FIELD_USER_DB
+    CONFIG_SECTION_SECRETS, CONFIG_FIELD_TMDB_API_KEY, CONFIG_FIELD_USER_DB, CONFIG_FIELD_APP_KEY
 
 config_parser = None
 
@@ -58,3 +58,8 @@ def get_imdb_url():
 @init_config_decorator
 def get_tmdb_api_key():
     return config_parser[CONFIG_SECTION_SECRETS][CONFIG_FIELD_TMDB_API_KEY]
+
+
+@init_config_decorator
+def get_app_key():
+    return config_parser[CONFIG_SECTION_SECRETS][CONFIG_FIELD_APP_KEY]
