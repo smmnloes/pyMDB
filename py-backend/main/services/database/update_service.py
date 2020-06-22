@@ -3,7 +3,7 @@ import sqlite3
 
 from app import app_main
 from constants.constants import DATASET_BASICS, DATASET_AKAS, DATASET_PRINCIPALS, DATASET_NAMES, DATASET_CREW, \
-    DATASET_RATINGS, TABLE_FTS, FTS_TID_COLUMN, FTS_TITLE_COLUMN
+    DATASET_RATINGS, TABLE_FTS, FTS_TID_COLUMN, FTS_TITLE_COLUMN, BIND_MOVIES
 from services.config import config_service
 from util.util import tid_nid_to_int, ordered_list_contains_number, clean_nulls, normalize
 from . import backup_service, download_service
@@ -18,7 +18,7 @@ def update_db():
     backup_service.backup_local_db()
 
     with app_main.pymdb_app.app_context():
-        app_main.db.create_all()
+        app_main.db.create_all(bind=BIND_MOVIES)
 
     try:
         for dataset in DATASETS:

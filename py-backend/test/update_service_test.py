@@ -4,9 +4,9 @@ from unittest.mock import patch, MagicMock
 
 from sqlalchemy import text
 
-from constants.constants import TABLE_FTS, FTS_TITLE_COLUMN
+from constants.constants import TABLE_FTS, FTS_TITLE_COLUMN, BIND_MOVIES
 from model.database_model import *
-from resources.resources_paths import TEST_DATASETS_PATH, TEST_TEMP_DB_PATH
+from resources.resources_paths import TEST_DATASETS_PATH, TEST_TEMP_DB_PATH, TEST_USER_DB_PATH
 from services.database import update_service
 from test_utils import create_test_app
 from util.util import normalize
@@ -24,7 +24,7 @@ class TestUpdateService(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.test_app = create_test_app(TEST_TEMP_DB_PATH)
+        cls.test_app = create_test_app(TEST_USER_DB_PATH, TEST_TEMP_DB_PATH)
         db.init_app(cls.test_app)
         pass
 
@@ -33,7 +33,7 @@ class TestUpdateService(unittest.TestCase):
         if os.path.exists(TEST_TEMP_DB_PATH):
             os.remove(TEST_TEMP_DB_PATH)
         with cls.test_app.app_context():
-            db.create_all()
+            db.create_all(bind=BIND_MOVIES)
 
     @patch('services.database.update_service.is_valid_tid', MagicMock(return_value=True))
     def test_read_basics(self):
@@ -91,14 +91,14 @@ class TestUpdateService(unittest.TestCase):
     def test_read_akas(self):
         update_service.read_akas()
         with self.test_app.app_context():
-            self.assertEqual(len(get_fts_results("Karmensita")), 1)
-            self.assertEqual(len(get_fts_results("Карменсіта")), 1)
-            self.assertEqual(len(get_fts_results("Le clown et ses chiens")), 1)
-            self.assertEqual(len(get_fts_results("Le clown")), 1)
-            self.assertEqual(len(get_fts_results("clown chiens")), 1)
-            self.assertEqual(len(get_fts_results("哀れなピエロ")), 1)
-            self.assertEqual(len(get_fts_results("szegény pierrot")), 1)
-            self.assertEqual(len(get_fts_results("pierrot")), 1)
+            self.assertEqual(len(self.get_fts_results("Karmensita")), 1)
+            self.assertEqual(len(self.get_fts_results("Карменсіта")), 1)
+            self.assertEqual(len(self.get_fts_results("Le clown et ses chiens")), 1)
+            self.assertEqual(len(self.get_fts_results("Le clown")), 1)
+            self.assertEqual(len(self.get_fts_results("clown chiens")), 1)
+            self.assertEqual(len(self.get_fts_results("哀れなピエロ")), 1)
+            self.assertEqual(len(self.get_fts_results("szegény pierrot")), 1)
+            self.assertEqual(len(self.get_fts_results("pierrot")), 1)
 
     @patch('services.database.update_service.is_valid_tid', new=is_valid_tid_mock)
     def test_valid_tids(self):
@@ -109,11 +109,9 @@ class TestUpdateService(unittest.TestCase):
             self.assertEqual(db.session.query(Names).filter(Names.name == "Brigitte Bardot").count(), 1)
             self.assertEqual(db.session.query(Names).filter(Names.name == "Fred Astaire").count(), 1)
 
-
-def get_fts_results(keyword):
-    match_phrase = "{}:{}".format(FTS_TITLE_COLUMN, normalize(keyword))
-    query_text = text(
-        'SELECT DISTINCT tid FROM {} WHERE {} MATCH :match_phrase'.format(TABLE_FTS, TABLE_FTS))
-    query_text = query_text.bindparams(match_phrase=match_phrase)
-    return db.session.execute(query_text).fetchall()
-
+    def get_fts_results(self, keyword):
+        match_phrase = "{}:{}".format(FTS_TITLE_COLUMN, normalize(keyword))
+        query_text = text(
+            'SELECT DISTINCT tid FROM {} WHERE {} MATCH :match_phrase'.format(TABLE_FTS, TABLE_FTS))
+        query_text = query_text.bindparams(match_phrase=match_phrase)
+        return db.get_engine(self.test_app, BIND_MOVIES).execute(query_text).fetchall()

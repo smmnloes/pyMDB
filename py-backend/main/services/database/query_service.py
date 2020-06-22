@@ -4,7 +4,7 @@ from sqlalchemy import asc, desc, text
 from sqlalchemy.orm import aliased
 
 from app import app_main
-from constants.constants import LIMIT_FTS_SEARCH_RESULTS, MIN_NUM_VOTES, TABLE_FTS, FTS_TITLE_COLUMN
+from constants.constants import LIMIT_FTS_SEARCH_RESULTS, MIN_NUM_VOTES, TABLE_FTS, FTS_TITLE_COLUMN, BIND_MOVIES
 from model.database_model import *
 from util.util import normalize
 
@@ -146,9 +146,10 @@ def get_tids_fts(order_results, title_normalized):
     match_phrase = "{}:{}".format(FTS_TITLE_COLUMN, title_normalized)
     order_by_clause = "ORDER BY RANK" if order_results else ""
     query_text = text(
-        'SELECT DISTINCT tid FROM {} WHERE {} MATCH :match_phrase {} LIMIT :limit'.format(TABLE_FTS, TABLE_FTS, order_by_clause))
+        'SELECT DISTINCT tid FROM {} WHERE {} MATCH :match_phrase {} LIMIT :limit'.format(TABLE_FTS, TABLE_FTS,
+                                                                                          order_by_clause))
     query_text = query_text.bindparams(match_phrase=match_phrase, limit=LIMIT_FTS_SEARCH_RESULTS)
-    results = db.session.execute(query_text).fetchall()
+    results = db.get_engine(app_main.pymdb_app, BIND_MOVIES).execute(query_text).fetchall()
     tid_list = [result['tid'] for result in results]
     return tid_list
 

@@ -8,7 +8,7 @@ from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 
 from api.api_errors import rest_api_errors
-from constants.constants import APP_PORT
+from constants.constants import APP_PORT, BIND_USERS, BIND_MOVIES
 from services.config import config_service
 
 db = SQLAlchemy()
@@ -25,18 +25,25 @@ def start_app():
 def create_app():
     global pymdb_app
     pymdb_app = Flask(__name__)
+    pymdb_app.config.update(
+        SQLALCHEMY_TRACK_MODIFICATIONS=False,
+        SQLALCHEMY_BINDS={
+            BIND_USERS: 'sqlite:///' + config_service.get_user_db_path(),
+            BIND_MOVIES: 'sqlite:///' + config_service.get_movie_db_path()
+        }
+    )
+    db.init_app(pymdb_app)
+
     global logger
     logger = pymdb_app.logger
-    pymdb_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    pymdb_app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + config_service.get_movie_db_path()
-    CORS(pymdb_app, resources={"/query": {'methods': ['POST']}})
-    db.init_app(pymdb_app)
-    api = Api(pymdb_app, errors=rest_api_errors)
-    pymdb_app.logger.setLevel(logging.INFO)
+    logger.setLevel(logging.INFO)
+
     global cache
     cache = Cache(pymdb_app, config={'CACHE_TYPE': 'simple',
                                      'CACHE_DEFAULT_TIMEOUT': 0})
 
+    api = Api(pymdb_app, errors=rest_api_errors)
+    CORS(pymdb_app, resources={"/query": {'methods': ['POST']}})
     from api.rest_controllers import MovieQuery, ResultCount, MovieByTid, TmdbDetailedData, HasDetails
     api.add_resource(MovieQuery, urljoin(API_ROOT, 'query'))
     api.add_resource(ResultCount, urljoin(API_ROOT, 'result_count'))

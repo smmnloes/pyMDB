@@ -6,6 +6,7 @@ from constants.constants import TABLE_BASICS, TABLE_RATINGS, TABLE_PRINCIPALS, I
 
 
 class Basics(db.Model):
+    __bind_key__ = 'movies'
     __tablename__ = TABLE_BASICS
     tid = db.Column(db.Integer, primary_key=True)
     primaryTitle = db.Column(db.Text)
@@ -15,6 +16,7 @@ class Basics(db.Model):
 
 
 class Ratings(db.Model):
+    __bind_key__ = 'movies'
     __tablename__ = TABLE_RATINGS
     tid = db.Column(db.Integer, db.ForeignKey('basics.tid'), primary_key=True)
     averageRating = db.Column(db.REAL)
@@ -22,6 +24,7 @@ class Ratings(db.Model):
 
 
 class Principals(db.Model):
+    __bind_key__ = 'movies'
     __tablename__ = TABLE_PRINCIPALS
     tid = db.Column(db.Integer, db.ForeignKey('basics.tid'), primary_key=True)
     nid = db.Column(db.Integer, db.ForeignKey('names.nid'), primary_key=True)
@@ -31,6 +34,7 @@ Index(INDEX_PREFIX + TABLE_PRINCIPALS, Principals.nid, Principals.tid)
 
 
 class Writers(db.Model):
+    __bind_key__ = 'movies'
     __tablename__ = TABLE_WRITERS
     tid = db.Column(db.Integer, db.ForeignKey('basics.tid'), primary_key=True)
     nid = db.Column(db.Integer, db.ForeignKey('names.nid'), primary_key=True)
@@ -40,6 +44,7 @@ Index(INDEX_PREFIX + TABLE_WRITERS, Writers.nid)
 
 
 class Directors(db.Model):
+    __bind_key__ = 'movies'
     __tablename__ = TABLE_DIRECTORS
     tid = db.Column(db.Integer, db.ForeignKey('basics.tid'), primary_key=True)
     nid = db.Column(db.Integer, db.ForeignKey('names.nid'), primary_key=True)
@@ -49,6 +54,7 @@ Index(INDEX_PREFIX + TABLE_DIRECTORS, Directors.nid)
 
 
 class Names(db.Model):
+    __bind_key__ = 'movies'
     __tablename__ = TABLE_NAMES
     nid = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Text)

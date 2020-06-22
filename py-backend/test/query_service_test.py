@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import patch, MagicMock
 
 from model.database_model import *
-from resources.resources_paths import TEST_QUERY_DB_PATH
+from resources.resources_paths import TEST_QUERY_DB_PATH, TEST_USER_DB_PATH
 from services.database import query_service
 from test_queries import *
 from test_utils import create_test_app
@@ -15,7 +15,7 @@ class TestQueryService(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.test_app = create_test_app(TEST_QUERY_DB_PATH)
+        cls.test_app = create_test_app(TEST_USER_DB_PATH, TEST_QUERY_DB_PATH)
         db.init_app(cls.test_app)
         pass
 

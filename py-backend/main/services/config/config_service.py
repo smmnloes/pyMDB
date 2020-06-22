@@ -5,7 +5,7 @@ import pathlib
 from constants.constants import CONFIG_FILE_NAME, CONFIG_SECTION_PATHS, CONFIG_FIELD_DB_DATA, CONFIG_FIELD_TMP_DIR, \
     CONFIG_SECTION_FILE_NAMES, CONFIG_FIELD_MOVIE_DB, DB_LAST_VERSION_SUFFIX, CONFIG_SECTION_URLS, \
     CONFIG_FIELD_IMDB_URL, \
-    CONFIG_SECTION_SECRETS, CONFIG_FIELD_TMDB_API_KEY
+    CONFIG_SECTION_SECRETS, CONFIG_FIELD_TMDB_API_KEY, CONFIG_FIELD_USER_DB
 
 config_parser = None
 
@@ -33,8 +33,16 @@ def get_temp_path():
 
 @init_config_decorator
 def get_movie_db_path():
-    return os.path.join(config_parser[CONFIG_SECTION_PATHS][CONFIG_FIELD_DB_DATA], config_parser[CONFIG_SECTION_FILE_NAMES][
-        CONFIG_FIELD_MOVIE_DB])
+    return os.path.join(config_parser[CONFIG_SECTION_PATHS][CONFIG_FIELD_DB_DATA],
+                        config_parser[CONFIG_SECTION_FILE_NAMES][
+                            CONFIG_FIELD_MOVIE_DB])
+
+
+@init_config_decorator
+def get_user_db_path():
+    return os.path.join(config_parser[CONFIG_SECTION_PATHS][CONFIG_FIELD_DB_DATA],
+                        config_parser[CONFIG_SECTION_FILE_NAMES][
+                            CONFIG_FIELD_USER_DB])
 
 
 @init_config_decorator
