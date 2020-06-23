@@ -1,5 +1,4 @@
 import logging
-import os
 from urllib.parse import urljoin
 
 from flask import Flask
@@ -9,7 +8,7 @@ from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 
 from api.api_errors import rest_api_errors
-from constants.constants import APP_PORT, BIND_USERS, BIND_MOVIES
+from constants.constants import BIND_USERS, BIND_MOVIES
 from services.config import config_service
 
 db = SQLAlchemy()
@@ -19,10 +18,6 @@ logger = None
 pymdb_app = None
 
 
-def start_app():
-    create_app().run(port=APP_PORT)
-
-
 def create_app():
     new_app = Flask(__name__)
     init_app_config(new_app)
@@ -30,16 +25,10 @@ def create_app():
     init_app_logger(new_app)
     init_app_cache(new_app)
     init_app_api(new_app)
-    init_app_user_db(new_app)
     global pymdb_app
     pymdb_app = new_app
-    return new_app
 
 
-def init_app_user_db(app):
-    if not os.path.exists(config_service.get_user_db_path()):
-        with app.app_context():
-            db.create_all(bind=BIND_USERS)
 
 
 def init_app_api(app):

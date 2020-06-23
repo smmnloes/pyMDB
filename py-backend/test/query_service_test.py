@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch, MagicMock
 
-from model.database_model import *
+from model.movies_model import *
 from resources.resources_paths import TEST_QUERY_DB_PATH, TEST_USER_DB_PATH
 from services.database import query_service
 from test_queries import *

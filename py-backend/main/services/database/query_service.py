@@ -4,8 +4,8 @@ from sqlalchemy import asc, desc, text
 from sqlalchemy.orm import aliased
 
 from app import app_main
-from constants.constants import LIMIT_FTS_SEARCH_RESULTS, MIN_NUM_VOTES, TABLE_FTS, FTS_TITLE_COLUMN, BIND_MOVIES
-from model.database_model import *
+from constants.constants import LIMIT_FTS_SEARCH_RESULTS, MIN_NUM_VOTES, TABLE_FTS, FTS_TITLE_COLUMN
+from model.movies_model import *
 from util.util import normalize
 
 

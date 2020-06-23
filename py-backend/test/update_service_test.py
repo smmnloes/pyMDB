@@ -4,8 +4,8 @@ from unittest.mock import patch, MagicMock
 
 from sqlalchemy import text
 
-from constants.constants import TABLE_FTS, FTS_TITLE_COLUMN, BIND_MOVIES
-from model.database_model import *
+from constants.constants import TABLE_FTS, FTS_TITLE_COLUMN
+from model.movies_model import *
 from resources.resources_paths import TEST_DATASETS_PATH, TEST_TEMP_DB_PATH, TEST_USER_DB_PATH
 from services.database import update_service
 from test_utils import create_test_app
