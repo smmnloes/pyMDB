@@ -7,7 +7,6 @@ from flask_caching import Cache
 from flask_cors import CORS
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
-from flask_user import UserManager
 
 from api.api_errors import rest_api_errors
 from constants.constants import APP_PORT, BIND_USERS, BIND_MOVIES
@@ -31,15 +30,13 @@ def create_app():
     init_app_logger(new_app)
     init_app_cache(new_app)
     init_app_api(new_app)
-    init_app_user_mgmt(new_app)
+    init_app_user_db(new_app)
     global pymdb_app
     pymdb_app = new_app
     return new_app
 
 
-def init_app_user_mgmt(app):
-    from model.user_model import User
-    UserManager(app, db, User)
+def init_app_user_db(app):
     if not os.path.exists(config_service.get_user_db_path()):
         with app.app_context():
             db.create_all(bind=BIND_USERS)
