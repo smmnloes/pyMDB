@@ -27,7 +27,7 @@ def create_app():
     init_app_api(new_app)
     global pymdb_app
     pymdb_app = new_app
-
+    return new_app
 
 
 
