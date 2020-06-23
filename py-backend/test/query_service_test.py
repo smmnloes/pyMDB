@@ -17,7 +17,6 @@ class TestQueryService(unittest.TestCase):
     def setUpClass(cls):
         cls.test_app = create_test_app(TEST_USER_DB_PATH, TEST_QUERY_DB_PATH)
         db.init_app(cls.test_app)
-        pass
 
     def test_empty_query(self):
         with self.test_app.app_context():
