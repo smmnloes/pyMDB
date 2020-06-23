@@ -30,7 +30,6 @@ def create_app():
     return new_app
 
 
-
 def init_app_api(app):
     api = Api(app, errors=rest_api_errors)
     CORS(app, resources={"/query": {'methods': ['POST']}})
@@ -61,6 +60,4 @@ def init_app_config(app):
             BIND_USERS: 'sqlite:///' + config_service.get_user_db_path(),
             BIND_MOVIES: 'sqlite:///' + config_service.get_movie_db_path()
         },
-        USER_EMAIL_SENDER_EMAIL='max@pymdb.mloesch.it',
-        SECRET_KEY=config_service.get_app_key()
     )
