@@ -38,6 +38,9 @@ pipeline {
                 // execute pipenv clean & install
                 sh 'ssh ubuntu@3.126.86.224 "cd /var/lib/pymdb/py-backend && /home/ubuntu/.local/bin/pipenv clean && /home/ubuntu/.local/bin/pipenv install"'
 
+                // initialize the user database if it doesn't exist yet
+                sh 'ssh ubuntu@3.126.86.224 "cd /var/lib/pymdb/py-backend && /home/ubuntu/.local/bin/pipenv run python3 ./main/manage.py init_user_db"'
+
                 // Start the service
                 sh 'ssh ubuntu@3.126.86.224 sudo systemctl start py-backend'
             }
