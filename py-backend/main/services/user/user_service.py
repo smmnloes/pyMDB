@@ -29,7 +29,7 @@ def get_email_normalized(email):
     try:
         valid = validate_email(email)
         return valid.email
-    except EmailNotValidError as e:
+    except EmailNotValidError:
         return None
 
 

@@ -1,9 +1,7 @@
 import json
 import os
-from datetime import timedelta
 from unittest.mock import patch, MagicMock
 
-import jwt
 from flask_testing import TestCase
 
 from api.user.errors import UserEmailExistsException, UserNameExistsException, EmailNotValidException, \
@@ -11,16 +9,14 @@ from api.user.errors import UserEmailExistsException, UserNameExistsException, E
 from constants.urls import API_USER_REGISTER, API_USER_LOGIN, API_USER_LOGOUT
 from model.user_model import *
 from resources.resources_paths import TEST_QUERY_DB_PATH, TEST_USER_DB_PATH
-from services.config import config_service
 from services.user import user_service
-from test_utils import create_test_app
+from test_utils import create_test_app, expired_auth_token
 
 
 @patch('app.app_main.logger', MagicMock())
 @patch('services.config.config_service.get_user_db_path', MagicMock(return_value=TEST_USER_DB_PATH))
 @patch('services.config.config_service.get_app_key', MagicMock(return_value='mock_key'))
 class TestUserService(TestCase):
-
     def create_app(self):
         return create_test_app(TEST_USER_DB_PATH, TEST_QUERY_DB_PATH)
 
@@ -49,18 +45,6 @@ class TestUserService(TestCase):
                 password=password
             )),
             content_type='application/json',
-        )
-
-    def get_expired_auth_token(self):
-        payload = {
-            'exp': datetime.utcnow() - timedelta(days=1),
-            'iat': datetime.utcnow() - timedelta(days=2),
-            'sub': 'userid'
-        }
-        return jwt.encode(
-            payload,
-            config_service.get_app_key(),
-            algorithm='HS256'
         )
 
     def test_register_user(self):
@@ -150,7 +134,6 @@ class TestUserService(TestCase):
         response = self.login_user("test@test.com", "wrong_password")
         self.assert400(response)
 
-
     def test_logout_user(self):
         email = "test@test.com"
         password = "password"
@@ -178,7 +161,7 @@ class TestUserService(TestCase):
             API_USER_LOGOUT,
             headers=dict(
                 Authorization='Bearer ' +
-                              self.get_expired_auth_token().decode()
+                              expired_auth_token.decode()
             )
         )
         self.assert400(logout_response, TokenExpiredException.message)
