@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from flask_bcrypt import generate_password_hash
 
 from app.app_main import db
@@ -22,3 +24,16 @@ class User(db.Model):
             password
         ).decode('utf-8')
         self.admin = admin
+
+
+class BlacklistToken(db.Model):
+    __bind_key__ = BIND_USERS
+    __tablename__ = 'blacklist_tokens'
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    token = db.Column(db.String(500), unique=True, nullable=False)
+    blacklisted_on = db.Column(db.DateTime, nullable=False)
+
+    def __init__(self, token):
+        self.token = token
+        self.blacklisted_on = datetime.now()

@@ -11,7 +11,7 @@ class Login(Resource):
 
 class Logout(Resource):
     def post(self):
-        pass
+        return user_service.logout_user(request)
 
 
 class Register(Resource):

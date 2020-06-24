@@ -5,10 +5,10 @@ from email_validator import validate_email, EmailNotValidError
 from flask import make_response, jsonify
 
 from api.user.errors import UserEmailExistsException, UserNameExistsException, EmailNotValidException, \
-    LoginFailedException
+    LoginFailedException, NoTokenProvidedException, TokenExpiredException, TokenBlacklistedException
 from app import app_main
 from constants import constants
-from model.user_model import User
+from model.user_model import User, BlacklistToken
 from services.config import config_service
 
 
@@ -50,7 +50,7 @@ def register_user(email, password, username, admin=False):
 
 def login_user(email, password):
     user = User.query.filter_by(
-        email=email
+        email=get_email_normalized(email)
     ).first()
 
     if (not user) or (not app_main.bcrypt.check_password_hash(user.password, password)):
@@ -63,6 +63,32 @@ def login_user(email, password):
         'auth_token': auth_token.decode()
     }
     return make_response(jsonify(response_object), 200)
+
+
+def check_if_token_expired(auth_token):
+    pass
+
+
+def is_blacklisted(auth_token):
+    return BlacklistToken.query.filter(BlacklistToken.token == auth_token).first() is not None
+
+
+def logout_user(request):
+    auth_token = get_token_from_request(request)
+    decode_auth_token(auth_token)
+    if is_blacklisted(auth_token):
+        raise TokenBlacklistedException
+
+
+def get_token_from_request(request):
+    auth_header = request.headers.get('Authorization')
+    if auth_header:
+        auth_token = auth_header.split(" ")[1]
+    else:
+        auth_token = None
+    if not auth_token:
+        raise NoTokenProvidedException
+    return auth_token
 
 
 def encode_auth_token(user_id):
@@ -80,10 +106,16 @@ def encode_auth_token(user_id):
 
 def decode_auth_token(auth_token):
     """
-    :param auth_token:
-    :return:
+    :param auth_token: encoded token
+    :return: the subject identity that is contained in the token
     :raises:    jwt.ExpiredSignatureError if token expired
                 jwt.InvalidTokenError if token invalid
     """
-    payload = jwt.decode(auth_token, config_service.get_app_key())
-    return payload['sub']
+
+    try:
+        payload = jwt.decode(auth_token, config_service.get_app_key())
+        return payload['sub']
+    except jwt.ExpiredSignatureError:
+        raise TokenExpiredException
+    except jwt.InvalidTokenError:
+        raise NoTokenProvidedException
