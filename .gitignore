@@ -6,3 +6,4 @@ workspace.xml
 performance_logs/
 .venv/
 temp.db
+users.db

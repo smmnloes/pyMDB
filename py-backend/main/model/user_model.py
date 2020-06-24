@@ -15,8 +15,9 @@ class User(db.Model):
     password = db.Column(db.String(255), nullable=False)
     admin = db.Column(db.Boolean, nullable=False, default=False)
 
-    def __init__(self, email, password, admin=False):
+    def __init__(self, email, password, username, admin=False):
         self.email = email
+        self.username = username
         self.password = generate_password_hash(
             password
         ).decode('utf-8')

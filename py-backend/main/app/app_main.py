@@ -1,21 +1,23 @@
 import logging
-from urllib.parse import urljoin
 
 from flask import Flask
+from flask_bcrypt import Bcrypt
 from flask_caching import Cache
 from flask_cors import CORS
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 
-from api.api_errors import rest_api_errors
+from api.movies.errors import movie_api_errors
+from api.user.errors import user_api_errors
 from constants.constants import BIND_USERS, BIND_MOVIES
+from constants.urls import *
 from services.config import config_service
 
 db = SQLAlchemy()
-API_ROOT = '/api/'
 cache = None
 logger = None
 pymdb_app = None
+bcrypt = None
 
 
 def create_app():
@@ -25,20 +27,34 @@ def create_app():
     init_app_logger(new_app)
     init_app_cache(new_app)
     init_app_api(new_app)
+    init_bcrypt(new_app)
     global pymdb_app
     pymdb_app = new_app
     return new_app
 
 
+def init_bcrypt(new_app):
+    global bcrypt
+    bcrypt = Bcrypt(new_app)
+
+
 def init_app_api(app):
-    api = Api(app, errors=rest_api_errors)
+    all_api_errors = movie_api_errors
+    all_api_errors.update(user_api_errors)
+    api = Api(app, errors=all_api_errors)
     CORS(app, resources={"/query": {'methods': ['POST']}})
-    from api.rest_controllers import MovieQuery, ResultCount, MovieByTid, TmdbDetailedData, HasDetails
-    api.add_resource(MovieQuery, urljoin(API_ROOT, 'query'))
-    api.add_resource(ResultCount, urljoin(API_ROOT, 'result_count'))
-    api.add_resource(MovieByTid, urljoin(API_ROOT, 'movie_by_tid'))
-    api.add_resource(TmdbDetailedData, urljoin(API_ROOT, 'details'))
-    api.add_resource(HasDetails, urljoin(API_ROOT, 'has_details'))
+    from api.movies.controllers import MovieQuery, ResultCount, MovieByTid, TmdbDetailedData, HasDetails
+    api.add_resource(MovieQuery, API_MOVIES_QUERY)
+    api.add_resource(ResultCount, API_MOVIES_RESULT_COUNT)
+    api.add_resource(MovieByTid, API_MOVIES_BY_TID)
+    api.add_resource(TmdbDetailedData, API_MOVIES_DETAILS)
+    api.add_resource(HasDetails, API_MOVIES_HAS_DETAILS)
+
+    from api.user.controllers import Login, Logout, Register, UserInfo
+    api.add_resource(Register, API_USER_REGISTER)
+    api.add_resource(Login, API_USER_LOGIN)
+    api.add_resource(Logout, API_USER_LOGOUT)
+    api.add_resource(UserInfo, API_USER_INFO)
 
 
 def init_app_cache(app):

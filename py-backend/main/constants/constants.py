@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 APP_PORT = 5002
 
 DATASET_BASICS = 'basics'
@@ -39,3 +41,5 @@ DB_LAST_VERSION_SUFFIX = '_last_version'
 
 BIND_USERS = 'users'
 BIND_MOVIES = 'movies'
+
+JWT_VALIDITY_PERIOD = timedelta(days=7)

@@ -27,21 +27,21 @@ export class QueryService {
 
   makeQuery(queryData: QueryModel): void {
 
-    this.http.post('api/query', queryData, httpOptions).subscribe(
+    this.http.post('api/movies/query', queryData, httpOptions).subscribe(
       newPage => {
         let processedNewPage: BasicDataModel[] = QueryService.processPage(newPage);
         this.basicDataPageSource.next(processedNewPage);
       }
     );
 
-    this.http.post('api/result_count', queryData, httpOptions).subscribe(newResultCount => {
+    this.http.post('api/movies/result_count', queryData, httpOptions).subscribe(newResultCount => {
       this.resultCountSource.next(<number>newResultCount);
     })
 
   }
 
   getMovieById(tid: number): Observable<BasicDataModel> {
-    return this.http.post('api/movie_by_tid', {tid: tid}, httpOptions).pipe(map(page => QueryService.processPage(page)[0]));
+    return this.http.post('api/movies/movie_by_tid', {tid: tid}, httpOptions).pipe(map(page => QueryService.processPage(page)[0]));
   }
 
 

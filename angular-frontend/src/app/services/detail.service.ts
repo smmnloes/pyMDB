@@ -13,7 +13,7 @@ export class DetailService {
 
 
   hasDetails(IMDB_Id: number): Observable<boolean> {
-    return this.http.get('api/has_details', {params: new HttpParams().set("imdbid", IMDB_Id.toString())}).map(result => <boolean>result);
+    return this.http.get('api/movies/has_details', {params: new HttpParams().set("imdbid", IMDB_Id.toString())}).map(result => <boolean>result);
   }
 
 
@@ -24,7 +24,7 @@ export class DetailService {
       params: new HttpParams().set("imdbid", IMDB_Id.toString())
     };
 
-    return this.http.get('api/details', options).pipe(
+    return this.http.get('api/movies/details', options).pipe(
       map(
         result => {
           return DetailedDataModel.fromJSON(result);

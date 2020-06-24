@@ -4,7 +4,7 @@ import json
 from flask import request
 from flask_restful import Resource
 
-from api.api_errors import DetailedDataNotFound, NoTmdbApiKeySpecified
+from api.movies.errors import DetailedDataNotFound, NoTmdbApiKeySpecified
 from app import app_main
 from services.config import config_service
 from services.database import query_service
