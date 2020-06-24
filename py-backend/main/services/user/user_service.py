@@ -76,8 +76,13 @@ def is_blacklisted(auth_token):
 def logout_user(request):
     auth_token = get_token_from_request(request)
     decode_auth_token(auth_token)
-    if is_blacklisted(auth_token):
-        raise TokenBlacklistedException
+    app_main.db.session.add(BlacklistToken(auth_token))
+    app_main.db.session.commit()
+    response_object = {
+        'status': 'success',
+        'message': 'Successfully logged out.'
+    }
+    return make_response(jsonify(response_object), 200)
 
 
 def get_token_from_request(request):
@@ -111,7 +116,8 @@ def decode_auth_token(auth_token):
     :raises:    jwt.ExpiredSignatureError if token expired
                 jwt.InvalidTokenError if token invalid
     """
-
+    if is_blacklisted(auth_token):
+        raise TokenBlacklistedException
     try:
         payload = jwt.decode(auth_token, config_service.get_app_key())
         return payload['sub']

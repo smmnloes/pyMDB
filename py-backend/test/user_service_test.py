@@ -148,7 +148,7 @@ class TestUserService(TestCase):
                 )['auth_token']
             )
         )
-        self.assert200(logout_response)
+        self.assert200(logout_response, 'Successfully logged out.')
 
     def test_logout_not_logged_in(self):
         logout_response = self.client.post(
