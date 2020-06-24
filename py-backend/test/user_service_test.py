@@ -229,7 +229,7 @@ class TestUserService(TestCase):
                                    ))
         self.assert401(response, UnauthorizedException.message)
 
-    def test_token_blacklisted(self):
+    def test_protected_route_token_blacklisted(self):
         app_main.api.add_resource(ProtectedTestRoute, ProtectedTestRoute.url)
         token = self.get_valid_auth_token()
         with self.app.app_context():
