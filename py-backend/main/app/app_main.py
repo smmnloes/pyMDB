@@ -1,7 +1,6 @@
 import logging
 
 from flask import Flask
-from flask_bcrypt import Bcrypt
 from flask_caching import Cache
 from flask_cors import CORS
 from flask_restful import Api
@@ -17,7 +16,6 @@ db = SQLAlchemy()
 cache = None
 logger = None
 pymdb_app = None
-bcrypt = None
 api = None
 
 
@@ -28,15 +26,9 @@ def create_app():
     init_app_logger(new_app)
     init_app_cache(new_app)
     init_app_api(new_app)
-    init_bcrypt(new_app)
     global pymdb_app
     pymdb_app = new_app
     return new_app
-
-
-def init_bcrypt(new_app):
-    global bcrypt
-    bcrypt = Bcrypt(new_app)
 
 
 def init_app_api(app):

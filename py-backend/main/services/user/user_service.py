@@ -3,6 +3,7 @@ from datetime import datetime
 import jwt
 from email_validator import validate_email, EmailNotValidError
 from flask import make_response, jsonify
+from flask_bcrypt import Bcrypt
 
 from api.user.errors import UserEmailExistsException, UserNameExistsException, EmailNotValidException, \
     LoginFailedException, NoTokenProvidedException, TokenExpiredException, TokenBlacklistedException
@@ -60,7 +61,7 @@ def login_user(email, password):
         email=get_email_normalized(email)
     ).first()
 
-    if (not user) or (not app_main.bcrypt.check_password_hash(user.password, password)):
+    if (not user) or (not Bcrypt().check_password_hash(user.password, password)):
         raise LoginFailedException
 
     auth_token = encode_auth_token(user.id)
@@ -70,14 +71,6 @@ def login_user(email, password):
         'auth_token': auth_token.decode()
     }
     return make_response(jsonify(response_object), 200)
-
-
-def check_if_token_expired(auth_token):
-    pass
-
-
-def is_blacklisted(auth_token):
-    return BlacklistToken.query.filter(BlacklistToken.token == auth_token).first() is not None
 
 
 def logout_user(request):
@@ -95,6 +88,10 @@ def logout_user(request):
 def blacklist_token(token):
     app_main.db.session.add(BlacklistToken(token))
     app_main.db.session.commit()
+
+
+def is_blacklisted(auth_token):
+    return BlacklistToken.query.filter(BlacklistToken.token == auth_token).first() is not None
 
 
 def get_token_from_request(request):
