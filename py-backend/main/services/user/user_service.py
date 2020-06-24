@@ -24,7 +24,7 @@ def check_username_exists(username):
 
 def get_email_normalized(email):
     """
-    Check if email is valid. Return normalized form if it is valid, otherwise none
+    Check if email is valid. Return normalized form if it is valid, otherwise None
     """
     try:
         valid = validate_email(email)
@@ -46,6 +46,13 @@ def register_user(email, password, username, admin=False):
     )
     app_main.db.session.add(user)
     app_main.db.session.commit()
+    auth_token = encode_auth_token(user.id)
+    response_object = {
+        'status': 'success',
+        'message': 'Successfully registered.',
+        'auth_token': auth_token.decode()
+    }
+    return make_response(jsonify(response_object), 201)
 
 
 def login_user(email, password):

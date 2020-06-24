@@ -49,7 +49,10 @@ class TestUserService(TestCase):
 
     def test_register_user(self):
         response = self.register_user('test@user.com', 'password', 'testuser')
-        self.assert200(response)
+        self.assertEqual(response.status_code, 201)
+        data = json.loads(response.data.decode())
+        self.assertTrue(data['auth_token'])
+        self.assertTrue(data['message'] == 'Successfully registered.')
 
         with self.app.app_context():
             self.assertEqual(User.query.filter(User.username == 'testuser').count(), 1)
@@ -115,6 +118,7 @@ class TestUserService(TestCase):
         response = self.login_user(email, password)
         self.assert200(response)
         data = json.loads(response.data.decode())
+        self.assertTrue(data['message'] == 'Successfully logged in.')
         self.assertTrue(data['auth_token'])
 
     def test_login_unkown_user(self):
