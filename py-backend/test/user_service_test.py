@@ -1,16 +1,21 @@
 import json
 import os
+from datetime import timedelta
 from unittest.mock import patch, MagicMock
 
+import jwt
 from flask_testing import TestCase
 
 from api.user.errors import UserEmailExistsException, UserNameExistsException, EmailNotValidException, \
-    TokenExpiredException, NoTokenProvidedException, TokenBlacklistedException
+    TokenExpiredException, NoTokenProvidedException, TokenBlacklistedException, UnauthorizedException
+from app import app_main
 from constants.urls import API_USER_REGISTER, API_USER_LOGIN, API_USER_LOGOUT
 from model.user_model import *
 from resources.resources_paths import TEST_QUERY_DB_PATH, TEST_USER_DB_PATH
+from services.config import config_service
 from services.user import user_service
-from test_utils import create_test_app, expired_auth_token
+from services.user.user_service import blacklist_token
+from test_utils import create_test_app, ProtectedTestRoute
 
 
 @patch('app.app_main.logger', MagicMock())
@@ -25,6 +30,20 @@ class TestUserService(TestCase):
             os.remove(TEST_USER_DB_PATH)
         with self.app.app_context():
             db.create_all(bind=BIND_USERS)
+
+    def get_valid_auth_token(self):
+        return user_service.encode_auth_token('fake_id').decode()
+
+    def get_expired_auth_token(self):
+        return jwt.encode(
+            payload={
+                'exp': datetime.utcnow() - timedelta(days=1),
+                'iat': datetime.utcnow() - timedelta(days=2),
+                'sub': 'userid'
+            },
+            key=config_service.get_app_key(),
+            algorithm='HS256'
+        ).decode()
 
     def register_user(self, email, password, username):
         return self.client.post(
@@ -165,22 +184,21 @@ class TestUserService(TestCase):
             API_USER_LOGOUT,
             headers=dict(
                 Authorization='Bearer ' +
-                              expired_auth_token.decode()
+                              self.get_expired_auth_token()
             )
         )
         self.assert400(logout_response, TokenExpiredException.message)
 
     def test_logout_token_blacklisted(self):
-        token = user_service.encode_auth_token('fake_id').decode()
         with self.app.app_context():
-            db.session.add(BlacklistToken(token))
+            db.session.add(BlacklistToken(self.get_valid_auth_token()))
             db.session.commit()
 
         logout_response = self.client.post(
             API_USER_LOGOUT,
             headers=dict(
                 Authorization='Bearer ' +
-                              token
+                              self.get_valid_auth_token()
             )
         )
         self.assert400(logout_response, TokenBlacklistedException.message)
@@ -188,9 +206,38 @@ class TestUserService(TestCase):
     def test_get_user_info(self):
         pass
 
-    # TODO: test on protected routes
-    def test_token_expired(self):
-        pass
+    def test_protected_route_logged_in(self):
+        app_main.api.add_resource(ProtectedTestRoute, ProtectedTestRoute.url)
+        response = self.client.get(ProtectedTestRoute.url,
+                                   headers=dict(
+                                       Authorization='Bearer ' +
+                                                     self.get_valid_auth_token()
+                                   ))
+        self.assert200(response)
+
+    def test_protected_route_not_logged_in(self):
+        app_main.api.add_resource(ProtectedTestRoute, ProtectedTestRoute.url)
+        response = self.client.get(ProtectedTestRoute.url)
+        self.assert401(response, UnauthorizedException.message)
+
+    def test_protected_route_token_expired(self):
+        app_main.api.add_resource(ProtectedTestRoute, ProtectedTestRoute.url)
+        response = self.client.get(ProtectedTestRoute.url,
+                                   headers=dict(
+                                       Authorization='Bearer ' +
+                                                     self.get_expired_auth_token()
+                                   ))
+        self.assert401(response, UnauthorizedException.message)
 
     def test_token_blacklisted(self):
-        pass
+        app_main.api.add_resource(ProtectedTestRoute, ProtectedTestRoute.url)
+        token = self.get_valid_auth_token()
+        with self.app.app_context():
+            blacklist_token(token)
+
+        response = self.client.get(ProtectedTestRoute.url,
+                                   headers=dict(
+                                       Authorization='Bearer ' +
+                                                     token
+                                   ))
+        self.assert401(response, UnauthorizedException.message)

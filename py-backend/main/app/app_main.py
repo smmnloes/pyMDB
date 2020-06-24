@@ -18,6 +18,7 @@ cache = None
 logger = None
 pymdb_app = None
 bcrypt = None
+api = None
 
 
 def create_app():
@@ -41,6 +42,7 @@ def init_bcrypt(new_app):
 def init_app_api(app):
     all_api_errors = movie_api_errors
     all_api_errors.update(user_api_errors)
+    global api
     api = Api(app, errors=all_api_errors)
     CORS(app, resources={"/query": {'methods': ['POST']}})
     from api.movies.controllers import MovieQuery, ResultCount, MovieByTid, TmdbDetailedData, HasDetails
