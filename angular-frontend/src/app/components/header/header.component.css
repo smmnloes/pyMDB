@@ -8,25 +8,43 @@
 }
 
 nav a {
-  font-size:1.2em;
+  font-size: 1.2em;
   color: white;
 
 }
 
-.header h1 a{
-  font-size:2em;
-  color:white;
-  font-weight:bold;
+.header h1 a {
+  font-size: 2em;
+  color: white;
+  font-weight: bold;
 }
 
 .button-login {
   border-radius: 5px;
 }
 
+
+.top-bar {
+  background-color: #b5b9bf !important;
+}
+
+.top-bar .menu {
+  background-color: #b5b9bf !important;
+  margin-left: 5em;
+  margin-right: 5em;
+}
+
+
 /* Small only */
 @media screen and (max-width: 39.9375em) {
   .content {
     width: 100%
+  }
+
+  .top-bar .menu {
+    background-color: #b5b9bf !important;
+    margin-left: 0;
+    margin-right: 0;
   }
 }
 
