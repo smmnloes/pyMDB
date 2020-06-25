@@ -19,6 +19,10 @@ nav a {
   font-weight:bold;
 }
 
+.button-login {
+  border-radius: 5px;
+}
+
 /* Small only */
 @media screen and (max-width: 39.9375em) {
   .content {
