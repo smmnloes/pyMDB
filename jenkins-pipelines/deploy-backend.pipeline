@@ -35,6 +35,9 @@ pipeline {
                 // Copy new folder
                 sh 'scp -r ./py-backend ubuntu@3.126.86.224:/var/lib/pymdb'
 
+                // Set restrictive permissions on config-file to protect secrets
+                sh 'ssh ubuntu@3.126.86.224 "chmod 600 /var/lib/pymdb/py-backend/main/services/config/config.ini"'
+
                 // execute pipenv clean & install
                 sh 'ssh ubuntu@3.126.86.224 "cd /var/lib/pymdb/py-backend && /home/ubuntu/.local/bin/pipenv clean && /home/ubuntu/.local/bin/pipenv install"'
 
