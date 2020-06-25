@@ -11,7 +11,7 @@
 }
 
 /* Medium only */
-@media screen and (min-width: 40em) and (max-width: 60em) {
+@media screen and (min-width: 40em) and (max-width: 80em) {
   .search-page {
     width: 75%
   }
@@ -19,7 +19,7 @@
 
 
 /* Large and up */
-@media screen and (min-width: 60.0001em) {
+@media screen and (min-width: 80.0001em) {
   .search-page {
     width: 50%
   }
