@@ -1,21 +1,21 @@
 <div class="grid-y grid-margin-y">
   <div class="cell">
     <div class="login-form">
-      <form (ngSubmit)="onSubmit()">
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit(loginForm.value)">
         <div class="grid-container">
           <div class="grid-y">
             <div class="cell large 4">
               <label for="email">Email: </label>
-              <input type="text" id="email">
+              <input type="text" id="email" formControlName="email">
             </div>
             <div class="cell large 4">
               <label for="password">Password: </label>
-              <input type="password" id="password">
+              <input type="password" id="password" formControlName="password">
             </div>
             <div class="cell">
               <div class="grid-x">
                 <div class="cell small-12 medium-3">
-                  <button class="button login-button" name="submitbutton" type="submit">Login
+                  <button class="button login-button" type="submit">Login
                   </button>
                 </div>
                 <div class="login-button-text-container">

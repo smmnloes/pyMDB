@@ -42,7 +42,7 @@ class UnauthorizedException(HTTPException):
 user_api_errors = {
     UserEmailExistsException.__name__: {
         'message': UserEmailExistsException.message,
-        'status': UserNameExistsException.status
+        'status': UserEmailExistsException.status
     },
     UserNameExistsException.__name__: {
         'message': UserNameExistsException.message,

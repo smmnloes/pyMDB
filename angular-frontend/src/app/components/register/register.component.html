@@ -1,20 +1,20 @@
 <div class="grid-y grid-margin-y">
   <div class="cell">
     <div class="register-form">
-      <form (ngSubmit)="onSubmit()">
+      <form [formGroup]="registerData" (ngSubmit)="onSubmit(registerData.value)">
         <div class="grid-container">
           <div class="grid-y">
             <div class="cell large 4">
-              <label for="username">Email: </label>
-              <input type="text" id="username">
+              <label for="username">Username: </label>
+              <input type="text" id="username" formControlName="username">
             </div>
             <div class="cell large 4">
               <label for="email">Email: </label>
-              <input type="text" id="email">
+              <input type="text" id="email" formControlName="email">
             </div>
             <div class="cell large 4">
               <label for="password">Password: </label>
-              <input type="password" id="password">
+              <input type="password" id="password" formControlName="password">
             </div>
             <div class="cell large 4">
               <label for="password_confirm">Confirm Password: </label>
@@ -23,12 +23,12 @@
             <div class="cell">
               <div class="grid-x">
                 <div class="cell small-12 medium-3">
-                  <button class="button login-button" name="submitbutton" type="submit">Register
+                  <button class="button login-button" type="submit">Register
                   </button>
                 </div>
                 <div class="login-button-text-container">
                   <div class="cell small-12 medium-9">
-                    Already have an account? <a class="login-link" [routerLink]="['/login']" >Log in here!</a>
+                    Already have an account? <a class="login-link" [routerLink]="['/login']">Log in here!</a>
                   </div>
                 </div>
               </div>

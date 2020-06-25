@@ -1,7 +1,7 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-import {FormsModule} from "@angular/forms";
-import {HttpClientModule} from "@angular/common/http";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 
 import {AppComponent} from './app.component';
 import {HeaderComponent} from './components/header/header.component';
@@ -21,6 +21,8 @@ import {ToastrModule} from "ngx-toastr";
 import {MultiSelectAllModule} from "@syncfusion/ej2-angular-dropdowns";
 import {LoginComponent} from './components/login/login.component';
 import {RegisterComponent} from './components/register/register.component';
+import {AuthService} from "./services/auth.service";
+import {AuthHttpInterceptor} from "./services/auth.interceptor";
 
 @NgModule({
   declarations: [
@@ -44,9 +46,10 @@ import {RegisterComponent} from './components/register/register.component';
     HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot({positionClass: 'toast-top-center', timeOut: 3000})
+    ToastrModule.forRoot({positionClass: 'toast-top-center', timeOut: 3000}),
+    ReactiveFormsModule
   ],
-  providers: [QueryService, DetailService],
+  providers: [QueryService, DetailService, AuthService, {provide: HTTP_INTERCEPTORS, useClass: AuthHttpInterceptor, multi: true}],
   bootstrap: [AppComponent]
 })
 export class AppModule {

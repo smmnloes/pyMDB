@@ -94,6 +94,18 @@ def is_blacklisted(auth_token):
     return BlacklistToken.query.filter(BlacklistToken.token == auth_token).first() is not None
 
 
+def get_user_logged_in(request):
+    try:
+        auth_token = get_token_from_request(request)
+    except NoTokenProvidedException:
+        return False
+    try:
+        decode_auth_token(auth_token)
+    except TokenExpiredException | NoTokenProvidedException | TokenBlacklistedException:
+        return False
+    return True
+
+
 def get_token_from_request(request):
     auth_header = request.headers.get('Authorization')
     if auth_header:
@@ -110,7 +122,8 @@ def encode_auth_token(user):
         'exp': datetime.utcnow() + constants.JWT_VALIDITY_PERIOD,
         'iat': datetime.utcnow(),
         'sub': user.id,
-        'name': user.username
+        'username': user.username,
+        'is_admin': user.admin
     }
     return jwt.encode(
         payload,
@@ -126,12 +139,14 @@ def decode_auth_token(auth_token):
     :raises:    jwt.ExpiredSignatureError if token expired
                 jwt.InvalidTokenError if token invalid
     """
-    if is_blacklisted(auth_token):
-        raise TokenBlacklistedException
+
     try:
         payload = jwt.decode(auth_token, config_service.get_app_key())
-        return payload['sub']
     except jwt.ExpiredSignatureError:
         raise TokenExpiredException
     except jwt.InvalidTokenError:
         raise NoTokenProvidedException
+
+    if is_blacklisted(auth_token):
+        raise TokenBlacklistedException
+    return payload['sub']

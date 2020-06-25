@@ -19,6 +19,6 @@ class Register(Resource):
         return user_service.register_user(request.json['email'], request.json['password'], request.json['username'])
 
 
-class UserInfo(Resource):
+class UserLoggedInStatus(Resource):
     def post(self):
-        pass
+        return user_service.get_user_logged_in(request)
