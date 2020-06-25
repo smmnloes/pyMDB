@@ -47,7 +47,7 @@ def register_user(email, password, username, admin=False):
     )
     app_main.db.session.add(user)
     app_main.db.session.commit()
-    auth_token = encode_auth_token(user.id)
+    auth_token = encode_auth_token(user)
     response_object = {
         'status': 'success',
         'message': 'Successfully registered.',
@@ -64,7 +64,7 @@ def login_user(email, password):
     if (not user) or (not Bcrypt().check_password_hash(user.password, password)):
         raise LoginFailedException
 
-    auth_token = encode_auth_token(user.id)
+    auth_token = encode_auth_token(user)
     response_object = {
         'status': 'success',
         'message': 'Successfully logged in.',
@@ -105,11 +105,12 @@ def get_token_from_request(request):
     return auth_token
 
 
-def encode_auth_token(user_id):
+def encode_auth_token(user):
     payload = {
         'exp': datetime.utcnow() + constants.JWT_VALIDITY_PERIOD,
         'iat': datetime.utcnow(),
-        'sub': user_id
+        'sub': user.id,
+        'name': user.username
     }
     return jwt.encode(
         payload,

@@ -32,7 +32,8 @@ class TestUserService(TestCase):
             db.create_all(bind=BIND_USERS)
 
     def get_valid_auth_token(self):
-        return user_service.encode_auth_token('fake_id').decode()
+        fake_user = User('test@test.com', 'password', 'username')
+        return user_service.encode_auth_token(fake_user).decode()
 
     def get_expired_auth_token(self):
         return jwt.encode(
@@ -105,7 +106,7 @@ class TestUserService(TestCase):
             )
             db.session.add(user)
             db.session.commit()
-            auth_token = user_service.encode_auth_token(user.id)
+            auth_token = user_service.encode_auth_token(user)
             self.assertTrue(isinstance(auth_token, bytes))
 
     def test_decode_auth_token(self):
@@ -117,7 +118,7 @@ class TestUserService(TestCase):
             )
             db.session.add(user)
             db.session.commit()
-            auth_token = user_service.encode_auth_token(user.id)
+            auth_token = user_service.encode_auth_token(user)
             self.assertTrue(isinstance(auth_token, bytes))
             self.assertTrue(user_service.decode_auth_token(auth_token) == 1)
 
