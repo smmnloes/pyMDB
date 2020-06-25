@@ -1,0 +1,48 @@
+.register-form {
+  background-color:darkgrey;
+  padding:10px;
+  margin:auto;
+  border-radius:10px;
+  box-shadow:5px 5px 10px dimgrey;
+}
+
+.login-button {
+  margin-top: 10px;
+  border-radius: 5px;
+}
+
+label {
+  font-weight:bold;
+}
+
+.login-button-text-container{
+  display : flex;
+  align-items : center;
+  justify-content: center;
+}
+
+.login-link {
+  color: white;
+}
+
+/* Small only */
+@media screen and (max-width: 39.9375em) {
+  .register-form {
+    width: 100%
+  }
+}
+
+/* Medium only */
+@media screen and (min-width: 40em) and (max-width: 80em) {
+  .register-form {
+    width: 50%
+  }
+}
+
+
+/* Large and up */
+@media screen and (min-width: 80.0001em) {
+  .register-form {
+    width: 30%
+  }
+}

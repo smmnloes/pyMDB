@@ -19,10 +19,6 @@ nav a {
   font-weight:bold;
 }
 
-.content {
-  margin: 35px auto auto auto;
-}
-
 /* Small only */
 @media screen and (max-width: 39.9375em) {
   .content {
