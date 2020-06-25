@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable, throwError} from "rxjs";
 import "rxjs/add/operator/map";
-import {DetailedDataModel} from "../header/content/search-page/search-results/result/detailed-data-model";
+import {DetailedDataModel} from "../components/content/search-page/search-results/result/detailed-data-model";
 import {catchError, map} from "rxjs/operators";
 
 @Injectable()

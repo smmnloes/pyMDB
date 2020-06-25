@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable, Subject} from "rxjs";
-import {BasicDataModel} from "../header/content/search-page/search-results/result/basic-data-model";
-import {QueryModel} from "../header/content/search-page/search-form/query-model";
+import {BasicDataModel} from "../components/content/search-page/search-results/result/basic-data-model";
+import {QueryModel} from "../components/content/search-page/search-form/query-model";
 import {ActivatedRoute} from "@angular/router";
 import {map} from "rxjs/operators";
 

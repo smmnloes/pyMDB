@@ -1,13 +1,22 @@
-.details-container {
+.details-page {
   background-color: darkgrey;
-  max-width: 1000px;
   margin: auto;
   border-radius: 10px;
   box-shadow: 5px 5px 10px dimgrey;
+  padding: 10px
+}
+
+.details-container {
+  margin:auto
 }
 
 .error-message {
   font-weight: bold;
+  text-align: center;
+}
+
+
+.poster {
   text-align: center;
 }
 
@@ -33,14 +42,24 @@
 
 /* Small only */
 @media screen and (max-width: 39.9375em) {
-  .details-container {
-    padding: 0;
+  .details-page {
+    width: 100%
   }
 }
 
-/* Medium and up */
-@media screen and (min-width: 40em) {
-  .details-container {
-    padding: 20px;
+/* Medium only */
+@media screen and (min-width: 40em) and (max-width: 60em) {
+  .details-page {
+    width: 75%
   }
 }
+
+
+/* Large and up */
+@media screen and (min-width: 60.0001em) {
+  .details-page {
+    width: 50%
+  }
+}
+
+

@@ -1,6 +1,6 @@
 import {RouterModule, Routes} from "@angular/router";
-import {SearchPageComponent} from "./header/content/search-page/search-page.component";
-import {DetailsPageComponent} from "./header/content/details-page/details-page.component";
+import {SearchPageComponent} from "./components/content/search-page/search-page.component";
+import {DetailsPageComponent} from "./components/content/details-page/details-page.component";
 import {NgModule} from "@angular/core";
 
 
