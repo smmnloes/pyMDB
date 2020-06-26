@@ -35,6 +35,17 @@ nav a {
 }
 
 
+
+
+.user-name-display {
+  font-weight: bold;
+  display : flex;
+  align-items : center;
+  justify-content: center;
+  margin-right: 5px;
+}
+
+
 /* Small only */
 @media screen and (max-width: 39.9375em) {
   .content {
@@ -52,5 +63,24 @@ nav a {
 @media screen and (min-width: 40em) {
   .content {
     width: 75%
+  }
+
+  .top-bar .menu {
+    background-color: #b5b9bf !important;
+    margin-left: 2em;
+    margin-right: 2em;
+  }
+  .user-icon:after {
+
+    content: '';
+    display: block;
+    height: 40px;  /*height of icon */
+    width: 40px;  /*width of icon */
+    position: absolute;
+    /*where to replace the icon */
+    top: 0;
+    left: -40px;
+    /*background */
+    background: url("../../../assets/user_symbol.svg") no-repeat 0px 0px;
   }
 }

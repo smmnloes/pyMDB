@@ -17,7 +17,7 @@ class EmailNotValidException(HTTPException):
 
 
 class LoginFailedException(HTTPException):
-    message = 'Login failed'
+    message = 'Username or password incorrect'
     status = 400
 
 
