@@ -1,5 +1,31 @@
 <div class="header">
   <h1><a href="/">pyMDB</a></h1>
   <h4><i>the movie search engine</i></h4>
+
+  <nav class="top-bar top-bar-custom">
+    <div class="top-bar-left">
+      <ul class="menu" data-dropdown-menu *ngIf="currentUserInfo?.isLoggedIn">
+        <li><a [routerLink]="'/account'">Account</a></li>
+        <li><a [routerLink]="'/favorites'">Favorites</a></li>
+      </ul>
+    </div>
+    <div class="top-bar-right">
+      <ul class="menu">
+        <ng-container *ngIf="currentUserInfo?.isLoggedIn else logoutTemplate">
+          <li class="user-name-display">
+            <i class="user-icon"></i>&nbsp;{{currentUserInfo.userName}}
+          </li>
+          <li>
+            <button type="button" class="button button-login" (click)="authService.logout()">Logout</button>
+          </li>
+        </ng-container>
+        <ng-template #logoutTemplate>
+          <li>
+            <button type="button" class="button button-login" [routerLink]="'/login'">Login</button>
+          </li>
+        </ng-template>
+      </ul>
+    </div>
+  </nav>
 </div>
 
