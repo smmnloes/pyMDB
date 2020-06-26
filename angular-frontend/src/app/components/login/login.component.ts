@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {AuthService} from "../../services/auth.service";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {ToastrService} from "ngx-toastr";
@@ -8,7 +8,7 @@ import {ToastrService} from "ngx-toastr";
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
 
   loginForm: FormGroup;
 
@@ -20,10 +20,6 @@ export class LoginComponent implements OnInit {
       }
     )
   }
-
-  ngOnInit(): void {
-  }
-
 
   onSubmit(loginData): void {
     this.authService.login(loginData.email, loginData.password);

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {AuthService} from "../../services/auth.service";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {ToastrService} from "ngx-toastr";
@@ -8,7 +8,7 @@ import {ToastrService} from "ngx-toastr";
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent {
   registerData: FormGroup;
 
   constructor(private authService: AuthService, private formBuilder: FormBuilder, private toastrService: ToastrService) {
@@ -16,20 +16,17 @@ export class RegisterComponent implements OnInit {
       {
         email: '',
         password: '',
+        passwordConfirm: '',
         username: ''
       }
     )
   }
 
-  ngOnInit(): void {
+ onSubmit(registerData) {
+    if (registerData.password != registerData.passwordConfirm) {
+      this.toastrService.error('"Password" and "Confirm Password" do not match')
+    } else {
+      this.authService.register(registerData.email, registerData.password, registerData.username);
+    }
   }
-
-  onSubmit(registerData) {
-    this.authService.register(registerData.email, registerData.password, registerData.username);
-  }
-
-  onSuccessfulRegistration(userData): void {
-
-  }
-
 }
