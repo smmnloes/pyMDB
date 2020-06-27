@@ -4,9 +4,8 @@ import {Subject} from "rxjs";
 import {Util} from "../util/util";
 import {ToastrService} from "ngx-toastr";
 import {Router} from "@angular/router";
-import {map} from "rxjs/operators";
 import {UserInfo} from "../models/userInfo";
-
+import * as jwtDecode from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +18,6 @@ export class AuthService {
 
 
   constructor(private http: HttpClient, private toastrService: ToastrService, private router: Router) {
-    this.createInitialUserStatus()
   }
 
   login(email: string, password: string): void {
@@ -46,24 +44,16 @@ export class AuthService {
 
 
   logout(): void {
-    let logoutUrl = this.BASE_URL + '/logout';
-    this.http.post(logoutUrl, Util.appJsonHeaderOptions).subscribe(resp => {
-        this.userInfoSource.next(UserInfo.loggedOutUser())
-        this.toastrService.success('Logout successful!')
-      }, error => {
-        // Just log out the user on the client side
-        this.userInfoSource.next(UserInfo.loggedOutUser())
-      }
-    );
+    AuthService.deleteAuthToken();
+    this.toastrService.success('Logout successful!')
+    this.userInfoSource.next(UserInfo.loggedOutUser())
   }
 
 
   createInitialUserStatus(): void {
-    if (localStorage.getItem('token')) {
-      let statusUrl = this.BASE_URL + '/status';
-      this.http.post(statusUrl, Util.appJsonHeaderOptions).pipe(map(value => <boolean>value)).subscribe(
-        isLoggedIn => this.userInfoSource.next(UserInfo.fromToken(isLoggedIn))
-      );
+    let token = localStorage.getItem('token');
+    if (token && AuthService.isTokenValid(token)) {
+      this.userInfoSource.next(UserInfo.fromToken(true))
     } else {
       this.userInfoSource.next(UserInfo.loggedOutUser());
     }
@@ -94,6 +84,19 @@ export class AuthService {
     localStorage.setItem('token', userData.auth_token);
   }
 
+  private static deleteAuthToken() {
+    localStorage.removeItem('token');
+  }
+
+  private static isTokenValid(token: string) {
+    let expireDate;
+    try {
+      expireDate = new Date(jwtDecode(token)['exp'] * 1000);
+    } catch (e) {
+      return false;
+    }
+    return new Date() < expireDate;
+  }
 }
 
 

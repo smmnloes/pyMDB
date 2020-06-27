@@ -44,11 +44,9 @@ def init_app_api(app):
     api.add_resource(TmdbDetailedData, API_MOVIES_DETAILS)
     api.add_resource(HasDetails, API_MOVIES_HAS_DETAILS)
 
-    from api.user.controllers import Login, Logout, Register, UserLoggedInStatus
+    from api.user.controllers import Login, Register
     api.add_resource(Register, API_USER_REGISTER)
     api.add_resource(Login, API_USER_LOGIN)
-    api.add_resource(Logout, API_USER_LOGOUT)
-    api.add_resource(UserLoggedInStatus, API_LOGIN_STATUS)
 
 
 def init_app_cache(app):

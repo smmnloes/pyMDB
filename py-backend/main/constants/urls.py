@@ -12,5 +12,3 @@ API_MOVIES_HAS_DETAILS = urljoin(API_ROOT_MOVIES, 'has_details')
 
 API_USER_REGISTER = urljoin(API_ROOT_USER, 'register')
 API_USER_LOGIN = urljoin(API_ROOT_USER, 'login')
-API_USER_LOGOUT = urljoin(API_ROOT_USER, 'logout')
-API_LOGIN_STATUS = urljoin(API_ROOT_USER, 'status')

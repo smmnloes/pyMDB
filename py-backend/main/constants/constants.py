@@ -42,4 +42,4 @@ DB_LAST_VERSION_SUFFIX = '_last_version'
 BIND_USERS = 'users'
 BIND_MOVIES = 'movies'
 
-JWT_VALIDITY_PERIOD = timedelta(days=7)
+JWT_VALIDITY_PERIOD = timedelta(days=1)

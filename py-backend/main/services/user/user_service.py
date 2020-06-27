@@ -6,10 +6,10 @@ from flask import make_response, jsonify
 from flask_bcrypt import Bcrypt
 
 from api.user.errors import UserEmailExistsException, UserNameExistsException, EmailNotValidException, \
-    LoginFailedException, NoTokenProvidedException, TokenExpiredException, TokenBlacklistedException
+    LoginFailedException, NoTokenProvidedException, TokenExpiredException
 from app import app_main
 from constants import constants
-from model.user_model import User, BlacklistToken
+from model.user_model import User
 from services.config import config_service
 
 
@@ -73,39 +73,6 @@ def login_user(email, password):
     return make_response(jsonify(response_object), 200)
 
 
-def logout_user(request):
-    auth_token = get_token_from_request(request)
-    decode_auth_token(auth_token)
-    blacklist_token(auth_token)
-    app_main.db.session.commit()
-    response_object = {
-        'status': 'success',
-        'message': 'Successfully logged out.'
-    }
-    return make_response(jsonify(response_object), 200)
-
-
-def blacklist_token(token):
-    app_main.db.session.add(BlacklistToken(token))
-    app_main.db.session.commit()
-
-
-def is_blacklisted(auth_token):
-    return BlacklistToken.query.filter(BlacklistToken.token == auth_token).first() is not None
-
-
-def get_user_logged_in(request):
-    try:
-        auth_token = get_token_from_request(request)
-    except NoTokenProvidedException:
-        return False
-    try:
-        decode_auth_token(auth_token)
-    except TokenExpiredException | NoTokenProvidedException | TokenBlacklistedException:
-        return False
-    return True
-
-
 def get_token_from_request(request):
     auth_header = request.headers.get('Authorization')
     if auth_header:
@@ -147,6 +114,4 @@ def decode_auth_token(auth_token):
     except jwt.InvalidTokenError:
         raise NoTokenProvidedException
 
-    if is_blacklisted(auth_token):
-        raise TokenBlacklistedException
     return payload['sub']
