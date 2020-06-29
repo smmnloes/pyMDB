@@ -98,7 +98,6 @@ class TestUserService(TestCase):
         response = self.register_user('test@test.com', '', 'testuser')
         self.assert400(response, PasswordInvalidException.message)
 
-
     def test_register_admin_user(self):
         with self.app.app_context():
             user_service.register_user('test@user.com', 'password', 'admin_user', True)
