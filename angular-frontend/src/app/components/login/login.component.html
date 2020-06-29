@@ -6,10 +6,27 @@
           <div class="grid-y">
             <div class="cell large 4">
               <label for="email">Email: </label>
+              <div *ngIf="email.invalid && (email.dirty || email.touched)"
+                   class="validation-alert">
+                <div>
+                  <div *ngIf="email.errors.required">
+                    Email is required.
+                  </div>
+                  <div *ngIf="email.errors.email">
+                    Please provide a valid email address.
+                  </div>
+                </div>
+              </div>
               <input type="text" id="email" formControlName="email">
             </div>
             <div class="cell large 4">
               <label for="password">Password: </label>
+              <div>
+                <div *ngIf="password.invalid && (password.dirty || password.touched) && password.errors.required"
+                     class="validation-alert">
+                  Please supply a password.
+                </div>
+              </div>
               <input type="password" id="password" formControlName="password">
             </div>
             <div class="cell">
@@ -20,7 +37,7 @@
                 </div>
                 <div class="login-button-text-container">
                   <div class="cell small-12 medium-9">
-                    No account yet? <a class="register-link" [routerLink]="['/register']" >Register here!</a>
+                    No account yet? <a class="register-link" [routerLink]="['/register']">Register here!</a>
                   </div>
                 </div>
               </div>

@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {AuthService} from "../../services/auth.service";
-import {FormBuilder, FormGroup} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ToastrService} from "ngx-toastr";
 
 @Component({
@@ -15,14 +15,24 @@ export class LoginComponent {
   constructor(private authService: AuthService, private formBuilder: FormBuilder, private toastrService: ToastrService) {
     this.loginForm = formBuilder.group(
       {
-        email: '',
-        password: ''
+        email: ['', [Validators.email, Validators.required]],
+        password: ['', Validators.required],
       }
     )
   }
 
+  get email() {
+    return this.loginForm.get('email');
+  }
+
+  get password() {
+    return this.loginForm.get('password');
+  }
+
   onSubmit(loginData): void {
-    this.authService.login(loginData.email, loginData.password);
+    if (this.loginForm.valid) {
+      this.authService.login(loginData.email, loginData.password);
+    }
   }
 
 
