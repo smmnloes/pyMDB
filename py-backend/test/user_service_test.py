@@ -7,7 +7,7 @@ import jwt
 from flask_testing import TestCase
 
 from api.user.errors import UserEmailExistsException, UserNameExistsException, EmailNotValidException, \
-    UnauthorizedException
+    UnauthorizedException, UserNameInvalidException, PasswordInvalidException
 from app import app_main
 from constants.urls import API_USER_REGISTER, API_USER_LOGIN
 from model.user_model import *
@@ -89,6 +89,15 @@ class TestUserService(TestCase):
     def test_register_user_invalid_email(self):
         response = self.register_user('malformed_email', 'password', 'testuser')
         self.assert400(response, EmailNotValidException.message)
+
+    def test_register_user_invalid_username(self):
+        response = self.register_user('test@test.com', 'password', '')
+        self.assert400(response, UserNameInvalidException.message)
+
+    def test_register_user_invalid_password(self):
+        response = self.register_user('test@test.com', '', 'testuser')
+        self.assert400(response, PasswordInvalidException.message)
+
 
     def test_register_admin_user(self):
         with self.app.app_context():

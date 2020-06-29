@@ -35,9 +35,21 @@ class TokenBlacklistedException(HTTPException):
     message = 'Token is blacklisted'
     status = 400
 
+
 class UnauthorizedException(HTTPException):
     message = 'Authorization required. Please log in'
     status = 401
+
+
+class UserNameInvalidException(HTTPException):
+    message = 'Invalid username'
+    status = 400
+
+
+class PasswordInvalidException(HTTPException):
+    message = 'Invalid password'
+    status = 400
+
 
 user_api_errors = {
     UserEmailExistsException.__name__: {
@@ -71,7 +83,14 @@ user_api_errors = {
     UnauthorizedException.__name__: {
         'message': UnauthorizedException.message,
         'status': UnauthorizedException.status
+    },
+    UserNameInvalidException.__name__: {
+        'message': UserNameInvalidException.message,
+        'status': UserNameInvalidException.status
+    },
+    PasswordInvalidException.__name__: {
+        'message': PasswordInvalidException.message,
+        'status': PasswordInvalidException.status
     }
-
 
 }

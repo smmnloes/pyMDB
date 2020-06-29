@@ -6,7 +6,8 @@ from flask import make_response, jsonify
 from flask_bcrypt import Bcrypt
 
 from api.user.errors import UserEmailExistsException, UserNameExistsException, EmailNotValidException, \
-    LoginFailedException, NoTokenProvidedException, TokenExpiredException
+    LoginFailedException, NoTokenProvidedException, TokenExpiredException, UserNameInvalidException, \
+    PasswordInvalidException
 from app import app_main
 from constants import constants
 from model.user_model import User
@@ -23,6 +24,16 @@ def check_username_exists(username):
         raise UserNameExistsException
 
 
+def check_username_valid(username):
+    if not username:
+        raise UserNameInvalidException
+
+
+def check_password_valid(password):
+    if not password:
+        raise PasswordInvalidException
+
+
 def get_email_normalized(email):
     """
     Check if email is valid. Return normalized form if it is valid, otherwise None
@@ -35,6 +46,8 @@ def get_email_normalized(email):
 
 
 def register_user(email, password, username, admin=False):
+    check_username_valid(username)
+    check_password_valid(password)
     check_username_exists(username)
     check_email_exists(email)
 
