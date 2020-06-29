@@ -11,3 +11,11 @@ html *
    font-size: 1em;
    font-family: Arial, sans-serif;
 }
+
+.validation-alert {
+  color: red;
+}
+
+.validation-alert:before {
+  margin-bottom: 0;
+}

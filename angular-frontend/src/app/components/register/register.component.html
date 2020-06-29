@@ -6,20 +6,57 @@
           <div class="grid-y">
             <div class="cell large 4">
               <label for="username">Username: </label>
-              <input type="text" id="username" formControlName="username">
+              <input type="text" id="username" formControlName="username" required>
+              <div *ngIf="username.invalid && (username.dirty || username.touched)"
+                   class="validation-alert">
+                <div *ngIf="username.errors.required">
+                  Username is required.
+                </div>
+              </div>
             </div>
+
             <div class="cell large 4">
               <label for="email">Email: </label>
               <input type="text" id="email" formControlName="email">
+              <div *ngIf="email.invalid && (email.dirty || email.touched)"
+                   class="validation-alert">
+                <div>
+                  <div *ngIf="email.errors.required">
+                    Email is required.
+                  </div>
+                  <div *ngIf="email.errors.email">
+                    Please provide a valid email address.
+                  </div>
+                </div>
+              </div>
             </div>
+
             <div class="cell large 4">
               <label for="password">Password: </label>
               <input type="password" id="password" formControlName="password">
+              <div *ngIf="password.invalid && (password.dirty || password.touched)"
+                   class="validation-alert">
+                <div>
+                  <div *ngIf="password.errors.required">
+                    Please supply a password.
+                  </div>
+                  <div *ngIf="password.errors.minlength">
+                    Password needs to be at least {{PW_MIN_LENGTH}} characters long.
+                  </div>
+                </div>
+              </div>
             </div>
+
             <div class="cell large 4">
               <label for="password_confirm">Confirm Password: </label>
               <input type="password" id="password_confirm" formControlName="passwordConfirm">
+              <div *ngIf="(passwordConfirm.dirty || passwordConfirm.touched) && registerData.errors?.passwordsDontMatch"
+                   class="validation-alert">
+                Password and password confirm must be equal.
+              </div>
             </div>
+
+
             <div class="cell">
               <div class="grid-x">
                 <div class="cell small-12 medium-3">
