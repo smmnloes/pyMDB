@@ -19,7 +19,7 @@
             </div>
 
             <div class="cell small-4 medium-4 large-2">
-              <label for="rating">min. Rating</label>
+              <label for="rating">min.&nbsp;Rating</label>
               <input id="rating" type="number" step="0.1" min="0" max="10" name="rating"
                      placeholder="5.5"
                      [(ngModel)]="queryModel.min_rating_imdb">
@@ -27,13 +27,13 @@
             <div class="cell small-8 medium-8 large-4">
               <div class="grid-x">
                 <div class="cell small-6">
-                  <label for="year_from">min. year</label>
+                  <label for="year_from">min.&nbsp;Year</label>
                   <input id="year_from" type="number" min="1800" max="2020" name="year_from"
                          placeholder="1965"
                          [(ngModel)]="queryModel.year_from">
                 </div>
                 <div class="cell small-6">
-                  <label for="year_to">max. year</label>
+                  <label for="year_to">max.&nbsp;Year</label>
                   <input id="year_to" type="number" min="1800" max="2020" name="year_to"
                          placeholder="2010"
                          [(ngModel)]="queryModel.year_to">
@@ -79,7 +79,7 @@
               </select>
             </div>
             <div class="cell small-3 small-offset-1">
-              <label for="sort-by">Sort by:</label>
+              <label for="sort-by">Sort&nbsp;by:</label>
               <select id="sort-by" name="sort-by" [(ngModel)]="queryModel.sort_by" (change)="onClickSortBy()">
                 <option *ngFor="let criteria of sortCriteria">{{criteria}}</option>
               </select>

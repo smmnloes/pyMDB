@@ -29,8 +29,6 @@ nav a {
 
 .top-bar .menu {
   background-color: #b5b9bf !important;
-  margin-left: 5em;
-  margin-right: 5em;
 }
 
 
@@ -42,21 +40,10 @@ nav a {
   align-items : center;
   justify-content: center;
   margin-right: 5px;
+  padding: 0.7rem 1rem;
 }
 
 
-/* Small only */
-@media screen and (max-width: 39.9375em) {
-  .content {
-    width: 100%
-  }
-
-  .top-bar .menu {
-    background-color: #b5b9bf !important;
-    margin-left: 0;
-    margin-right: 0;
-  }
-}
 
 /* Medium and up */
 @media screen and (min-width: 40em) {
@@ -80,6 +67,6 @@ nav a {
     top: 0;
     left: -40px;
     /*background */
-    background: url("../../../assets/user_symbol.svg") no-repeat 0px 0px;
+    background: url("../../../assets/user_symbol.svg") no-repeat 0 0;
   }
 }
